@@ -1,4 +1,4 @@
-<img width="1799" height="927" alt="Frame 286" src="https://github.com/user-attachments/assets/e793be23-be42-4b16-aa0d-bd8656026ecb" />
+
 
 <div align="center">
 
@@ -133,10 +133,10 @@ Playder is an independent, unofficial project made for personal and educational 
 ---
 ## Some Prview 
 
-<img width="1799" height="927" alt="Frame 289" src="https://github.com/user-attachments/assets/c4c122ed-b86c-44e4-a618-417f5287bc98" />
-<img width="1799" height="927" alt="Frame 287" src="https://github.com/user-attachments/assets/186be8ac-ff3e-4e2a-ab7e-ae80bc9da7e7" />
-<img width="1799" height="927" alt="Frame 290" src="https://github.com/user-attachments/assets/c394603c-7aa7-4d78-8688-38a6c6e42232" />
-<img width="1799" height="927" alt="Frame 288" src="https://github.com/user-attachments/assets/06f5c13a-b8f1-4ecf-85aa-b17d020db5c8" />
+<img width="1799" height="927" alt="Image" src="https://github.com/user-attachments/assets/e2d7d8aa-685f-4d79-923f-bcaeb60b658d" />
+<img width="1799" height="927" alt="Image" src="https://github.com/user-attachments/assets/95754196-6c38-4aa2-a13e-3250e04597da" />
+<img width="1799" height="927" alt="Image" src="https://github.com/user-attachments/assets/b3d5f3b9-fa1c-4efe-9859-42177e19c240" />
+<img width="1799" height="927" alt="Image" src="https://github.com/user-attachments/assets/d04ddc06-dca3-459c-b71a-e28f28e4ef4e" />
 
 ---
 
