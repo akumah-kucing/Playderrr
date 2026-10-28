@@ -44,9 +44,10 @@
 ## Hhhh-how to install? :3
 
 1. On your phone, open the [latest release](https://github.com/akumah-kucing/Playderrr/releases/latest).
-2. Download the `.apk` that matches your phone. If you are not sure, pick **arm64**, that is almost every phone from the last 8 years. The **universal** one works everywhere but is bigger.
+2. Download the `.apk`.
 3. Open the downloaded file. Android will ask you to allow installs from your browser or file manager, say yes (you can turn it off again after).
 4. Open Playder. You are done, no account needed to start listening.
+5. If u can't install it, feel free to hit us us ur android version on issues, then we would fix that if we're in mood 🤤
 
 Updating works the same way: install the new apk over the old one and your library stays.
 
