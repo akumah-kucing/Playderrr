@@ -79,11 +79,18 @@ internal val DevPeople = listOf(
         name = "Alvinzz",
         bio = "Hi hello hi",
         avatar = R.drawable.alvinzz,
+        socials = listOf(
+            DevSocial("Instagram", "https://www.instagram.com/mangfriday9/"),
+        ),
     ),
     DevPerson(
         name = "Rafiakmal29",
         bio = "Slop slop slop, gimme some robuks!",
         avatar = R.drawable.rafiakmal29,
+        socials = listOf(
+            DevSocial("Instagram", "https://www.instagram.com/austrian_in_a_box/"),
+            DevSocial("Roblox", "https://www.roblox.com/search/users?keyword=dawg_seven"),
+        ),
     ),
 )
 
