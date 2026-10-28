@@ -49,6 +49,7 @@ import coil3.request.ImageRequest
 import coil3.request.transformations
 import com.playder.R
 import com.playder.core.updater.DiscordUrl
+import com.playder.core.updater.GithubProfileUrl
 import com.playder.core.updater.InstagramUrl
 import com.playder.core.updater.ThreadsUrl
 import com.playder.ui.component.pressBounce
@@ -70,6 +71,7 @@ internal val DevPeople = listOf(
         bio = "I don't know, I don't care, I'm just a stray cat.... Miaw :3",
         avatar = R.drawable.akumahkucing,
         socials = listOf(
+            DevSocial("GitHub", GithubProfileUrl),
             DevSocial("Instagram", InstagramUrl),
             DevSocial("Discord", DiscordUrl),
             DevSocial("Threads", ThreadsUrl),
@@ -80,6 +82,7 @@ internal val DevPeople = listOf(
         bio = "Hi hello hi",
         avatar = R.drawable.alvinzz,
         socials = listOf(
+            DevSocial("GitHub", "https://github.com/itsvinzz"),
             DevSocial("Instagram", "https://www.instagram.com/mangfriday9/"),
         ),
     ),
@@ -88,6 +91,7 @@ internal val DevPeople = listOf(
         bio = "Slop slop slop, gimme some robuks!",
         avatar = R.drawable.rafiakmal29,
         socials = listOf(
+            DevSocial("GitHub", "https://github.com/Rafiakmal29"),
             DevSocial("Instagram", "https://www.instagram.com/austrian_in_a_box/"),
             DevSocial("Roblox", "https://www.roblox.com/search/users?keyword=dawg_seven"),
         ),
