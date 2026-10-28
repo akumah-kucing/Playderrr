@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +41,9 @@ import com.playder.ui.component.SheetPillButton
 import com.playder.ui.player.menu.MenuRowSurface
 import com.playder.ui.screens.search.SearchColors
 import com.playder.viewmodels.LibraryImportViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
 /**
  * [sources] are the services that have brought music in, one "Delete ... imports" row each.
@@ -101,6 +105,7 @@ fun PopupSheetState.showManageImportsSheet(
  */
 fun PopupSheetState.showManageLocalSheet(
     viewModel: LibraryImportViewModel,
+    songs: List<Song>,
     onRescan: () -> Unit,
     onAddFolder: () -> Unit,
     onRemoveFromList: () -> Unit,
@@ -121,6 +126,9 @@ fun PopupSheetState.showManageLocalSheet(
                 onAddFolder()
             },
             rows = listOf(
+                ManageAction(R.drawable.info, "Check collection") {
+                    showLocalAuditSheet(songs)
+                },
                 ManageAction(R.drawable.undo, "Undo import session") {
                     showConfirm(
                         title = "Undo your last local import?",
@@ -134,6 +142,81 @@ fun PopupSheetState.showManageLocalSheet(
             ),
         )
     }
+}
+
+private fun PopupSheetState.showLocalAuditSheet(songs: List<Song>) {
+    showWithHandle {
+        LocalAuditContent(songs)
+    }
+}
+
+private data class LocalAuditResult(
+    val trackCount: Int,
+    val possibleDuplicateGroups: Int,
+    val missingTitles: Int,
+    val missingArtists: Int,
+    val missingArtwork: Int,
+)
+
+@Composable
+private fun LocalAuditContent(songs: List<Song>) {
+    val result = produceState<LocalAuditResult?>(initialValue = null) {
+        value = withContext(Dispatchers.Default) { auditLocalSongs(songs) }
+    }.value
+
+    Text(text = "Local collection check", color = SearchColors.Primary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+    Spacer(Modifier.height(8.dp))
+    Text(
+        text = "Read-only metadata check. Nothing in your library or files will be changed.",
+        color = SearchColors.Secondary,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+    )
+    Spacer(Modifier.height(12.dp))
+
+    if (result == null) {
+        Text(text = "Checking local tracks...", color = SearchColors.Secondary, fontSize = 14.sp)
+    } else {
+        AuditResultRow("Local tracks checked", result.trackCount)
+        AuditResultRow("Possible duplicate groups", result.possibleDuplicateGroups)
+        AuditResultRow("Missing title", result.missingTitles)
+        AuditResultRow("Missing artist", result.missingArtists)
+        AuditResultRow("Missing artwork", result.missingArtwork)
+    }
+}
+
+@Composable
+private fun AuditResultRow(label: String, count: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 7.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = label, color = SearchColors.Primary, fontSize = 14.sp)
+        Text(text = count.toString(), color = SearchColors.Secondary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+private fun auditLocalSongs(songs: List<Song>): LocalAuditResult {
+    val localSongs = songs.filter { it.song.isLocal }
+    val possibleDuplicateGroups = localSongs.mapNotNull { song ->
+        val title = auditMetadata(song.song.title) ?: return@mapNotNull null
+        val artists = song.artists.mapNotNull { auditMetadata(it.name) }.sorted()
+        if (artists.isEmpty()) null else "$title|${artists.joinToString("|")}"
+    }.groupingBy { it }.eachCount().count { it.value > 1 }
+
+    return LocalAuditResult(
+        trackCount = localSongs.size,
+        possibleDuplicateGroups = possibleDuplicateGroups,
+        missingTitles = localSongs.count { auditMetadata(it.song.title) == null },
+        missingArtists = localSongs.count { song -> song.artists.none { auditMetadata(it.name) != null } },
+        missingArtwork = localSongs.count { it.song.thumbnailUrl.isNullOrBlank() },
+    )
+}
+
+private fun auditMetadata(value: String?): String? {
+    val normalized = value?.trim()?.lowercase(Locale.ROOT)?.takeIf { it.isNotEmpty() } ?: return null
+    return normalized.takeUnless { it in setOf("<unknown>", "unknown", "unknown song", "unknown artist") }
 }
 
 /**
