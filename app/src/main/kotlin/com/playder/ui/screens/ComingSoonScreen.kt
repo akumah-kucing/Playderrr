@@ -59,7 +59,7 @@ fun ComingSoonScreen(
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back),
-                    contentDescription = "Back",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }

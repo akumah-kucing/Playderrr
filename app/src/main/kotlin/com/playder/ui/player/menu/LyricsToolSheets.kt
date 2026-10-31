@@ -108,7 +108,7 @@ fun LyricsEditorSheet(onDismiss: () -> Unit) {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Edit lyrics",
+                    text = androidx.compose.ui.res.stringResource(com.playder.R.string.edit_lyrics),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
@@ -116,7 +116,7 @@ fun LyricsEditorSheet(onDismiss: () -> Unit) {
                 )
                 if (parsed.isNotEmpty()) {
                     Text(
-                        text = "Save",
+                        text = androidx.compose.ui.res.stringResource(com.playder.R.string.save),
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,

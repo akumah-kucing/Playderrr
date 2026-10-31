@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.playder.R
@@ -45,16 +46,16 @@ fun PlaybackSettingsScreen(navController: NavController) {
     val keepPlaying = !stopPlaybackOnTaskRemoved
 
     SubSettingsScaffold(
-        title = "Playback",
+        title = stringResource(R.string.playback_category),
         onBack = { navController.navigateUp() },
         searchBar = { SubSettingsSearchBar(query = query, onQueryChange = { query = it }) },
     ) {
         val items = listOf(
             SettingsItem(
-                title = { Text("Keep playing even when closed") },
-                highlightKey = "Keep playing even when closed",
-                descriptionText = "Keep playing after the app is cleared",
-                detail = "Continue playback in background when app is cleared from recents",
+                title = { Text(stringResource(R.string.loc_playback_keep_playing)) },
+                highlightKey = stringResource(R.string.loc_playback_keep_playing),
+                descriptionText = stringResource(R.string.loc_playback_keep_playing_desc),
+                detail = stringResource(R.string.loc_playback_keep_playing_detail),
                 icon = painterResource(R.drawable.clear_all),
                 iconShape = CircleShape,
                 onClick = { onStopPlaybackOnTaskRemovedChange(!stopPlaybackOnTaskRemoved) },
@@ -66,10 +67,10 @@ fun PlaybackSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Save Player's last state") },
-                highlightKey = "Save Player's last state",
-                descriptionText = "Off clears played tracks on close",
-                detail = "disabling this will removing previously played tracks when closing the app",
+                title = { Text(stringResource(R.string.loc_playback_save_state)) },
+                highlightKey = stringResource(R.string.loc_playback_save_state),
+                descriptionText = stringResource(R.string.loc_playback_save_state_desc),
+                detail = stringResource(R.string.loc_playback_save_state_detail),
                 icon = painterResource(R.drawable.cached),
                 iconShape = CircleShape,
                 onClick = { onPersistentQueueChange(!persistentQueue) },
@@ -81,9 +82,9 @@ fun PlaybackSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Skip Silence") },
-                highlightKey = "Skip Silence",
-                descriptionText = "Jump over the quiet gaps in songs",
+                title = { Text(stringResource(R.string.loc_playback_skip_silence)) },
+                highlightKey = stringResource(R.string.loc_playback_skip_silence),
+                descriptionText = stringResource(R.string.loc_playback_skip_silence_desc),
                 icon = painterResource(R.drawable.skip_next),
                 iconShape = CircleShape,
                 onClick = { onSkipSilenceChange(!skipSilence) },

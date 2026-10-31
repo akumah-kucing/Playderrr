@@ -17,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.playder.R
 import com.playder.ui.component.LocalMenuState
 import com.playder.ui.screens.library.showConfirm
 import com.playder.viewmodels.TransferStep
@@ -37,6 +39,9 @@ internal fun TransferSection(viewModel: TransferViewModel = hiltViewModel()) {
     val scope = rememberCoroutineScope()
     var checkError by remember { mutableStateOf<String?>(null) }
     var waitingForPermission by remember { mutableStateOf<Uri?>(null) }
+    val replaceTitle = stringResource(R.string.loc_storage_transfer_replace_title)
+    val replaceMessage = stringResource(R.string.loc_storage_transfer_replace_message)
+    val pickZip = stringResource(R.string.loc_storage_transfer_pick_zip)
 
     val exportPicker = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri ->
         if (uri != null) viewModel.exportTo(uri)
@@ -64,38 +69,41 @@ internal fun TransferSection(viewModel: TransferViewModel = hiltViewModel()) {
     }
 
     Text(
-        "Moving to a new phone? Take everything with you",
+        stringResource(R.string.loc_storage_transfer_title),
         style = storageText(17f, FontWeight.SemiBold),
         modifier = Modifier.padding(horizontal = 2.dp),
     )
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(top = 14.dp)) {
         StorageActionButton(
-            label = "Export everything",
+            label = stringResource(R.string.loc_storage_transfer_export),
             detail = when (val step = export) {
-                is TransferStep.Working -> step.progress?.let { "Exporting… ${(it * 100).toInt()}%" } ?: "Exporting…"
-                TransferStep.Done -> "Exported! Import the .zip in Playder on the other phone"
+                is TransferStep.Working -> step.progress?.let {
+                    stringResource(R.string.loc_storage_transfer_export_progress, (it * 100).toInt())
+                } ?: stringResource(R.string.loc_storage_transfer_exporting)
+                TransferStep.Done -> stringResource(R.string.loc_storage_transfer_exported)
                 is TransferStep.Failed -> step.message
-                TransferStep.Idle -> "Library, history, downloads and settings in one .zip, without logins"
+                TransferStep.Idle -> stringResource(R.string.loc_storage_transfer_export_idle)
             },
             enabled = export !is TransferStep.Working && import !is TransferStep.Working,
             onClick = { exportPicker.launch(viewModel.exportFileName()) },
         )
         StorageActionButton(
-            label = "Import everything",
+            label = stringResource(R.string.loc_storage_transfer_import),
             detail = when (val step = import) {
-                is TransferStep.Working -> step.progress?.let { "Importing… ${(it * 100).toInt()}%, Playder restarts when it's done" } ?: "Importing…"
-                TransferStep.Done -> "Done, restarting…"
+                is TransferStep.Working -> step.progress?.let {
+                    stringResource(R.string.loc_storage_transfer_import_progress, (it * 100).toInt())
+                } ?: stringResource(R.string.loc_storage_transfer_importing)
+                TransferStep.Done -> stringResource(R.string.loc_storage_transfer_imported)
                 is TransferStep.Failed -> step.message
-                TransferStep.Idle -> checkError ?: "Bring back a .zip made with Export everything"
+                TransferStep.Idle -> checkError ?: stringResource(R.string.loc_storage_transfer_import_idle)
             },
             danger = true,
             enabled = export !is TransferStep.Working && import !is TransferStep.Working && import !is TransferStep.Done,
             onClick = {
                 menuState.showConfirm(
-                    title = "Replace your library?",
-                    message = "Everything in Playder right now is replaced by what's in the export: library, history, " +
-                        "downloads and settings. Your logins stay as they are. Playder restarts once to finish.",
-                    action = "Pick the .zip",
+                    title = replaceTitle,
+                    message = replaceMessage,
+                    action = pickZip,
                     onConfirm = {
                         viewModel.clearImport()
                         importPicker.launch(ZipTypes)

@@ -424,7 +424,7 @@ fun WebLoginHeader(title: String, subtitle: String, onBack: () -> Unit) {
             .padding(horizontal = 8.dp, vertical = 4.dp),
     ) {
         IconButton(onClick = onBack) {
-            Icon(painterResource(R.drawable.arrow_back), contentDescription = "Back", tint = Color.White)
+            Icon(painterResource(R.drawable.arrow_back), contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back), tint = Color.White)
         }
         Spacer(Modifier.width(4.dp))
         Column(modifier = Modifier.weight(1f)) {

@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -265,7 +266,7 @@ fun SearchScreen(
             glassState = glassState,
             progressProvider = progressProvider,
             pureBlack = pureBlack,
-            title = "Search",
+            title = stringResource(R.string.search),
             trailing = {
                 SearchAvatar(imageUrl = profilePicStr.ifBlank { null }, onClick = { navController.navigateToTab("settings") })
             },
@@ -274,7 +275,7 @@ fun SearchScreen(
                 value = query,
                 onValueChange = { query = it },
                 onSearch = commit,
-                placeholder = "Search for any tracks, albums, lyrics...",
+                placeholder = stringResource(R.string.search_any_tracks_albums_lyrics),
                 focused = active,
                 leading = if (active) {
                     {
@@ -430,7 +431,7 @@ private fun SearchActiveContent(
         if (query.isEmpty()) {
             if (state.history.isNotEmpty()) {
                 item(key = "history_header") {
-                    SearchSectionHeader(title = "Search History")
+                    SearchSectionHeader(title = stringResource(R.string.search_history))
                 }
                 items(
                     items = state.history,
@@ -454,7 +455,7 @@ private fun SearchActiveContent(
         } else {
             if (state.suggestions.isNotEmpty()) {
                 item(key = "suggestion_header") {
-                    SearchSectionHeader(title = "Suggestion")
+                    SearchSectionHeader(title = stringResource(R.string.suggestions))
                 }
                 items(
                     items = state.suggestions,
@@ -473,7 +474,7 @@ private fun SearchActiveContent(
             if (state.items.isNotEmpty()) {
                 item(key = "top_result_header") {
                     Spacer(modifier = Modifier.height(10.dp))
-                    SearchSectionHeader(title = "Top Result")
+                    SearchSectionHeader(title = stringResource(R.string.top_result))
                 }
                 items(
                     items = state.items,
@@ -506,7 +507,7 @@ private fun SearchActiveContent(
                         // offline there's nothing on its way: the library just has no match
                         if (offlineMode) {
                             Text(
-                                text = "Offline mode: nothing in your library matches",
+                                text = stringResource(R.string.offline_search_no_matches),
                                 color = SearchColors.Secondary,
                                 fontSize = 13.sp,
                             )
@@ -545,11 +546,11 @@ private fun SuggestionResultRow(
 ) {
     val subtitle = when (item) {
         is SongItem -> item.artists.joinToString { it.name }
-        is AlbumItem -> "Album" + (item.artists?.takeIf { it.isNotEmpty() }
+        is AlbumItem -> stringResource(R.string.loc_search_type_album) + (item.artists?.takeIf { it.isNotEmpty() }
             ?.let { " • " + it.joinToString { a -> a.name } } ?: "")
 
-        is ArtistItem -> "Artist"
-        is PlaylistItem -> "Playlist" + (item.author?.name?.let { " • $it" } ?: "")
+        is ArtistItem -> stringResource(R.string.loc_search_type_artist)
+        is PlaylistItem -> stringResource(R.string.loc_search_type_playlist) + (item.author?.name?.let { " • $it" } ?: "")
     }
 
     Row(

@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,20 +61,20 @@ fun GestureScreen(navController: NavController) {
     val (left, setLeft) = rememberEnumPreference(SwipeLeftActionKey, defaultValue = DefaultSwipeLeft)
 
     AudioLabPage(
-        title = LabTitle("Gesture", "", firstSize = 52.sp),
+        title = LabTitle(stringResource(R.string.loc_gesture_title), "", firstSize = 52.sp),
         onBack = { navController.navigateUp() },
     ) {
         SwipeCard(
-            title = "Swipe right",
-            subtitle = "Slide a song in any list to the right",
+            title = stringResource(R.string.loc_gesture_swipe_right),
+            subtitle = stringResource(R.string.loc_gesture_right_desc),
             toRight = true,
             action = right,
             onPick = setRight,
         )
         Spacer(Modifier.height(14.dp))
         SwipeCard(
-            title = "Swipe left",
-            subtitle = "Slide a song in any list to the left",
+            title = stringResource(R.string.loc_gesture_swipe_left),
+            subtitle = stringResource(R.string.loc_gesture_left_desc),
             toRight = false,
             action = left,
             onPick = setLeft,
@@ -139,7 +140,7 @@ private fun ActionDropdown(action: SongSwipeAction, onClick: () -> Unit) {
         Spacer(Modifier.size(20.dp))
         Crossfade(targetState = action, animationSpec = tween(180), modifier = Modifier.weight(1f), label = "swipeAction") { shown ->
             Text(
-                shown.title,
+                swipeActionTitle(shown),
                 fontFamily = InterFontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
@@ -160,13 +161,21 @@ private fun ActionDropdown(action: SongSwipeAction, onClick: () -> Unit) {
     }
 }
 
+@Composable
+private fun swipeActionTitle(action: SongSwipeAction): String = stringResource(
+    when (action) {
+        SongSwipeAction.Library -> R.string.add_to_library
+        SongSwipeAction.Queue -> R.string.add_to_queue
+    },
+)
+
 /** the sheet's rows: tapping one picks it, and the sheet closes itself */
 @Composable
 private fun ActionPicker(selected: SongSwipeAction, onPick: (SongSwipeAction) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(bottom = 12.dp)) {
         SongSwipeAction.entries.forEach { option ->
             SheetOptionRow(
-                title = option.title,
+                title = swipeActionTitle(option),
                 onClick = { onPick(option) },
                 leading = { SheetIcon(option.icon) },
                 trailing = {

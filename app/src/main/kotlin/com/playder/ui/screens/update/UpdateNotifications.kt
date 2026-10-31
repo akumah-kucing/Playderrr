@@ -84,10 +84,10 @@ private fun postNotification(context: Context, release: GithubRelease): Boolean 
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
     )
 
-    val summary = changelogSummaryLine(release.body).ifBlank { "Tap to see what's new." }
+    val summary = changelogSummaryLine(release.body).ifBlank { context.getString(R.string.loc_update_reminder_notification) }
     val notification = NotificationCompat.Builder(context, ChannelId)
         .setSmallIcon(R.drawable.playder_notification)
-        .setContentTitle("Playder ${release.version} is out")
+        .setContentTitle(context.getString(R.string.loc_update_notification_title, release.version))
         .setContentText(summary)
         .setStyle(NotificationCompat.BigTextStyle().bigText(summary))
         .setContentIntent(pending)

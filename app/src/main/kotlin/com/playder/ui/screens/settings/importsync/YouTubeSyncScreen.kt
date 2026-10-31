@@ -192,7 +192,7 @@ fun YouTubeSyncScreen(
             horizontalAlignment = Alignment.Start,
             title = { Text("Sign out of YouTube?") },
             buttons = {
-                TextButton(onClick = { confirmSignOut = false }) { Text("Cancel") }
+                TextButton(onClick = { confirmSignOut = false }) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.cancel)) }
                 TextButton(onClick = {
                     confirmSignOut = false
                     viewModel.signOut()
@@ -212,11 +212,11 @@ fun YouTubeSyncScreen(
             horizontalAlignment = Alignment.Start,
             title = { Text("Put local playlists on YouTube?") },
             buttons = {
-                TextButton(onClick = { confirmUpload = false }) { Text("Cancel") }
+                TextButton(onClick = { confirmUpload = false }) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.cancel)) }
                 TextButton(onClick = {
                     confirmUpload = false
                     viewModel.uploadLocalPlaylists()
-                }) { Text("Create") }
+                }) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.create)) }
             },
         ) {
             Text(

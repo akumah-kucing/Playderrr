@@ -16,8 +16,7 @@
 
     <!-- Top bar -->
     <plurals name="n_selected">
-        <item quantity="one">%d seçildi</item>
-        <item quantity="other">%d seçililer</item>
+        <item quantity="other">%d seçildi</item>
     </plurals>
 
     <!-- Home -->
@@ -374,4 +373,28 @@
     <string name="audio_devices">Ses cihazları</string>
     <string name="bluetooth_headphones">Bluetooth kulaklık</string>
     <string name="license">GNU General Public License v3.0</string>
+    <string name="music">Müzik</string>
+    <string name="added_to_library">Kitaplığa eklendi</string>
+    <string name="removed_from_library">Kitaplıktan kaldırıldı</string>
+    <string name="remove_from_import_and_library">İçe aktarılanlardan ve kitaplıktan kaldır</string>
+    <string name="removed_from_import_and_library">%1$s içe aktarılanlarınızdan ve kitaplığınızdan kaldırıldı</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">APK bulunamadı</item>
+        <item quantity="one">%d APK bulundu</item>
+        <item quantity="other">%d APK bulundu</item>
+    </plurals>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Ses kalitesi rozetini göster</string>
+    <string name="network_ip_version">Ağ IP sürümü</string>
+    <string name="ip_version_auto">Otomatik</string>
+    <string name="ip_version_ipv4">IPv4\'ü zorla</string>
+    <string name="ip_version_ipv6">IPv6\'yı zorla</string>
+    <string name="audio_quality_medium">Orta</string>
+    <string name="clear_downloaded_updates">İndirilen güncellemeleri temizle</string>
+    <string name="clear_downloaded_updates_desc">Yer açmak için indirilen APK dosyalarını kaldırın</string>
+    <string name="standard_lyrics_blur">Standart şarkı sözü bulanıklığı</string>
+    <string name="listen_together_smart_resync">Akıllı ağ eşitlemesi</string>
+    <string name="listen_together_smart_resync_desc">Bağlantı kesildikten sonra ana bilgisayarla otomatik olarak yeniden eşitlenin</string>
+    <string name="error_stream_unavailable_title">Bu parça çalınamadı</string>
+    <string name="playback_error_channel_name">Oynatma hataları</string>
 </resources>

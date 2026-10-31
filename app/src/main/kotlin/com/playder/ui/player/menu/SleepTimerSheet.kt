@@ -85,7 +85,7 @@ fun SleepTimerSheet(onDismiss: () -> Unit) {
                 .animateContentSize(animationSpec = tween(420, easing = SheetEasing))
         ) {
             Text(
-                text = "Sleep timer",
+                text = androidx.compose.ui.res.stringResource(com.playder.R.string.sleep_timer),
                 color = Color.White,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,

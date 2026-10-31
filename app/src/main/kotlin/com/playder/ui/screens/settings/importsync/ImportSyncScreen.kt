@@ -97,7 +97,7 @@ fun ImportSyncScreen(
                     onClick = { navController.navigate(ImportProvidersRoute) },
                 ),
                 SettingsItem(
-                    title = { Text("Sync") },
+                    title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.action_sync)) },
                     highlightKey = "Sync",
                     descriptionText = if (signedIn) "YouTube account connected: playlists, likes and history"
                     else "Connect your YouTube account to keep playlists, likes and history in step",

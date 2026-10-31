@@ -124,24 +124,31 @@
     <string name="duplicates_description_single">曲はすでに再生リストにあります</string>
     <string name="duplicates_description_multiple">%d の曲はすでに再生リストにあります</string>
     <plurals name="n_song">
+        <item quantity="one">%d 曲</item>
         <item quantity="other">%d 曲</item>
     </plurals>
     <plurals name="n_artist">
+        <item quantity="one">%d 件のアーティスト</item>
         <item quantity="other">%d 件のアーティスト</item>
     </plurals>
     <plurals name="n_album">
+        <item quantity="one">%d 個のアルバム</item>
         <item quantity="other">%d 個のアルバム</item>
     </plurals>
     <plurals name="n_playlist">
+        <item quantity="one">%d 件の再生リスト</item>
         <item quantity="other">%d 件の再生リスト</item>
     </plurals>
     <plurals name="n_week">
+        <item quantity="one">%d 週間</item>
         <item quantity="other">%d 週間</item>
     </plurals>
     <plurals name="n_month">
+        <item quantity="one">%d か月</item>
         <item quantity="other">%d か月</item>
     </plurals>
     <plurals name="n_year">
+        <item quantity="one">%d 年</item>
         <item quantity="other">%d 年</item>
     </plurals>
     <string name="playlist_imported">再生リストをインポートしました</string>
@@ -152,6 +159,7 @@
     <string name="sleep_timer">スリープタイマー</string>
     <string name="end_of_song">曲の終わり</string>
     <plurals name="minute">
+        <item quantity="one">1 分</item>
         <item quantity="other">%d 分</item>
     </plurals>
     <string name="error_no_stream">ストリームが利用できません</string>
@@ -270,4 +278,60 @@
     <string name="use_login_for_browse_desc">例えば、Premiumのアカウントでログインした時に、Premium限定のアルバムが表示されるようになります</string>
     <string name="use_login_for_browse">表示されるコンテンツをアカウントと結び付ける</string>
     <string name="action_login">ログイン</string>
+    <string name="music">音楽</string>
+    <string name="album_description_placeholder">これはアルバムの仮の説明です。以下の曲をお楽しみください！</string>
+    <string name="you_might_also_like">関連プレイリスト</string>
+    <string name="shuffle_content_desc">シャッフル</string>
+    <string name="shuffle_label">シャッフル</string>
+    <string name="pause">一時停止</string>
+    <string name="added_to_library">ライブラリに追加しました</string>
+    <string name="removed_from_library">ライブラリから削除しました</string>
+    <string name="remove_from_import_and_library">インポートとライブラリから削除</string>
+    <string name="removed_from_import_and_library">%1$sのインポートとライブラリから削除しました</string>
+    <string name="saving">保存中</string>
+    <string name="saved">保存しました</string>
+    <string name="start_an_radio">ラジオ</string>
+    <string name="add_to_an_playlist">追加</string>
+    <string name="more_label">もっと見る</string>
+    <string name="releases_for_you">あなたへの新作</string>
+    <string name="lyrics_swipe_to_change_song">スワイプして曲を変更</string>
+    <string name="lyrics_swipe_to_change_song_desc">全画面歌詞のアーティスト名と曲名の部分を左右にスワイプすると、曲を変更できます</string>
+    <string name="lyrics_thumbnail_play_pause">サムネイルに再生／一時停止を表示</string>
+    <string name="lyrics_thumbnail_play_pause_desc">全画面歌詞の曲のサムネイルに再生／一時停止ボタンを重ねて表示します</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">APKが見つかりません</item>
+        <item quantity="one">%d個のAPKが見つかりました</item>
+        <item quantity="other">%d個のAPKが見つかりました</item>
+    </plurals>
+    <string name="theme_desc">アプリのテーマをカスタマイズ</string>
+    <string name="theme_colors">テーマとカラー</string>
+    <string name="theme_mode">テーマモード</string>
+    <string name="color_palette">カラーパレット</string>
+    <string name="use_system_colors">システムカラーを使用</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">音質バッジを表示</string>
+    <string name="network_ip_version">ネットワークIPバージョン</string>
+    <string name="ip_version_auto">自動</string>
+    <string name="ip_version_ipv4">IPv4を強制</string>
+    <string name="ip_version_ipv6">IPv6を強制</string>
+    <string name="audio_quality_medium">中音質</string>
+    <string name="clear_downloaded_updates">ダウンロード済みアップデートを消去</string>
+    <string name="clear_downloaded_updates_desc">APKファイルを削除して空き容量を増やします</string>
+    <string name="bluetooth_permission_required">オーディオ機器を検出するにはBluetooth権限が必要です。</string>
+    <string name="streaming_to">出力先</string>
+    <string name="this_phone">この端末</string>
+    <string name="wired_headphones">有線ヘッドホン</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">スマートフォンのスピーカー</string>
+    <string name="audio_quality_title">音質</string>
+    <string name="battery_content_desc">バッテリー残量</string>
+    <string name="done">完了</string>
+    <string name="audio_devices">オーディオ機器</string>
+    <string name="bluetooth_headphones">Bluetoothヘッドホン</string>
+    <string name="license">GNU General Public License v3.0</string>
+    <string name="standard_lyrics_blur">標準の歌詞ぼかし</string>
+    <string name="listen_together_smart_resync">スマートネットワーク再同期</string>
+    <string name="listen_together_smart_resync_desc">接続が切れた後、ホストの再生位置に自動的に追いつきます</string>
+    <string name="error_stream_unavailable_title">この曲を再生できませんでした</string>
+    <string name="playback_error_channel_name">再生エラー</string>
 </resources>

@@ -3,6 +3,7 @@
 package com.playder.ui.screens.settings
 
 import com.playder.ui.component.navigateToTab
+import androidx.annotation.StringRes
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -43,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -147,7 +149,7 @@ private val SettingsIndex = listOf(
 )
 
 private data class RecommendedSetting(
-    val title: String,
+    @StringRes val titleRes: Int,
     val breadcrumb: String,
     val iconRes: Int,
     val onClick: (NavController) -> Unit,
@@ -155,7 +157,7 @@ private data class RecommendedSetting(
 
 private val RecommendedOptions = listOf(
     RecommendedSetting(
-        title = "Configure Blur settings",
+        titleRes = R.string.settings_recommend_blur,
         breadcrumb = "settings>appearance",
         iconRes = R.drawable.contrast,
         onClick = { nav ->
@@ -164,7 +166,7 @@ private val RecommendedOptions = listOf(
         }
     ),
     RecommendedSetting(
-        title = "Configure Crossfade settings",
+        titleRes = R.string.settings_recommend_crossfade,
         breadcrumb = "settings>audio lab",
         iconRes = R.drawable.linear_scale,
         onClick = { nav ->
@@ -172,7 +174,7 @@ private val RecommendedOptions = listOf(
         }
     ),
     RecommendedSetting(
-        title = "Configure Equalizer settings",
+        titleRes = R.string.settings_recommend_equalizer,
         breadcrumb = "settings>audio lab",
         iconRes = R.drawable.equalizer,
         onClick = { nav ->
@@ -374,7 +376,7 @@ fun PlayderSettingsScreen(navController: NavController) {
 
                                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(
-                                        text = recommendedItem.title,
+                                        text = stringResource(recommendedItem.titleRes),
                                         fontFamily = InterFontFamily,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 16.sp,
@@ -412,49 +414,49 @@ fun PlayderSettingsScreen(navController: NavController) {
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         CategoryBubble(
-                            title = "General",
+                            title = stringResource(R.string.general),
                             iconRes = R.drawable.settings,
                             onClick = { navController.navigate("general_settings") }
                         )
 
                         CategoryBubble(
-                            title = "Appearance",
+                            title = stringResource(R.string.appearance),
                             iconRes = R.drawable.contrast,
                             onClick = { navController.navigate("appearance_settings") }
                         )
 
                         CategoryBubble(
-                            title = "Playback",
+                            title = stringResource(R.string.playback_category),
                             iconRes = R.drawable.play,
                             onClick = { navController.navigate("playback_settings") }
                         )
 
                         CategoryBubble(
-                            title = "Gesture",
+                            title = stringResource(R.string.gesture_category),
                             iconRes = R.drawable.swipe,
                             onClick = { navController.navigate("gesture_settings") }
                         )
 
                         CategoryBubble(
-                            title = "Storage",
+                            title = stringResource(R.string.storage),
                             iconRes = R.drawable.storage,
                             onClick = { navController.navigate("storage_settings") }
                         )
 
                         CategoryBubble(
-                            title = "Audio Lab",
+                            title = stringResource(R.string.audio_lab_category),
                             iconRes = R.drawable.equalizer,
                             onClick = { navController.navigate("audio_lab") }
                         )
 
                         CategoryBubble(
-                            title = "Modules",
+                            title = stringResource(R.string.modules_category),
                             iconRes = R.drawable.library_add,
                             onClick = { navController.navigate("modules") }
                         )
 
                         CategoryBubble(
-                            title = "Integrations",
+                            title = stringResource(R.string.integrations),
                             iconRes = R.drawable.integration,
                             onClick = { navController.navigate(IntegrationsRoute) }
                         )
@@ -501,14 +503,14 @@ fun PlayderSettingsScreen(navController: NavController) {
                 value = query,
                 onValueChange = { query = it },
                 onSearch = {},
-                placeholder = "Search any settings",
+                placeholder = androidx.compose.ui.res.stringResource(com.playder.R.string.search_settings),
                 focused = isSearchFocused,
                 onFocusChanged = { isSearchFocused = it },
                 trailing = if (query.text.isNotEmpty()) {
                     {
                         Icon(
                             painter = painterResource(R.drawable.close),
-                            contentDescription = "Clear",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.clear),
                             tint = Color.White.copy(alpha = 0.7f),
                             modifier = Modifier
                                 .size(20.dp)

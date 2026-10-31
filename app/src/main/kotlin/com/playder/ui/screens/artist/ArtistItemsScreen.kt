@@ -39,11 +39,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.playder.LocalPlayerAwareWindowInsets
 import com.playder.LocalPlayerConnection
+import com.playder.R
 import com.playder.extensions.toMediaItem
 import com.playder.models.toMediaMetadata
 import com.playder.playback.queues.ListQueue
@@ -84,10 +87,8 @@ import com.music.innertube.models.WatchEndpoint
 import com.music.innertube.models.YTItem
 import kotlinx.coroutines.launch
 
-/** what a shelf's page holds, read off its items: YouTube's titles are in the account's language */
-private enum class ItemsKind(val word: String) {
-    Songs("songs"), Albums("albums"), Videos("videos"), Playlists("playlists"), Artists("artists")
-}
+/** what a shelf's page holds, read off its items */
+private enum class ItemsKind { Songs, Albums, Videos, Playlists, Artists }
 
 private fun kindOf(items: List<YTItem>): ItemsKind? {
     val first = items.firstOrNull() ?: return null
@@ -101,6 +102,10 @@ private fun kindOf(items: List<YTItem>): ItemsKind? {
         is ArtistItem -> ItemsKind.Artists
     }
 }
+
+private fun isSinglesAndEpsTitle(title: String): Boolean =
+    listOf("single", "singel", "sencillo", "одиноч", "сингл", "single", "シングル", "싱글", "单曲", "單曲", "ซิงเกิล")
+        .any { title.contains(it, ignoreCase = true) } || title.contains("EP", ignoreCase = true)
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -132,12 +137,37 @@ fun ArtistItemsScreen(
         bannerUrl
     }
 
-    // "Albums" -> "twenty one pilots albums"; a page titled with the artist's own name says what it holds
+    val kindLabel = when (kind) {
+        ItemsKind.Songs -> stringResource(R.string.songs)
+        ItemsKind.Albums -> stringResource(R.string.albums)
+        ItemsKind.Videos -> stringResource(R.string.artist_videos_ui)
+        ItemsKind.Playlists -> stringResource(R.string.playlists)
+        ItemsKind.Artists -> stringResource(R.string.artists)
+        null -> ""
+    }
+    val headingFormat = when {
+        kind == ItemsKind.Songs -> R.string.artist_top_songs_by_format_ui
+        kind == ItemsKind.Albums && isSinglesAndEpsTitle(pageTitle) -> R.string.artist_singles_eps_by_format_ui
+        kind == ItemsKind.Albums -> R.string.artist_albums_by_format_ui
+        kind == ItemsKind.Videos -> R.string.artist_videos_by_format_ui
+        kind == ItemsKind.Playlists -> R.string.artist_playlists_by_format_ui
+        kind == ItemsKind.Artists -> R.string.artist_artists_by_format_ui
+        else -> null
+    }
     val heading = when {
-        kind == ItemsKind.Songs -> if (artistName.isNotBlank()) "Top $artistName songs" else pageTitle
-        artistName.isBlank() -> pageTitle
-        pageTitle.isBlank() || pageTitle.equals(artistName, ignoreCase = true) -> "$artistName ${kind?.word.orEmpty()}"
-        else -> "$artistName ${pageTitle.replaceFirstChar { it.lowercase() }}"
+        artistName.isNotBlank() && headingFormat != null -> stringResource(headingFormat, artistName)
+        kind == ItemsKind.Albums && isSinglesAndEpsTitle(pageTitle) -> stringResource(R.string.artist_singles_eps_ui)
+        kindLabel.isNotBlank() -> kindLabel
+        pageTitle.isNotBlank() -> pageTitle
+        else -> stringResource(R.string.content)
+    }
+    val itemCount = when (kind) {
+        ItemsKind.Songs -> pluralStringResource(R.plurals.n_song, items.size, items.size)
+        ItemsKind.Albums -> pluralStringResource(R.plurals.n_album, items.size, items.size)
+        ItemsKind.Playlists -> pluralStringResource(R.plurals.n_playlist, items.size, items.size)
+        ItemsKind.Artists -> pluralStringResource(R.plurals.n_artist, items.size, items.size)
+        ItemsKind.Videos -> stringResource(R.string.artist_video_count_format_ui, items.size)
+        null -> stringResource(R.string.artist_item_count_format_ui, items.size)
     }
 
     var isGrid by rememberSaveable { mutableStateOf<Boolean?>(null) }
@@ -253,7 +283,7 @@ fun ArtistItemsScreen(
                             CreatorUi(name = it, avatarUrl = viewModel.artistId?.let { id -> com.playder.utils.ArtistPageCache.header(id)?.avatarUrl }, artistId = viewModel.artistId)
                         }
                     ),
-                    stats = "${songs.size} ${if (songs.size == 1) "song" else "songs"}",
+                    stats = pluralStringResource(R.plurals.n_song, songs.size, songs.size),
                     isPlaying = isThisQueue && isPlaying,
                     onPlayClick = { if (isThisQueue) playerConnection.togglePlayPause() else playSongs() },
                     onShuffleClick = { playSongs(shuffled = true) },
@@ -262,7 +292,7 @@ fun ArtistItemsScreen(
             } else {
                 ArtistSubpageHeader(
                     title = heading,
-                    subtitle = "${items.size}${if (itemsPage?.continuation != null) "+" else ""} ${kind?.word.orEmpty()}",
+                    subtitle = "$itemCount${if (itemsPage?.continuation != null) "+" else ""}",
                     // the artists' page is a grid of faces only
                     isGrid = if (kind == ItemsKind.Artists) null else gridMode,
                     onGridChange = { isGrid = it },
@@ -416,7 +446,7 @@ private fun ItemsRetry(onRetry: () -> Unit) {
             .padding(top = 24.dp)
     ) {
         Text(
-            text = "Couldn't load this page. Tap to try again",
+            text = stringResource(R.string.artist_items_load_error_ui),
             style = PlaylistStatsStyle,
             color = Color.White.copy(alpha = 0.7f),
             modifier = Modifier

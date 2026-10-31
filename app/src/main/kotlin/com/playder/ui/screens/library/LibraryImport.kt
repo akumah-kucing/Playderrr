@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -158,7 +159,7 @@ private fun ImportPromoBanner(onClick: () -> Unit) {
         ProviderMarquee()
         Spacer(Modifier.height(20.dp))
         Text(
-            text = "Import your music here!",
+            text = stringResource(R.string.import_music_here),
             color = SearchColors.Primary,
             fontSize = 21.sp,
             lineHeight = 25.sp,

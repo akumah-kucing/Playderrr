@@ -25,11 +25,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.playder.LocalPlayerAwareWindowInsets
 import com.playder.LocalPlayerConnection
+import com.playder.R
 import com.playder.db.entities.Album
 import com.playder.ui.component.LocalMenuState
 import com.playder.ui.component.containerTransformSource
@@ -108,8 +111,8 @@ fun ArtistAlbumsScreen(
     ) {
         item(key = "header", contentType = "header") {
             ArtistSubpageHeader(
-                title = if (name.isNotBlank()) "$name albums" else "Albums",
-                subtitle = "${albums.size} in your library",
+                title = if (name.isNotBlank()) stringResource(R.string.artist_albums_by_format_ui, name) else stringResource(R.string.albums),
+                subtitle = stringResource(R.string.artist_library_album_count_format_ui, albums.size),
                 isGrid = isGrid,
                 onGridChange = { isGrid = it },
             )
@@ -141,7 +144,10 @@ fun ArtistAlbumsScreen(
                 PlaylistTrackRow(
                     thumbnailUrl = album.album.thumbnailUrl,
                     title = album.album.title,
-                    subtitle = listOfNotNull(album.album.year?.toString(), "${album.album.songCount} songs").joinToString(" • "),
+                    subtitle = listOfNotNull(
+                        album.album.year?.toString(),
+                        pluralStringResource(R.plurals.n_song, album.album.songCount, album.album.songCount),
+                    ).joinToString(" • "),
                     isActive = album.id == mediaMetadata?.album?.id,
                     isPlaying = isPlaying,
                     coverModifier = Modifier.containerTransformSource(

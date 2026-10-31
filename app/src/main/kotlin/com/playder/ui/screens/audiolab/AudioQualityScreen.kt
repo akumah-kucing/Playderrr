@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +49,8 @@ import com.playder.module.AccountState
 import com.playder.module.applemusic.AppleMusicModule
 import com.playder.module.monochrome.MonochromeModule
 import com.playder.modules.SourceModules
+import com.playder.ui.screens.settings.modules.localizedModuleOptionDescription
+import com.playder.ui.screens.settings.modules.localizedModuleOptionLabel
 import com.playder.viewmodels.ModulesViewModel
 import com.playder.R
 import com.playder.constants.AudioQuality
@@ -60,13 +63,6 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 private class QualityOption(val quality: AudioQuality, val title: String, val description: String, val format: String)
-
-private val YouTubeOptions = listOf(
-    QualityOption(AudioQuality.AUTO, "Auto", "High on Wi-Fi, Medium on mobile data", "Adaptive"),
-    QualityOption(AudioQuality.HIGH, "High", "The best the streamer has: less compression, more data", "~160 kbps · Opus"),
-    QualityOption(AudioQuality.MEDIUM, "Medium", "Around 128 kbps, easy on data", "~128 kbps · AAC"),
-    QualityOption(AudioQuality.LOW, "Low", "The smallest streams, for slow connections", "~50–70 kbps · Opus"),
-)
 
 /** what the picture shows: the quality of whichever provider plays first */
 private class Effective(val quality: AudioQuality, val title: String, val format: String)
@@ -85,6 +81,12 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
     val youTubeOn by modules.youTubeEnabled.collectAsState()
     val context = LocalContext.current
     val metered = remember { (context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.isActiveNetworkMetered == true }
+    val youTubeOptions = listOf(
+        QualityOption(AudioQuality.AUTO, stringResource(R.string.audio_quality_auto), stringResource(R.string.loc_audio_quality_auto_desc), stringResource(R.string.loc_audio_quality_format_adaptive)),
+        QualityOption(AudioQuality.HIGH, stringResource(R.string.audio_quality_high), stringResource(R.string.loc_audio_quality_high_desc), "~160 kbps · Opus"),
+        QualityOption(AudioQuality.MEDIUM, stringResource(R.string.loc_audio_quality_medium_label), stringResource(R.string.loc_audio_quality_medium_desc), "~128 kbps · AAC"),
+        QualityOption(AudioQuality.LOW, stringResource(R.string.audio_quality_low), stringResource(R.string.loc_audio_quality_low_desc), "~50–70 kbps · Opus"),
+    )
 
     val usable = { id: String ->
         if (id == SourceModules.YouTubeId) youTubeOn
@@ -93,7 +95,7 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
     // the first provider in the order that's on plays everything it has
     val first = order.firstOrNull(usable)
     val effective = when (first) {
-        null -> Effective(AudioQuality.LOW, "Nothing is on", "Turn a provider on")
+        null -> Effective(AudioQuality.LOW, stringResource(R.string.loc_audio_effect_none), stringResource(R.string.loc_audio_effect_enable_provider))
         MonochromeModule.Id -> Effective(AudioQuality.LOSSLESS, "Monochrome", "FLAC · lossless")
         AppleMusicModule.Id -> {
             val pick = entries.firstOrNull { it.module.info.id == first }?.picks?.get(AppleMusicModule.ChoiceQuality)
@@ -102,29 +104,29 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
         }
         else -> {
             val tier = if (quality == AudioQuality.AUTO) (if (metered) AudioQuality.MEDIUM else AudioQuality.HIGH) else quality
-            val option = YouTubeOptions.first { it.quality == tier }
+            val option = youTubeOptions.first { it.quality == tier }
             Effective(tier, "YouTube · ${option.title}", option.format)
         }
     }
 
     AudioLabPage(
-        title = LabTitle("Audio", "Quality", firstSize = 40.sp, secondSize = 64.sp),
+        title = LabTitle("Audio", stringResource(R.string.loc_audio_quality), firstSize = 40.sp, secondSize = 64.sp),
         onBack = { navController.navigateUp() },
         subtitle = "${effective.title} · ${effective.format}",
     ) {
-        LabSheetTitle("Streaming")
+        LabSheetTitle(stringResource(R.string.loc_audio_streaming))
         LabGroup {
             ProviderCaption(
                 logo = R.drawable.provider_youtube_music,
                 name = "YouTube Music",
                 status = when {
-                    youTubeOn -> "Plays what the others don't have"
-                    order.none(usable) -> "Off, and nothing else is on, so songs won't play"
-                    else -> "Off: songs the others don't have are skipped"
+                    youTubeOn -> stringResource(R.string.loc_audio_status_play_other)
+                    order.none(usable) -> stringResource(R.string.loc_audio_status_off_provider)
+                    else -> stringResource(R.string.loc_audio_status_off_skipped)
                 },
                 on = youTubeOn,
             )
-            YouTubeOptions.forEach { option ->
+            youTubeOptions.forEach { option ->
                 QualityRow(option.title, option.description, selected = quality == option.quality, enabled = youTubeOn) { onQuality(option.quality) }
             }
 
@@ -139,14 +141,24 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
                     val picked = entry.picks[qualityChoice.id]?.takeIf { p -> qualityChoice.options.any { it.id == p } }
                         ?: qualityChoice.options.first().id
                     qualityChoice.options.forEach { option ->
-                        QualityRow(option.label, option.description, selected = picked == option.id, enabled = active) {
+                        QualityRow(
+                            localizedModuleOptionLabel(id, option.id, option.label),
+                            localizedModuleOptionDescription(id, option.id, option.description),
+                            selected = picked == option.id,
+                            enabled = active,
+                        ) {
                             modules.setPick(id, qualityChoice.id, option.id)
                         }
                     }
                 } else if (id == MonochromeModule.Id) {
-                    QualityRow("Lossless", "FLAC, as Monochrome has it: CD quality or better", selected = true, enabled = active) {}
+                    QualityRow(
+                        stringResource(R.string.loc_audio_quality_lossless_label),
+                        stringResource(R.string.loc_audio_quality_lossless_desc),
+                        selected = true,
+                        enabled = active,
+                    ) {}
                 }
-                LabTextAction("${entry.module.info.name} settings", R.drawable.navigate_next) {
+                LabTextAction(stringResource(R.string.loc_audio_provider_settings, entry.module.info.name), R.drawable.navigate_next) {
                     navController.navigate(com.playder.ui.screens.settings.modules.moduleRoute(id))
                 }
             }
@@ -154,18 +166,24 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
 
         // downloads are saved apart from what plays: lossless downloads monochrome's flac whatever the provider order says, since a download is kept
         Spacer(Modifier.height(24.dp))
-        LabSheetTitle("Download")
+        LabSheetTitle(stringResource(R.string.loc_audio_quality_download_title))
         LabGroup {
             com.playder.constants.DownloadQuality.entries.forEach { option ->
-                QualityRow(option.title, option.description, selected = downloadQuality == option, enabled = true) {
+                val (title, description) = when (option) {
+                    com.playder.constants.DownloadQuality.LOSSLESS -> stringResource(R.string.loc_audio_download_lossless_title) to stringResource(R.string.loc_audio_download_lossless_desc)
+                    com.playder.constants.DownloadQuality.HIGH -> stringResource(R.string.loc_audio_download_high_title) to stringResource(R.string.loc_audio_download_high_desc)
+                    com.playder.constants.DownloadQuality.MEDIUM -> stringResource(R.string.loc_audio_download_medium_title) to stringResource(R.string.loc_audio_download_medium_desc)
+                    com.playder.constants.DownloadQuality.LOW -> stringResource(R.string.loc_audio_download_low_title) to stringResource(R.string.loc_audio_download_low_desc)
+                }
+                QualityRow(title, description, selected = downloadQuality == option, enabled = true) {
                     onDownloadQuality(option)
                 }
             }
         }
-        Footnote("For songs downloaded from now on. Downloads already made stay as they are.")
+        Footnote(stringResource(R.string.loc_audio_download_note))
 
         Spacer(Modifier.height(24.dp))
-        LabSheetTitle("Provider")
+        LabSheetTitle(stringResource(R.string.loc_audio_provider))
         ProviderOrder(
             order = order,
             name = modules::nameOf,
@@ -173,9 +191,9 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
             usable = usable,
             status = { id ->
                 if (id == SourceModules.YouTubeId) {
-                    if (youTubeOn) "On" else "Off, tap to turn on"
+                    if (youTubeOn) stringResource(R.string.loc_module_state_on) else stringResource(R.string.loc_audio_off_tap)
                 } else {
-                    entries.firstOrNull { it.module.info.id == id }?.let(::moduleStatus) ?: "Not installed"
+                    entries.firstOrNull { it.module.info.id == id }?.let { moduleStatus(it) } ?: stringResource(R.string.loc_audio_not_installed)
                 }
             },
             onTap = { id ->
@@ -194,17 +212,17 @@ fun AudioQualityScreen(navController: NavController, modules: ModulesViewModel =
             onReorder = modules::setOrder,
         )
         Footnote(
-            "Tap a provider to turn it on or off, or to sign in. Drag its handle to change the order: " +
-                "each song plays from the first one that's on and has it.",
+            stringResource(R.string.loc_audio_provider_note),
         )
     }
 }
 
+@Composable
 private fun moduleStatus(entry: com.playder.modules.ModuleEntry): String = when {
-    entry.account is AccountState.SignedOut -> "Sign in to play from it"
-    entry.account is AccountState.Expired -> "Sign in again"
-    entry.enabled -> "On"
-    else -> "Off, tap to turn on"
+    entry.account is AccountState.SignedOut -> stringResource(R.string.loc_audio_signin_to_play)
+    entry.account is AccountState.Expired -> stringResource(R.string.loc_module_signin_again)
+    entry.enabled -> stringResource(R.string.loc_module_state_on)
+    else -> stringResource(R.string.loc_audio_off_tap)
 }
 
 @Composable

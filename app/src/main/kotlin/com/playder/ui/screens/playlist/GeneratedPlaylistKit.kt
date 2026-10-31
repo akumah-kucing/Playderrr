@@ -185,7 +185,7 @@ fun GeneratedSearchCapsule(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.close),
-                    contentDescription = "Clear",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.clear),
                     tint = Color.White,
                     modifier = Modifier.size(14.dp),
                 )

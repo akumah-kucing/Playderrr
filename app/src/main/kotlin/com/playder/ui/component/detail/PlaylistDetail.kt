@@ -625,7 +625,7 @@ private fun PlaylistNormalBarRow(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.more_horiz),
-                    contentDescription = "Options",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.options),
                     tint = Color.White,
                     modifier = Modifier.size(18.dp),
                 )
@@ -695,7 +695,7 @@ private fun BackPill(
         ) {
             Icon(
                 painter = painterResource(R.drawable.arrow_back_ios),
-                contentDescription = "Back",
+                contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
                 tint = Color.White,
                 modifier = Modifier
                     .size(16.dp)
@@ -818,7 +818,7 @@ fun PlaylistHeader(
                 Spacer(Modifier.width(9.dp))
                 CircleAction(
                     icon = R.drawable.shuffle,
-                    contentDescription = "Shuffle",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.shuffle),
                     onClick = onShuffleClick,
                     spinOnClick = true,
                 )
@@ -1452,10 +1452,16 @@ fun rememberArtistThumbnail(artistId: String?, artistName: String): State<String
         val id = artistId ?: return@LaunchedEffect
         if (state.value != null) return@LaunchedEffect
         val url = withContext(Dispatchers.IO) {
-            database.artist(id).firstOrNull()?.artist?.thumbnailUrl
-                ?: YouTube.artist(id).getOrNull()?.artist?.thumbnail?.also { fetched ->
+            val storedArtist = database.artist(id).firstOrNull()?.artist
+            storedArtist?.thumbnailUrl?.takeIf { it.isNotBlank() }
+                ?: YouTube.artist(id).getOrNull()?.artist?.thumbnail?.takeIf { it.isNotBlank() }?.also { fetched ->
                     database.query {
-                        insert(ArtistEntity(id = id, name = artistName, thumbnailUrl = fetched))
+                        val currentArtist = getArtistById(id)
+                        if (currentArtist == null) {
+                            insert(ArtistEntity(id = id, name = artistName, thumbnailUrl = fetched))
+                        } else if (currentArtist.thumbnailUrl.isNullOrBlank()) {
+                            update(currentArtist.copy(thumbnailUrl = fetched))
+                        }
                     }
                 }
         }

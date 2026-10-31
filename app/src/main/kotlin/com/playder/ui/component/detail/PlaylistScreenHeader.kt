@@ -239,7 +239,7 @@ fun PlaylistScreenHeader(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.shuffle),
-                        contentDescription = "Shuffle",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.shuffle),
                         tint = contentColor,
                         modifier = Modifier.size(22.dp)
                     )
@@ -257,7 +257,7 @@ fun PlaylistScreenHeader(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.more_vert),
-                        contentDescription = "Options",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.options),
                         tint = contentColor,
                         modifier = Modifier.size(22.dp)
                     )

@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -166,7 +167,7 @@ fun GenreScreen(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    text = "Nothing here yet",
+                                    text = stringResource(R.string.nothing_here_yet),
                                     style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
                                     color = SearchColors.Secondary,
                                 )
@@ -177,7 +178,7 @@ fun GenreScreen(
                         item(key = "section_${index}_${section.title}") {
                             if (index == 0) Spacer(modifier = Modifier.height(10.dp))
                             SearchSectionHeader(
-                                title = section.title ?: "Featured",
+                                title = section.title ?: stringResource(R.string.featured),
                                 ruleAbove = false,
                                 ruleBelow = false,
                                 large = false,
@@ -218,7 +219,7 @@ fun GenreScreen(
                             if (cards == null || cards.isNotEmpty()) {
                                 item(key = "community_header") {
                                     SearchSectionHeader(
-                                        title = "From the community",
+                                        title = stringResource(R.string.from_the_community),
                                         ruleAbove = false,
                                         ruleBelow = false,
                                         large = false,
@@ -481,9 +482,9 @@ private fun GenreItemCard(
 ) {
     val subtitle = when (item) {
         is SongItem -> item.artists.joinToString { it.name }
-        is AlbumItem -> item.artists?.joinToString { it.name }.orEmpty().ifEmpty { "Album" }
-        is ArtistItem -> "Artist"
-        is PlaylistItem -> item.author?.name ?: "Playlist"
+        is AlbumItem -> item.artists?.joinToString { it.name }.orEmpty().ifEmpty { stringResource(R.string.search_type_album) }
+        is ArtistItem -> stringResource(R.string.search_type_artist)
+        is PlaylistItem -> item.author?.name ?: stringResource(R.string.search_type_playlist)
     }
 
     Column(

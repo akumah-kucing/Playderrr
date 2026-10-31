@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +54,7 @@ import com.playder.ui.screens.audiolab.LabToggleRow
 import com.playder.ui.screens.settings.importsync.CaptureWebView
 import com.playder.ui.theme.InterFontFamily
 import com.playder.viewmodels.ModulesViewModel
+import java.util.Locale
 
 const val ModulesRoute = "modules"
 const val ModuleRoutePattern = "module/{id}"
@@ -60,24 +62,67 @@ const val ModuleSignInRoutePattern = "module_signin/{id}"
 fun moduleRoute(id: String) = "module/$id"
 fun moduleSignInRoute(id: String) = "module_signin/$id"
 
+@Composable
+internal fun localizedModuleChoiceLabel(moduleId: String, label: String): String =
+    if (moduleId == "applemusic") {
+        stringResource(if (label == "Region") R.string.loc_audio_quality_region_label else R.string.loc_audio_streaming)
+    } else label
+
+@Composable
+internal fun localizedModuleOptionLabel(moduleId: String, optionId: String, label: String): String =
+    if (moduleId == "applemusic" && optionId == "auto") {
+        stringResource(R.string.loc_audio_quality_region_account)
+    } else if (moduleId == "applemusic" && optionId.length == 2) {
+        Locale("", optionId.uppercase()).getDisplayCountry(Locale.getDefault()).ifBlank { label }
+    } else label
+
+@Composable
+internal fun localizedModuleOptionDescription(moduleId: String, optionId: String, description: String): String =
+    if (moduleId != "applemusic") description else when {
+        description == "Apple Music's standard stereo stream" ->
+            stringResource(R.string.loc_audio_quality_apple_stream)
+        description == "A quarter of the data, for slow or metered networks" ->
+            stringResource(R.string.loc_audio_quality_metered_desc)
+        description == "Searches the catalog of your Apple account's country" ->
+            stringResource(R.string.loc_audio_quality_region_account_desc)
+        description.startsWith("Searches the ") && optionId.length == 2 ->
+            stringResource(
+                R.string.loc_audio_quality_region_desc,
+                Locale("", optionId.uppercase()).getDisplayCountry(Locale.getDefault()),
+            )
+        else -> description
+    }
+
+@Composable
+private fun moduleDescription(id: String, fallback: String): String = when (id) {
+    "applemusic" -> stringResource(R.string.loc_module_apple_description)
+    "monochrome" -> stringResource(R.string.loc_module_monochrome_description)
+    else -> fallback
+}
+
 private fun logoFor(id: String): Int? = when (id) {
     "applemusic" -> R.drawable.provider_apple_music
     "monochrome" -> R.drawable.provider_monochrome
     else -> null
 }
 
+@Composable
 private fun statusOf(entry: ModuleEntry): String = when (val account = entry.account) {
-    AccountState.SignedOut -> "Not signed in"
-    is AccountState.Expired -> "Sign in again · ${account.reason}"
-    is AccountState.SignedIn -> if (entry.enabled) "On · ${account.label}" else "Off · ${account.label}"
+    AccountState.SignedOut -> stringResource(R.string.loc_module_signin)
+    is AccountState.Expired -> "${stringResource(R.string.loc_module_signin_again)} · ${account.reason}"
+    is AccountState.SignedIn -> stringResource(
+        if (entry.enabled) R.string.loc_module_signed_in_on else R.string.loc_module_signed_in_off,
+        stringResource(if (entry.enabled) R.string.loc_module_state_on else R.string.loc_module_state_off),
+        account.label,
+    )
 }
 
 @Composable
 fun ModulesScreen(navController: NavController, viewModel: ModulesViewModel = hiltViewModel()) {
     val entries by viewModel.entries.collectAsState()
-    SubSettingsScaffold(title = "Modules", onBack = { navController.navigateUp() }) {
+    SubSettingsScaffold(title = stringResource(R.string.modules_category), onBack = { navController.navigateUp() }) {
         Text(
-            "Sources Playder can play from besides YouTube. Each one is its own module: built in for now, installable on its own later.",
+            stringResource(R.string.loc_modules_description),
             fontFamily = InterFontFamily, fontSize = 14.sp, lineHeight = 19.sp, color = LabColors.Secondary,
         )
         Spacer(Modifier.height(16.dp))
@@ -98,7 +143,7 @@ fun ModulesScreen(navController: NavController, viewModel: ModulesViewModel = hi
                     Text(entry.module.info.name, fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Color.White)
                     Text(statusOf(entry), fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary)
                     Text(
-                        (if (entry.packageName == null) "Built in" else "Installed") + " · v${entry.module.info.version}",
+                        "${stringResource(if (entry.packageName == null) R.string.loc_module_builtin else R.string.loc_module_installed)} · v${entry.module.info.version}",
                         fontFamily = InterFontFamily, fontSize = 11.sp, color = LabColors.Faint,
                     )
                 }
@@ -135,8 +180,8 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
     val playing = playerConnection?.mediaMetadata?.collectAsState()?.value
 
     SubSettingsScaffold(
-        title = entry?.module?.info?.name ?: "Module",
-        backLabel = "Modules",
+        title = entry?.module?.info?.name ?: stringResource(R.string.loc_module_title),
+        backLabel = stringResource(R.string.loc_module_back_modules),
         onBack = { navController.navigateUp() },
     ) {
         if (entry == null) return@SubSettingsScaffold
@@ -153,18 +198,25 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(module.info.description, fontFamily = InterFontFamily, fontSize = 13.sp, lineHeight = 18.sp, color = LabColors.Secondary)
+            Text(
+                moduleDescription(id, module.info.description),
+                fontFamily = InterFontFamily, fontSize = 13.sp, lineHeight = 18.sp, color = LabColors.Secondary,
+            )
             Spacer(Modifier.height(14.dp))
             if (!signedIn && module.signIn != null) {
                 PrimaryButton(
-                    text = if (entry.account is AccountState.Expired) "Sign in again" else "Sign in to ${module.info.name}",
+                    text = if (entry.account is AccountState.Expired) stringResource(R.string.loc_module_signin_again)
+                    else stringResource(R.string.loc_module_signin_to, module.info.name),
                     onClick = { navController.navigate(moduleSignInRoute(id)) },
                 )
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    LabTextAction(if (module.signIn != null) "Check account" else "Check server", R.drawable.refresh) { viewModel.verify(id) }
+                    LabTextAction(
+                        stringResource(if (module.signIn != null) R.string.loc_module_check_account else R.string.loc_module_check_server),
+                        R.drawable.refresh,
+                    ) { viewModel.verify(id) }
                     Spacer(Modifier.weight(1f))
-                    if (module.signIn != null) LabTextAction("Sign out", R.drawable.close) { viewModel.signOut(id) }
+                    if (module.signIn != null) LabTextAction(stringResource(R.string.loc_module_signout), R.drawable.close) { viewModel.signOut(id) }
                 }
             }
         }
@@ -172,8 +224,8 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
 
         LabCard(padding = 10.dp) {
             LabToggleRow(
-                title = "Play from ${module.info.name}",
-                subtitle = "Songs play from ${module.info.name} when it has them, in the order set under Audio Quality → Provider order",
+                title = stringResource(R.string.loc_module_play_from, module.info.name),
+                subtitle = stringResource(R.string.loc_module_play_from_detail, module.info.name),
                 checked = entry.enabled && signedIn,
                 enabled = signedIn,
                 onCheckedChange = { viewModel.setEnabled(id, it) },
@@ -185,20 +237,24 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
             if (choice.options.isEmpty()) return@forEach
             // a pick the module no longer offers (spatial, before it went) reads as the default
             val picked = entry.picks[choice.id]?.takeIf { p -> choice.options.any { it.id == p } } ?: choice.options.first().id
-            LabSectionLabel(choice.label)
+            LabSectionLabel(localizedModuleChoiceLabel(id, choice.label))
             LabChips(
-                chips = choice.options.map { LabChip(it.id, it.label) },
+                chips = choice.options.map { LabChip(it.id, localizedModuleOptionLabel(id, it.id, it.label)) },
                 selectedKey = picked,
                 onSelect = { viewModel.setPick(id, choice.id, it) },
             )
             choice.options.firstOrNull { it.id == picked }?.let { option ->
-                Text(option.description, fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary,
+                Text(
+                    localizedModuleOptionDescription(id, option.id, option.description),
+                    fontFamily = InterFontFamily,
+                    fontSize = 12.sp,
+                    color = LabColors.Secondary,
                     modifier = Modifier.padding(top = 8.dp, start = 6.dp))
             }
             Spacer(Modifier.height(16.dp))
         }
 
-        LabSectionLabel("Test playback")
+        LabSectionLabel(stringResource(R.string.loc_module_test_playback))
         LabCard(padding = 14.dp) {
             val track = playing?.let {
                 TrackQuery(
@@ -209,11 +265,18 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
                 )
             } ?: TrackQuery("Espresso", listOf("Sabrina Carpenter"), durationMs = 175_000)
             Text(
-                "Runs every step on this phone with “${track.title}”: finding the song, the stream${if (module.signIn != null) ", a license from this phone's Widevine" else ""}, and decoding the start of the song, muted.",
+                stringResource(
+                    R.string.loc_module_test_detail,
+                    track.title,
+                    if (module.signIn != null) stringResource(R.string.loc_module_license_detail) else "",
+                ),
                 fontFamily = InterFontFamily, fontSize = 13.sp, lineHeight = 18.sp, color = LabColors.Secondary,
             )
             Spacer(Modifier.height(12.dp))
-            PrimaryButton(text = if (testing) "Testing…" else "Run the test", enabled = signedIn && !testing) {
+            PrimaryButton(
+                text = stringResource(if (testing) R.string.loc_module_testing else R.string.loc_module_run_test),
+                enabled = signedIn && !testing,
+            ) {
                 viewModel.runTest(id, track)
             }
             Column(Modifier.animateContentSize()) {
@@ -221,7 +284,7 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
             }
             if (!testing && steps.isNotEmpty() && steps.all { it.ok == true }) {
                 Text(
-                    "Everything works. Turn on “Play from ${module.info.name}” and play anything: a toast says where each song comes from.",
+                    stringResource(R.string.loc_module_test_success, module.info.name),
                     fontFamily = InterFontFamily, fontSize = 13.sp, color = Color.White,
                     modifier = Modifier.padding(top = 10.dp),
                 )
@@ -229,12 +292,13 @@ fun ModuleScreen(navController: NavController, id: String, viewModel: ModulesVie
         }
         Spacer(Modifier.height(12.dp))
         if (id == "applemusic") Text(
-            "Not available: lossless, Dolby Atmos and Apple's Spatial mix (Apple only encodes those for its own DRM, FairPlay) and downloads (web players get no offline licenses).",
+            stringResource(R.string.loc_module_unavailable),
             fontFamily = InterFontFamily, fontSize = 12.sp, lineHeight = 17.sp, color = LabColors.Faint,
             modifier = Modifier.padding(horizontal = 6.dp),
         )
         Spacer(Modifier.height(120.dp))
     }
+
 }
 
 @Composable

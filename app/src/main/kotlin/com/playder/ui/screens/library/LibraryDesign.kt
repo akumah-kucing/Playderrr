@@ -485,7 +485,7 @@ fun LibraryPlayBar(
         Spacer(modifier = Modifier.width(9.dp))
         com.playder.ui.component.detail.CircleAction(
             icon = R.drawable.shuffle,
-            contentDescription = "Shuffle",
+            contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.shuffle),
             onClick = onMore,
             spinOnClick = true,
         )

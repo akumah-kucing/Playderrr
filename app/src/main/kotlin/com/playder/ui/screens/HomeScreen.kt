@@ -586,7 +586,7 @@ private fun HomeShell() {
                         model = profileImageUrl,
                         placeholder = painterResource(R.drawable.person),
                         error = painterResource(R.drawable.person),
-                        contentDescription = "Profile",
+                        contentDescription = androidx.compose.ui.res.stringResource(R.string.profile_accessibility_description),
                         modifier = Modifier
                             .size(36.dp)
                             .clip(CircleShape),
@@ -602,7 +602,7 @@ private fun HomeShell() {
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.person),
-                            contentDescription = "Profile",
+                            contentDescription = androidx.compose.ui.res.stringResource(R.string.profile_accessibility_description),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)
                         )
@@ -1277,7 +1277,7 @@ fun HomeScreen(
                             speedDialItems.takeIf { it.isNotEmpty() }?.let { items ->
                                 homeItem("speed_dial_title", revealSeen, "title") {
                                     HomeSectionTitle(
-                                        title = stringResource(R.string.speed_dial),
+                                        title = stringResource(R.string.home_speed_dial),
                                         onClick = { navController.navigate("section_detail/speed_dial") }
                                     )
                                 }
@@ -1290,7 +1290,7 @@ fun HomeScreen(
                             recentlyPlayed?.takeIf { it.isNotEmpty() }?.let { items ->
                                 homeItem("recently_played_title", revealSeen, "title") {
                                     HomeSectionTitle(
-                                        title = stringResource(R.string.recently_played),
+                                        title = stringResource(R.string.home_recently_played),
                                         onClick = { navController.navigate("section_detail/recently_played") }
                                     )
                                 }
@@ -1332,7 +1332,7 @@ fun HomeScreen(
                             recentHistorySongs?.takeIf { it.isNotEmpty() }?.let { history ->
                                 homeItem("history_title", revealSeen, "title") {
                                     HomeSectionTitle(
-                                        title = stringResource(R.string.home_history),
+                                        title = stringResource(R.string.home_history_title),
                                         onClick = { navController.navigate("history") }
                                     )
                                 }
@@ -1365,7 +1365,7 @@ fun HomeScreen(
                             artistListItems?.takeIf { it.isNotEmpty() }?.let { items ->
                                 homeItem("artist_list_title", revealSeen, "title") {
                                     // just a title: each box below is its own artist's page
-                                    HomeSectionTitle(title = stringResource(R.string.artist_list))
+                                    HomeSectionTitle(title = stringResource(R.string.home_artist_list))
                                 }
                                 homeItem("artist_list_content", revealSeen, "cardRow") {
                                     HomeCardRow("artist_list", items, revealSeen, key = { "${it.artistId}_${it.artistName}" }, content = artistGroupCard)
@@ -1376,7 +1376,7 @@ fun HomeScreen(
                             allTimeHits?.takeIf { it.isNotEmpty() }?.let { hits ->
                                 homeItem("all_time_hits_title", revealSeen, "title") {
                                     HomeSectionTitle(
-                                        title = stringResource(R.string.all_time_hits),
+                                        title = stringResource(R.string.home_all_time_hits),
                                         onClick = { navController.navigate("section_detail/all_time_hits") }
                                     )
                                 }
@@ -1390,7 +1390,7 @@ fun HomeScreen(
                             (if (isLive) liveRow else musicVideoRow)?.takeIf { it.isNotEmpty() }?.let { videos ->
                                 homeItem("${section.id}_title", revealSeen, "title") {
                                     HomeSectionTitle(
-                                        title = stringResource(if (isLive) R.string.live_shows else R.string.music_videos_for_you),
+                                        title = stringResource(if (isLive) R.string.home_live_shows else R.string.home_music_videos),
                                         onClick = { navController.navigate("section_detail/${section.id}") }
                                     )
                                 }
@@ -1404,15 +1404,15 @@ fun HomeScreen(
                                 homeItem("${section.id}_title", revealSeen, "title") {
                                     val categorySongs = category.items.filterIsInstance<SongItem>()
                                     val title = when (category.kind) {
-                                        HomeCategory.Kind.NewFromArtists -> stringResource(R.string.home_new_from_your_artists)
+                                        HomeCategory.Kind.NewFromArtists -> stringResource(R.string.home_new_from_artists)
                                         else -> category.title
                                     }
                                     HomeSectionTitle(
                                         label = when (category.kind) {
-                                            HomeCategory.Kind.BecauseYouLike -> stringResource(R.string.home_because_you_like)
-                                            HomeCategory.Kind.MoreLikeArtist -> stringResource(R.string.home_more_like)
-                                            HomeCategory.Kind.YourGenre -> stringResource(R.string.home_because_you_listen_to)
-                                            HomeCategory.Kind.NewGenre -> stringResource(R.string.home_try_something_new)
+                                            HomeCategory.Kind.BecauseYouLike -> stringResource(R.string.home_because_you_like_title)
+                                            HomeCategory.Kind.MoreLikeArtist -> stringResource(R.string.home_more_like_title)
+                                            HomeCategory.Kind.YourGenre -> stringResource(R.string.home_because_you_listen_to_title)
+                                            HomeCategory.Kind.NewGenre -> stringResource(R.string.home_try_something_new_title)
                                             HomeCategory.Kind.NewFromArtists -> null
                                         },
                                         title = title,
@@ -1465,7 +1465,7 @@ fun HomeScreen(
                                 homeItem("account_playlists_title", revealSeen, "title") {
                                     Box {
                                         HomeSectionTitle(
-                                            label = "Your Playlists",
+                                            label = stringResource(R.string.playlists),
                                             title = accountName,
                                             thumbnail = {
                                                 if (profileImageUrl != null) {
@@ -1516,7 +1516,7 @@ fun HomeScreen(
                         HomeSection.DontForgetTheseSongs -> {
                             forgottenFavorites?.takeIf { it.isNotEmpty() }?.let { forgottenFavorites ->
                                 homeItem("forgotten_favorites_title", revealSeen, "title") {
-                                    val forgottenFavoritesTitle = stringResource(R.string.dont_forget_these_songs)
+                                    val forgottenFavoritesTitle = stringResource(R.string.home_dont_forget_songs)
                                     HomeSectionTitle(
                                         title = forgottenFavoritesTitle,
                                         onClick = { navController.navigate("section_detail/forgotten_favorites") },
@@ -1724,7 +1724,7 @@ fun HomeScreen(
                         )
 
                         Text(
-                            text = "Home",
+                            text = stringResource(R.string.home),
                             style = TextStyle(
                                 fontFamily = InterFontFamily,
                                 fontWeight = FontWeight.Bold,
@@ -1764,7 +1764,7 @@ fun HomeScreen(
                                     model = profileImageRequest,
                                     placeholder = painterResource(R.drawable.person),
                                     error = painterResource(R.drawable.person),
-                                    contentDescription = "Profile",
+                                    contentDescription = androidx.compose.ui.res.stringResource(R.string.profile_accessibility_description),
                                     modifier = avatarBoundsModifier
                                         .size(36.dp)
                                         .clip(CircleShape),
@@ -1780,7 +1780,7 @@ fun HomeScreen(
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.person),
-                                        contentDescription = "Profile",
+                                        contentDescription = androidx.compose.ui.res.stringResource(R.string.profile_accessibility_description),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.size(20.dp)
                                     )

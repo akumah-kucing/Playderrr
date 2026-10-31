@@ -6,6 +6,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.app.LocaleManager
 import android.os.Build
 import android.widget.Toast
 import androidx.datastore.preferences.core.edit
@@ -137,10 +138,22 @@ class App : Application(), SingletonImageLoader.Factory {
         }
     }
 
+    private fun resolveAppLocale(savedLanguage: String?): Locale {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val locales = getSystemService(LocaleManager::class.java).applicationLocales
+            if (!locales.isEmpty) return locales[0]
+        } else {
+            savedLanguage
+                ?.takeUnless { it == SYSTEM_DEFAULT }
+                ?.let { return Locale.forLanguageTag(it) }
+        }
+        return resources.configuration.locales[0] ?: Locale.getDefault()
+    }
+
     private suspend fun initializeSettings() {
         val settings = dataStore.data.first()
         com.playder.utils.OfflineMode.set(settings[OfflineModeKey] ?: false)
-        val locale = Locale.getDefault()
+        val locale = resolveAppLocale(settings[AppLanguageKey])
         val languageTag = locale.language
 
         YouTube.locale = YouTubeLocale(
@@ -254,11 +267,8 @@ class App : Application(), SingletonImageLoader.Factory {
                 .map { Triple(it[ContentCountryKey], it[ContentLanguageKey], it[AppLanguageKey]) }
                 .distinctUntilChanged()
                 .collect { (contentCountry, contentLanguage, appLanguage) ->
-                    val systemLocale = Locale.getDefault()
-                    val effectiveAppLocale = appLanguage
-                        ?.takeUnless { it == SYSTEM_DEFAULT }
-                        ?.let { Locale.forLanguageTag(it) }
-                        ?: systemLocale
+                    val systemLocale = resources.configuration.locales[0] ?: Locale.getDefault()
+                    val effectiveAppLocale = resolveAppLocale(appLanguage)
 
                     YouTube.locale = YouTubeLocale(
                         gl = contentCountry?.takeIf { it != SYSTEM_DEFAULT }

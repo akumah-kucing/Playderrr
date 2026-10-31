@@ -199,7 +199,7 @@ private fun AutoSyncStatus(state: LyricsAutoSync.State?, timed: Boolean, onUndo:
     )
     if (state is LyricsAutoSync.State.Synced && state.previousOffsetMs != state.offsetMs) {
         Text(
-            text = "Undo",
+            text = androidx.compose.ui.res.stringResource(com.playder.R.string.undo),
             color = Color.White,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,

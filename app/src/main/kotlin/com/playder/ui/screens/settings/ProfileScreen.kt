@@ -167,7 +167,6 @@ import com.playder.ui.screens.settings.devspace.DevAvatar
 import com.playder.ui.screens.settings.devspace.DevPeople
 import com.playder.ui.screens.setup.onboarding.IdCardAspect
 import com.playder.ui.screens.setup.onboarding.ProfileIdCard
-import com.playder.ui.screens.update.UpdateHeadline
 import com.playder.ui.screens.update.rememberUpdateState
 import com.playder.ui.screens.update.showAboutSheet
 import com.playder.ui.screens.update.showUpdateSheet
@@ -187,12 +186,17 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 private object PlayderGreeting {
-    private fun pick() = listOf("Hello again", "Hey", "Welcome back", "Good to see you").random()
+    private fun pick() = listOf(
+        R.string.profile_greeting_hello_again,
+        R.string.profile_greeting_hey,
+        R.string.profile_greeting_welcome_back,
+        R.string.profile_greeting_good_to_see_you,
+    ).random()
 
-    private val greetingState = mutableStateOf("Hello again")
+    private val greetingState = mutableStateOf(R.string.profile_greeting_hello_again)
     private var wasBackgrounded = false
 
-    val current: String get() = greetingState.value
+    val currentRes: Int get() = greetingState.value
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(
@@ -252,6 +256,11 @@ fun ProfileScreen(navController: NavController) {
         com.music.innertube.YouTube.accountInfo().onSuccess { liveAccountName = it.name }
     }
     val accountName = localUsername.ifBlank { liveAccountName.orEmpty() }
+    val greeting = androidx.compose.ui.res.stringResource(
+        R.string.profile_greeting_format,
+        androidx.compose.ui.res.stringResource(PlayderGreeting.currentRes),
+        accountName.ifBlank { androidx.compose.ui.res.stringResource(R.string.profile_greeting_default_name) },
+    )
     val totalListeningMs by database.totalListeningTimeMs().collectAsState(initial = 0L)
 
     // the onboarding writes the card's number and join date; an install from before it gets them once, here
@@ -261,7 +270,10 @@ fun ProfileScreen(navController: NavController) {
     }
     val cardNumber = cardNumberPref.ifBlank { "00000000000" }
     val joinedDate = if (joinedEpochDay >= 0L) LocalDate.ofEpochDay(joinedEpochDay) else LocalDate.now()
-    val joinedText = "joined at " + joinedDate.format(DateLong)
+    val joinedText = androidx.compose.ui.res.stringResource(
+        R.string.profile_joined_at_format,
+        joinedDate.format(DateLong),
+    )
     val photo: Any? = profilePicUri.takeIf { it.isNotBlank() }?.let { if (it.contains("://")) it else "file://$it" }
 
     // ---- header state -------------------------------------------------------------------------
@@ -533,7 +545,7 @@ fun ProfileScreen(navController: NavController) {
                     ) {
                         // greeting (in the header; its scrolled-away twin lives in the top bar)
                         Text(
-                            text = "${PlayderGreeting.current}, ${accountName.ifBlank { "there" }}!",
+                            text = greeting,
                             style = PageTitle,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -634,7 +646,7 @@ fun ProfileScreen(navController: NavController) {
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.expand_more),
-                                contentDescription = "Pull down",
+                                contentDescription = androidx.compose.ui.res.stringResource(R.string.profile_pull_down),
                                 tint = Color.White.copy(alpha = 0.35f),
                                 modifier = Modifier
                                     .size(30.dp)
@@ -648,7 +660,7 @@ fun ProfileScreen(navController: NavController) {
                             )
                             if (recapWaiting) {
                                 Text(
-                                    text = "swipe down here!!",
+                                    text = androidx.compose.ui.res.stringResource(R.string.profile_swipe_down_hint),
                                     style = MonoSmall.copy(color = Color.White.copy(alpha = 0.6f)),
                                     maxLines = 1,
                                     modifier = Modifier.graphicsLayer {
@@ -676,7 +688,11 @@ fun ProfileScreen(navController: NavController) {
                         ) {
                             val invalid = stage == HeaderStage.Invalid
                             Text(
-                                text = if (invalid) "come back later" else "scratch!",
+                                text = if (invalid) {
+                                    androidx.compose.ui.res.stringResource(R.string.profile_come_back_later)
+                                } else {
+                                    androidx.compose.ui.res.stringResource(R.string.profile_scratch_hint)
+                                },
                                 style = PageTitle.copy(fontSize = 20.sp, textAlign = TextAlign.Center),
                                 modifier = Modifier.graphicsLayer { alpha = if (invalid) 1f else 1f - scratch.dissolve.value },
                             )
@@ -687,7 +703,7 @@ fun ProfileScreen(navController: NavController) {
                                     modifier = Modifier.padding(top = 6.dp),
                                 )
                                 Text(
-                                    text = "swipe up to close",
+                                    text = androidx.compose.ui.res.stringResource(R.string.profile_swipe_up_to_close),
                                     style = MonoSmall.copy(color = Color.White.copy(alpha = 0.35f)),
                                     modifier = Modifier.padding(top = 26.dp),
                                 )
@@ -713,7 +729,7 @@ fun ProfileScreen(navController: NavController) {
                         }
                         val hasUpdate = updateState is com.playder.core.updater.UpdateState.Available
                         VersionCard(
-                            updateHeadline = if (hasUpdate) UpdateHeadline else null,
+                            updateHeadline = if (hasUpdate) androidx.compose.ui.res.stringResource(R.string.loc_update_headline) else null,
                             onCardClick = { zoomOutState.showUpdateSheet(updateState, onOpenDevSpace = openDevSpace) },
                             onPillClick = {
                                 if (hasUpdate) {
@@ -726,7 +742,7 @@ fun ProfileScreen(navController: NavController) {
                         Spacer(Modifier.height(16.dp))
                         DeveloperCard(onClick = { navController.navigate("developer_space") })
                         Spacer(Modifier.height(28.dp))
-                        Text("Settings", style = PageTitle.copy(fontSize = 15.sp), modifier = Modifier.padding(start = 2.dp, bottom = 10.dp))
+                        Text(androidx.compose.ui.res.stringResource(com.playder.R.string.settings), style = PageTitle.copy(fontSize = 15.sp), modifier = Modifier.padding(start = 2.dp, bottom = 10.dp))
                         OpenSettingsRow(onClick = { navController.navigate("playder_settings") })
                         Spacer(Modifier.height(180.dp))
                     }
@@ -780,7 +796,7 @@ fun ProfileScreen(navController: NavController) {
             )
             if (collapseProgress > 0.01f) {
                 Text(
-                    text = "${PlayderGreeting.current}, ${accountName.ifBlank { "there" }}!",
+                    text = greeting,
                     style = PageTitle.copy(fontSize = 18.sp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -905,7 +921,7 @@ private fun ListeningTimeCard(totalMs: Long, onViewStats: () -> Unit) {
             // long hour counts ("1234h") shrink the figures a step so the label keeps its room
             val k = widthScale(maxWidth.value + 40f) * if (hours >= 1000) 0.8f else if (hours >= 100) 0.9f else 1f
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TimeValue(hours.toString(), "h", k)
+                TimeValue(hours.toString(), androidx.compose.ui.res.stringResource(R.string.profile_hours_short), k)
                 Box(
                     modifier = Modifier
                         .padding(horizontal = (14 * k).dp)
@@ -913,10 +929,10 @@ private fun ListeningTimeCard(totalMs: Long, onViewStats: () -> Unit) {
                         .height((34 * k).dp)
                         .background(Color.White.copy(alpha = 0.4f)),
                 )
-                TimeValue((totalMinutes % 60).toString(), "m", k)
+                TimeValue((totalMinutes % 60).toString(), androidx.compose.ui.res.stringResource(R.string.profile_minutes_short), k)
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    "Total Listening\ntime",
+                    androidx.compose.ui.res.stringResource(R.string.profile_total_listening_time),
                     style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, lineHeight = 18.sp, color = Color(0xFF8A8A8A), textAlign = TextAlign.End),
                     modifier = Modifier.weight(1f),
                 )
@@ -926,7 +942,7 @@ private fun ListeningTimeCard(totalMs: Long, onViewStats: () -> Unit) {
         Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF474747)))
         Spacer(Modifier.height(12.dp))
         Text(
-            "View Stats  >",
+            androidx.compose.ui.res.stringResource(R.string.profile_view_stats),
             style = TextStyle(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Color(0xFF8A8A8A)),
         )
     }
@@ -969,7 +985,7 @@ private fun VersionCard(
                 .padding(CardPadding),
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Version & about app", style = TextStyle(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Color(0xFF9A9A9A)))
+                Text(androidx.compose.ui.res.stringResource(R.string.profile_version_about), style = TextStyle(fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Color(0xFF9A9A9A)))
                 Text(
                     // "7.1.1 build#1093" -> "7.1.1"
                     BuildConfig.VERSION_NAME.substringBefore(' '),
@@ -994,7 +1010,9 @@ private fun VersionCard(
  */
 @Composable
 private fun VersionCapsule(update: Boolean, onAbout: () -> Unit) {
-    val shown = if (update) "Update" else "About app"
+    val shown = androidx.compose.ui.res.stringResource(
+        if (update) R.string.profile_update else R.string.profile_about_app
+    )
 
     // the pop: a quick squash, then a spring that carries past full size and settles
     val pop = remember { Animatable(1f) }
@@ -1088,7 +1106,7 @@ private fun DeveloperCard(onClick: () -> Unit) {
         }
         Spacer(Modifier.width(12.dp))
         Text(
-            "meet da dev and contributors :3",
+            androidx.compose.ui.res.stringResource(R.string.profile_meet_developers),
             style = TextStyle(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 15.sp, letterSpacing = (-0.6).sp, color = Color(0xFF9A9A9A)),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -1119,6 +1137,6 @@ private fun OpenSettingsRow(onClick: () -> Unit) {
         ) {
             Icon(painterResource(R.drawable.settings), contentDescription = null, tint = Color(0xFF232323), modifier = Modifier.size(18.dp))
         }
-        Text("Open settings", style = PageTitle.copy(fontSize = 17.sp, fontWeight = FontWeight.SemiBold))
+        Text(androidx.compose.ui.res.stringResource(R.string.profile_open_settings), style = PageTitle.copy(fontSize = 17.sp, fontWeight = FontWeight.SemiBold))
     }
 }

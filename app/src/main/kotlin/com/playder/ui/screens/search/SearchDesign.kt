@@ -418,7 +418,7 @@ fun SearchAvatar(
         if (model != null) {
             AsyncImage(
                 model = model,
-                contentDescription = "Profile",
+                contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.profile_accessibility_description),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
             )

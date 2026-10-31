@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.playder.LocalPlayerConnection
+import com.playder.R
 import com.playder.extensions.toMediaItem
 import com.playder.playback.queues.ListQueue
 import com.playder.viewmodels.LibraryHomeViewModel
@@ -31,7 +33,7 @@ fun LibraryRecentlyAddedScreen(
     val viewModel: LibraryHomeViewModel = hiltViewModel()
     // with the lifecycle: the Cached shelf looks at the cache every couple of seconds while watched
     val songs by (shelf?.let(viewModel::shelf)?.songs ?: viewModel.songs).collectAsStateWithLifecycle()
-    val queueTitle = shelf?.label ?: "Recently added"
+    val queueTitle = stringResource(R.string.library_recently_added_queue_title)
     val playerConnection = LocalPlayerConnection.current ?: return
 
     val entries = remember(songs) {
@@ -58,9 +60,9 @@ fun LibraryRecentlyAddedScreen(
     }
 
     LibraryGridScreen(
-        title = "Added",
-        subtitle = "Recently",
-        searchPlaceholder = "Find song listed here, by the lyrics, or the artist",
+        title = stringResource(R.string.library_title_added),
+        subtitle = stringResource(R.string.library_subtitle_recently),
+        searchPlaceholder = stringResource(R.string.library_recently_added_search_hint),
         entries = entries,
         onOpen = { entry -> play(songs.indexOfFirst { it.id == entry.id }.coerceAtLeast(0), shuffle = false) },
         onPlay = { play(0, shuffle = false) },

@@ -104,12 +104,12 @@
     <string name="remove_all_from_library">Supprimer tout de la bibliothèque</string>
     <string name="action_download">Télécharger</string>
     <string name="downloading">Téléchargement</string>
-    <string name="saving">Sauvegarde</string>
+    <string name="saving">Enregistrement</string>
     <string name="saved">Sauvegardé</string>
     <string name="remove_download">Supprimer le téléchargement</string>
     <string name="import_playlist">Importer une playlist</string>
     <string name="add_to_playlist">Ajouter à la playlist</string>
-    <string name="start_an_radio">Radio</string>
+    <string name="start_an_radio">Lancer une radio</string>
     <string name="add_to_an_playlist">Ajouter</string>
     <string name="view_artist">Voir l\'artiste</string>
     <string name="view_album">Voir l\'album</string>
@@ -125,7 +125,7 @@
     <string name="search_online">Rechercher en ligne</string>
     <string name="action_sync">Synchronisation</string>
     <string name="advanced">Avancé</string>
-    <string name="tempo_and_pitch">Tempo et Hauteur</string>
+    <string name="tempo_and_pitch">Tempo et hauteur</string>
 
     <!-- Sort menu -->
     <string name="sort_by_create_date">Date d\'ajout</string>
@@ -262,8 +262,8 @@
     <string name="use_system_colors">Utiliser les couleurs du système</string>
     <string name="enable_dynamic_theme">Activer le thème dynamique</string>
     <string name="dark_theme">Thème sombre</string>
-    <string name="dark_theme_on">On</string>
-    <string name="dark_theme_off">Off</string>
+    <string name="dark_theme_on">Activé</string>
+    <string name="dark_theme_off">Désactivé</string>
     <string name="dark_theme_follow_system">Suivre le système</string>
     <string name="pure_black">Noir pur</string>
     <string name="customize_navigation_tabs">Personnaliser les onglets de navigation</string>
@@ -388,4 +388,14 @@
     <string name="standard_lyrics_blur">Paroles standard floues</string>
     <string name="listen_together_smart_resync">Resynchronisation intelligente du réseau</string>
     <string name="listen_together_smart_resync_desc">Reprendre automatiquement la connexion avec l\'hôte après une perte de connexion</string>
+    <string name="music">Musique</string>
+    <string name="added_to_library">Ajouté à la bibliothèque</string>
+    <string name="removed_from_library">Retiré de la bibliothèque</string>
+    <string name="remove_from_import_and_library">Retirer des imports et de la bibliothèque</string>
+    <string name="removed_from_import_and_library">Retiré de vos imports %1$s et de votre bibliothèque</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Afficher l’indicateur de qualité audio</string>
+    <string name="audio_quality_medium">Moyenne</string>
+    <string name="error_stream_unavailable_title">Impossible de lire ce titre</string>
+    <string name="playback_error_channel_name">Erreurs de lecture</string>
 </resources>

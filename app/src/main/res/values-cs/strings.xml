@@ -6,8 +6,6 @@
     <string name="albums">Alba</string>
     <string name="playlists">Playlisty</string>
     <plurals name="n_selected">
-        <item quantity="one">Vybrána %d</item>
-        <item quantity="few">Vybrány %d</item>
         <item quantity="other">Vybráno %d</item>
     </plurals>
     <string name="history">Historie</string>
@@ -106,37 +104,30 @@
     <string name="error_artist_name_empty">Jméno umělce nemůže být prázdné.</string>
     <plurals name="n_song">
         <item quantity="one">%d skladba</item>
-        <item quantity="few">%d skladby</item>
         <item quantity="other">%d skladeb</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d umělec</item>
-        <item quantity="few">%d umělci</item>
         <item quantity="other">%d umělců</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d album</item>
-        <item quantity="few">%d alba</item>
         <item quantity="other">%d alb</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d playlist</item>
-        <item quantity="few">%d playlisty</item>
         <item quantity="other">%d playlistů</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d týden</item>
-        <item quantity="few">%d týdny</item>
         <item quantity="other">%d týdnů</item>
     </plurals>
     <plurals name="n_month">
         <item quantity="one">%d měsíc</item>
-        <item quantity="few">%d měsíce</item>
         <item quantity="other">%d měsíců</item>
     </plurals>
     <plurals name="n_year">
         <item quantity="one">%d rok</item>
-        <item quantity="few">%d roky</item>
         <item quantity="other">%d let</item>
     </plurals>
     <string name="playlist_imported">Playlist importován</string>
@@ -148,7 +139,6 @@
     <string name="end_of_song">Konec skladby</string>
     <plurals name="minute">
         <item quantity="one">1 minuta</item>
-        <item quantity="few">%d minuty</item>
         <item quantity="other">%d minut</item>
     </plurals>
     <string name="error_no_stream">Není dostupný žádný stream</string>
@@ -288,4 +278,60 @@
     <string name="use_login_for_browse">Použít účet pro procházení obsahu</string>
     <string name="use_login_for_browse_desc">Může ovlivnit obsah, který se vám zobrazí – při přihlášení například mohou být zobrazena například alba, která jsou dostupná pouze s Premium účtem</string>
     <string name="action_login">Přihlásit se</string>
+    <string name="music">Hudba</string>
+    <string name="album_description_placeholder">Toto je ukázkový popis alba. Užijte si poslech následujících skladeb!</string>
+    <string name="you_might_also_like">Související playlist</string>
+    <string name="shuffle_content_desc">Náhodné přehrávání</string>
+    <string name="shuffle_label">Náhodně</string>
+    <string name="pause">Pozastavit</string>
+    <string name="added_to_library">Přidáno do knihovny</string>
+    <string name="removed_from_library">Odebráno z knihovny</string>
+    <string name="remove_from_import_and_library">Odebrat z importů a knihovny</string>
+    <string name="removed_from_import_and_library">Odebráno z importů %1$s a z knihovny</string>
+    <string name="saving">Ukládání</string>
+    <string name="saved">Uloženo</string>
+    <string name="start_an_radio">Rádio</string>
+    <string name="add_to_an_playlist">Přidat</string>
+    <string name="more_label">Další</string>
+    <string name="releases_for_you">Vydání pro vás</string>
+    <string name="lyrics_swipe_to_change_song">Přejetím změnit skladbu</string>
+    <string name="lyrics_swipe_to_change_song_desc">Přejetím doleva nebo doprava v části s interpretem a názvem skladby na celostránkových textech změníte skladbu</string>
+    <string name="lyrics_thumbnail_play_pause">Zobrazit na miniatuře přehrávání a pozastavení</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Zobrazit přes miniaturu skladby na celé obrazovce textů tlačítko přehrávání a pozastavení</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">Nebylo nalezeno žádné APK</item>
+        <item quantity="one">Nalezeno %d APK</item>
+        <item quantity="other">Nalezeno %d APK</item>
+    </plurals>
+    <string name="theme_desc">Přizpůsobit motiv aplikace</string>
+    <string name="theme_colors">Motiv a barvy</string>
+    <string name="theme_mode">Režim motivu</string>
+    <string name="color_palette">Paleta barev</string>
+    <string name="use_system_colors">Použít barvy systému</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Zobrazit označení kvality zvuku</string>
+    <string name="network_ip_version">Verze IP sítě</string>
+    <string name="ip_version_auto">Automaticky</string>
+    <string name="ip_version_ipv4">Vynutit IPv4</string>
+    <string name="ip_version_ipv6">Vynutit IPv6</string>
+    <string name="audio_quality_medium">Střední</string>
+    <string name="clear_downloaded_updates">Smazat stažené aktualizace</string>
+    <string name="clear_downloaded_updates_desc">Odstranit stažené soubory APK a uvolnit místo</string>
+    <string name="bluetooth_permission_required">K vyhledání zvukových zařízení je nutné oprávnění Bluetooth.</string>
+    <string name="streaming_to">Streamování do zařízení</string>
+    <string name="this_phone">Tento telefon</string>
+    <string name="wired_headphones">Kabelová sluchátka</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Reproduktor telefonu</string>
+    <string name="audio_quality_title">Kvalita zvuku</string>
+    <string name="battery_content_desc">Úroveň nabití baterie</string>
+    <string name="done">Hotovo</string>
+    <string name="audio_devices">Zvuková zařízení</string>
+    <string name="bluetooth_headphones">Sluchátka Bluetooth</string>
+    <string name="license">GNU General Public License v3.0</string>
+    <string name="standard_lyrics_blur">Standardní rozostření textů</string>
+    <string name="listen_together_smart_resync">Chytrá opětovná synchronizace přes síť</string>
+    <string name="listen_together_smart_resync_desc">Po výpadku připojení automaticky dohnat hostitele</string>
+    <string name="error_stream_unavailable_title">Tuto skladbu se nepodařilo přehrát</string>
+    <string name="playback_error_channel_name">Chyby přehrávání</string>
 </resources>

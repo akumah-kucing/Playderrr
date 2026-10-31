@@ -104,25 +104,32 @@
     <string name="error_artist_name_empty">Tên nghệ sĩ không được để trống.</string>
     <plurals name="n_song">
         <item quantity="other">%d bài hát</item>
-    </plurals>
+            <item quantity="one">Bài hát %d</item>
+</plurals>
     <plurals name="n_artist">
         <item quantity="other">%d nghệ sĩ</item>
-    </plurals>
+            <item quantity="one">nghệ sĩ %d</item>
+</plurals>
     <plurals name="n_album">
         <item quantity="other">%d album</item>
-    </plurals>
+            <item quantity="one">Album %d</item>
+</plurals>
     <plurals name="n_playlist">
         <item quantity="other">%d danh sách phát</item>
-    </plurals>
+            <item quantity="one">Danh sách phát %d</item>
+</plurals>
     <plurals name="n_week">
         <item quantity="other">%d tuần</item>
-    </plurals>
+            <item quantity="one">%d tuần</item>
+</plurals>
     <plurals name="n_month">
         <item quantity="other">%d tháng</item>
-    </plurals>
+            <item quantity="one">%d tháng</item>
+</plurals>
     <plurals name="n_year">
         <item quantity="other">%d năm</item>
-    </plurals>
+            <item quantity="one">%d năm</item>
+</plurals>
     <string name="playlist_imported">Danh sách phát đã được nhập vào</string>
     <string name="removed_song_from_playlist">Đã xoá \"%s\" khỏi danh sách phát</string>
     <string name="playlist_synced">Danh sách phát được đồng bộ</string>
@@ -132,7 +139,8 @@
     <string name="end_of_song">Kết thúc bài hát</string>
     <plurals name="minute">
         <item quantity="other">%d phút</item>
-    </plurals>
+            <item quantity="one">1 phút</item>
+</plurals>
     <string name="error_no_stream">Không có luồng nào khả dụng</string>
     <string name="error_no_internet">Không có kết nối mạng</string>
     <string name="error_timeout">Hết giờ</string>
@@ -270,4 +278,60 @@
     <string name="use_login_for_browse">Đăng nhập để xem nội dung</string>
     <string name="use_login_for_browse_desc">Điều này có thể ảnh hưởng đến nội dung bạn nhìn thấy, ví dụ như hiện những album dành riêng cho premium nếu bạn đăng nhập với tài khoản Premium</string>
     <string name="action_login">Đăng nhập</string>
+    <string name="music">Âm nhạc</string>
+    <string name="album_description_placeholder">Đây là mô tả giữ chỗ cho album. Chúc các bạn nghe những bài hát dưới đây vui vẻ nhé!</string>
+    <string name="you_might_also_like">Danh sách phát liên quan</string>
+    <string name="shuffle_content_desc">Trộn bài</string>
+    <string name="shuffle_label">Trộn bài</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="added_to_library">Đã thêm vào thư viện</string>
+    <string name="removed_from_library">Đã xóa khỏi thư viện</string>
+    <string name="remove_from_import_and_library">Xóa khỏi nhập và thư viện</string>
+    <string name="removed_from_import_and_library">Đã xóa khỏi nội dung nhập %1$s và thư viện của bạn</string>
+    <string name="saving">Đang lưu</string>
+    <string name="saved">Đã lưu</string>
+    <string name="start_an_radio">Radio</string>
+    <string name="add_to_an_playlist">Thêm vào</string>
+    <string name="more_label">Hơn</string>
+    <string name="releases_for_you">Bản phát hành dành cho bạn</string>
+    <string name="lyrics_swipe_to_change_song">Vuốt để thay đổi bài hát</string>
+    <string name="lyrics_swipe_to_change_song_desc">Vuốt sang trái hoặc phải trong phần nghệ sĩ và tên bài hát trong lời bài hát toàn màn hình để thay đổi bài hát</string>
+    <string name="lyrics_thumbnail_play_pause">Hiển thị phát/tạm dừng trên hình thu nhỏ</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Hiển thị lớp phủ nút phát/tạm dừng trên hình thu nhỏ của bài hát trong lời bài hát toàn màn hình</string>
+    <string name="theme_desc">Tùy chỉnh chủ đề ứng dụng của bạn</string>
+    <string name="theme_colors">Chủ đề &amp; Màu sắc</string>
+    <string name="theme_mode">Chế độ chủ đề</string>
+    <string name="color_palette">Bảng màu</string>
+    <string name="use_system_colors">Sử dụng màu hệ thống</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Hiển thị huy hiệu chất lượng âm thanh</string>
+    <string name="network_ip_version">Phiên bản IP mạng</string>
+    <string name="ip_version_auto">Tự động</string>
+    <string name="ip_version_ipv4">Bắt buộc IPv4</string>
+    <string name="ip_version_ipv6">Bắt buộc IPv6</string>
+    <string name="audio_quality_medium">Trung bình</string>
+    <string name="clear_downloaded_updates">Xóa các bản cập nhật đã tải xuống</string>
+    <string name="clear_downloaded_updates_desc">Xóa các tệp APK đã tải xuống để giải phóng dung lượng</string>
+    <string name="bluetooth_permission_required">Cần có quyền Bluetooth để khám phá các thiết bị âm thanh.</string>
+    <string name="streaming_to">Truyền tới</string>
+    <string name="this_phone">Điện thoại này</string>
+    <string name="wired_headphones">Tai nghe có dây</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Loa điện thoại</string>
+    <string name="audio_quality_title">Chất lượng âm thanh</string>
+    <string name="battery_content_desc">Mức pin</string>
+    <string name="done">Xong</string>
+    <string name="audio_devices">Thiết bị âm thanh</string>
+    <string name="bluetooth_headphones">Tai nghe Bluetooth</string>
+    <string name="license">Giấy phép Công cộng GNU v3.0</string>
+    <string name="standard_lyrics_blur">Làm mờ lời bài hát chuẩn</string>
+    <string name="listen_together_smart_resync">Đồng bộ lại mạng thông minh</string>
+    <string name="listen_together_smart_resync_desc">Tự động bắt kịp máy chủ sau khi mất kết nối</string>
+    <string name="error_stream_unavailable_title">Không thể phát bản nhạc này</string>
+    <string name="playback_error_channel_name">Lỗi phát lại</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">Không tìm thấy APK nào</item>
+        <item quantity="one">Đã tìm thấy APK %d</item>
+        <item quantity="other">Đã tìm thấy APK %d</item>
+    </plurals>
 </resources>

@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.playder.R
 import com.playder.db.entities.Playlist
 import com.playder.importer.ImportProgress
 import com.playder.importer.ImportSource
@@ -70,7 +72,7 @@ internal fun LazyListScope.libraryImportedTab(
     }
 
     item(key = "imported_songs") {
-        LibraryCapsLabel("All music")
+        LibraryCapsLabel(stringResource(R.string.all_music))
         Spacer(modifier = Modifier.height(10.dp))
         LibraryCardGrid(
             services.map { service ->
@@ -87,7 +89,7 @@ internal fun LazyListScope.libraryImportedTab(
     }
 
     item(key = "imported_playlists") {
-        LibraryCapsLabel("Playlists")
+        LibraryCapsLabel(stringResource(R.string.playlists))
         Spacer(modifier = Modifier.height(10.dp))
         LibraryCardGrid(
             services.map { service ->
@@ -104,6 +106,6 @@ internal fun LazyListScope.libraryImportedTab(
 
     item(key = "imported_manage") {
         Spacer(modifier = Modifier.height(22.dp))
-        LibraryManagePill(text = "Manage imports", onClick = onManage)
+        LibraryManagePill(text = stringResource(R.string.manage_imports), onClick = onManage)
     }
 }

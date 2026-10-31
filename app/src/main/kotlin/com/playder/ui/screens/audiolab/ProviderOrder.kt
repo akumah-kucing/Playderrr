@@ -60,7 +60,7 @@ fun ProviderOrder(
     usable: (String) -> Boolean,
     onReorder: (List<String>) -> Unit,
     /** the small line under a provider's name */
-    status: (String) -> String? = { null },
+    status: @Composable (String) -> String? = { null },
     onTap: (String) -> Unit = {},
 ) {
     val haptic = LocalHapticFeedback.current

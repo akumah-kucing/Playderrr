@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -81,7 +82,7 @@ fun UpdatePromptSheet(
         } else {
             needsPermission = true
             readyToInstall = true
-            error = "Allow \"Install unknown apps\" for playder, then tap Install here again."
+            error = context.getString(R.string.loc_update_allow_install)
         }
     }
 
@@ -121,7 +122,8 @@ fun UpdatePromptSheet(
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = if (userName.isBlank()) "Update available!" else "Update available, $userName!",
+                text = if (userName.isBlank()) stringResource(R.string.loc_update_prompt_available)
+                else stringResource(R.string.loc_update_prompt_available_name, userName),
                 color = Color.White,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
@@ -139,7 +141,7 @@ fun UpdatePromptSheet(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "What changed on ${release.version}",
+                    text = stringResource(R.string.loc_update_whats_changed, release.version),
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -151,7 +153,7 @@ fun UpdatePromptSheet(
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = "To Be Installed -",
+                text = stringResource(R.string.loc_update_to_be_installed),
                 color = Color(0xFF8A8A8A),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -208,11 +210,10 @@ fun UpdatePromptSheet(
                 enabled = !downloading && release.apkUrl != null,
                 progress = animatedProgress,
                 label = when {
-                    downloading -> "Downloading… ${(animatedProgress * 100).toInt()}%"
-                    release.apkUrl == null -> "No APK in this release"
-                    needsPermission -> "Install here"
-                    readyToInstall -> "Install here"
-                    else -> "Install here"
+                    downloading -> stringResource(R.string.loc_update_downloading, (animatedProgress * 100).toInt())
+                    release.apkUrl == null -> stringResource(R.string.loc_update_no_apk)
+                    needsPermission || readyToInstall -> stringResource(R.string.loc_update_install_here)
+                    else -> stringResource(R.string.loc_update_install_here)
                 },
                 dimmed = release.apkUrl == null,
                 onClick = {
@@ -229,7 +230,7 @@ fun UpdatePromptSheet(
                             downloading = false
                             result.fold(
                                 onSuccess = { startInstall(it) },
-                                onFailure = { error = it.message ?: "Download failed" },
+                                onFailure = { error = it.message ?: context.getString(R.string.loc_update_download_failed) },
                             )
                         }
                     }
@@ -240,7 +241,7 @@ fun UpdatePromptSheet(
 
             PromptButton(
                 enabled = !downloading,
-                label = "Open the web",
+                label = stringResource(R.string.loc_update_open_web),
                 dimmed = downloading,
                 onClick = { context.openReleaseUrl(release.htmlUrl) },
             )
@@ -249,7 +250,7 @@ fun UpdatePromptSheet(
 
             PromptButton(
                 enabled = !downloading,
-                label = "no thanks remind me in 24 hour",
+                label = stringResource(R.string.loc_update_no_thanks),
                 dimmed = downloading,
                 onClick = onSnooze,
             )

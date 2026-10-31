@@ -53,6 +53,7 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -79,6 +80,7 @@ import com.playder.ui.component.LocalMenuState
 import com.playder.ui.component.LocalZoomOutOverlayState
 import com.playder.ui.component.OdometerNumber
 import com.playder.ui.component.PlaylistThumbnail
+import com.playder.ui.component.detail.rememberArtistThumbnail
 import com.playder.ui.component.homeCardSize
 import com.playder.ui.menu.ArtistMenu
 import com.playder.ui.menu.SongMenu
@@ -160,7 +162,7 @@ internal fun UserProfilePage(
             if (photo != null) {
                 AsyncImage(
                     model = photo,
-                    contentDescription = "Profile picture",
+                    contentDescription = stringResource(R.string.profile_picture),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
                 )
@@ -263,7 +265,7 @@ private fun NameLine(
 @Composable
 private fun EditProfilePill(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Text(
-        text = "Edit profile",
+        text = stringResource(R.string.user_edit_profile),
         style = TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.SemiBold,
@@ -318,21 +320,40 @@ private fun ListensCard(total: ListenTotal, width: Dp, onClick: () -> Unit, modi
     ) {
         Row {
             Text(
-                text = "Total listens",
+                text = stringResource(R.string.user_total_listens),
                 style = TextStyle(fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 17.sp, letterSpacing = (-0.04).em, color = Color.White),
                 modifier = Modifier.alignByBaseline(),
             )
             Spacer(Modifier.width(6.dp))
             Text(
-                text = total.label,
+                text = stringResource(
+                    when (total.label) {
+                        "ALL TIME" -> R.string.user_listens_all_time
+                        "THIS MONTH" -> R.string.user_listens_this_month
+                        else -> R.string.user_listens_this_week
+                    }
+                ),
                 style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 9.5.sp, color = Color(0xFF8A8A8A)),
                 modifier = Modifier.alignByBaseline(),
             )
         }
         Spacer(Modifier.height(4.dp))
         Row {
-            ListensFigure(total.songs.toString(), if (total.songs == 1) "Song" else "Songs", Modifier.weight(1f))
-            ListensFigure(timeValue, timeUnit, Modifier.weight(1f))
+            ListensFigure(
+                total.songs.toString(),
+                stringResource(if (total.songs == 1) R.string.user_song_unit_singular else R.string.user_song_unit_plural),
+                Modifier.weight(1f),
+            )
+            ListensFigure(
+                timeValue,
+                stringResource(
+                    when (timeUnit) {
+                        ListeningTimeUnit.Minute -> if (timeValue == "1") R.string.user_minute_unit_singular else R.string.user_minute_unit_plural
+                        ListeningTimeUnit.Hour -> if (timeValue == "1") R.string.user_hour_unit_singular else R.string.user_hour_unit_plural
+                    }
+                ),
+                Modifier.weight(1f),
+            )
         }
     }
 }
@@ -365,11 +386,13 @@ private fun ListensFigure(value: String, unit: String, modifier: Modifier = Modi
 }
 
 /** "26 Hours", or "42 Mins" while it's still under an hour. */
-private fun ListenTotal.timeFigure(): Pair<String, String> {
+private enum class ListeningTimeUnit { Minute, Hour }
+
+private fun ListenTotal.timeFigure(): Pair<String, ListeningTimeUnit> {
     val minutes = playTimeMs / 60_000L
-    if (minutes < 60) return minutes.toString() to if (minutes == 1L) "Min" else "Mins"
+    if (minutes < 60) return minutes.toString() to ListeningTimeUnit.Minute
     val hours = minutes / 60
-    return hours.toString() to if (hours == 1L) "Hour" else "Hours"
+    return hours.toString() to ListeningTimeUnit.Hour
 }
 
 // ---- Rows of covers ---------------------------------------------------------------------------
@@ -415,12 +438,12 @@ private fun RecentSection(state: ProfileMorphState, viewModel: UserProfileViewMo
     val isPlaying by playerConnection.isPlaying.collectAsState()
 
     ProfileSection(
-        title = "Listening to",
+        title = stringResource(R.string.user_listening_to),
         state = state,
         row = 3,
         items = songs,
         key = { it.id },
-        emptyText = "Songs you play will show up here.",
+        emptyText = stringResource(R.string.user_songs_empty),
     ) { song, order ->
         HomeCoverCard(
             title = song.title,
@@ -460,7 +483,7 @@ private fun PlaylistsSection(state: ProfileMorphState, viewModel: UserProfileVie
     val shape = RoundedCornerShape(HomeCardCornerRadius)
 
     ProfileSection(
-        title = "Your playlists",
+        title = stringResource(R.string.user_playlists),
         state = state,
         row = 4,
         items = entries,
@@ -469,7 +492,7 @@ private fun PlaylistsSection(state: ProfileMorphState, viewModel: UserProfileVie
     ) { playlist, order ->
         val songCount = playlist?.songCount ?: likedCount
         HomeCoverCard(
-            title = playlist?.title ?: "Liked songs",
+            title = playlist?.title ?: stringResource(R.string.liked_songs),
             subtitle = pluralStringResource(R.plurals.n_song, songCount, songCount),
             thumbnailUrl = playlist?.thumbnails?.firstOrNull(),
             sharedElementKey = "playlist-${playlist?.id ?: "liked"}",
@@ -513,17 +536,21 @@ private fun ArtistsSection(state: ProfileMorphState, viewModel: UserProfileViewM
     val scope = rememberCoroutineScope()
 
     ProfileSection(
-        title = "Top artists",
+        title = stringResource(R.string.user_top_artists),
         state = state,
         row = 5,
         items = artists,
         key = { it.id },
-        emptyText = "The artists you play the most will show up here.",
+        emptyText = stringResource(R.string.user_artists_empty),
     ) { artist, order ->
+        val looked = rememberArtistThumbnail(
+            artistId = artist.id.takeIf { artist.thumbnailUrl.isNullOrBlank() && artist.artist.isYouTubeArtist },
+            artistName = artist.title,
+        )
         HomeCoverCard(
             title = artist.title,
             subtitle = null,
-            thumbnailUrl = artist.thumbnailUrl,
+            thumbnailUrl = artist.thumbnailUrl ?: looked.value,
             circular = true,
             modifier = Modifier
                 .reveal(state, row = 5, order = order)

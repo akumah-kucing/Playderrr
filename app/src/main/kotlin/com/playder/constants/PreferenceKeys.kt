@@ -74,6 +74,13 @@ enum class SliderStyle {
 
 const val SYSTEM_DEFAULT = "SYSTEM_DEFAULT"
 val AppLanguageKey = stringPreferencesKey("appLanguage")
+fun canonicalizeAppLanguageTag(tag: String): String =
+    if (tag.equals("in", ignoreCase = true) || tag.startsWith("in-", ignoreCase = true)) {
+        "id${tag.substring(2)}"
+    } else {
+        tag
+    }
+
 val ContentLanguageKey = stringPreferencesKey("contentLanguage")
 val ContentCountryKey = stringPreferencesKey("contentCountry")
 val SuggestionRegionKey = stringPreferencesKey("suggestionRegion")

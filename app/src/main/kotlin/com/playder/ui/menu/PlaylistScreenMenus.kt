@@ -136,7 +136,7 @@ fun LocalPlaylistMenu(
         Material3MenuGroup(
             items = listOfNotNull(
                 Material3MenuItemData(
-                    title = { Text("Play next") },
+                    title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.play_next)) },
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.playlist_play),
@@ -179,7 +179,7 @@ fun LocalPlaylistMenu(
                     )
                 } else null,
                 Material3MenuItemData(
-                    title = { Text("Add to playlist") },
+                    title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.add_to_playlist)) },
                     icon = {
                         Icon(
                             painter = painterResource(R.drawable.playlist_add),

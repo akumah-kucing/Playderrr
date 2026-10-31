@@ -7,9 +7,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.playder.R
 import com.playder.LocalPlayerConnection
 import com.playder.extensions.toMediaItem
 import com.playder.playback.queues.ListQueue
@@ -49,9 +51,9 @@ fun LibraryAlbumsScreen(
     }
 
     LibraryGridScreen(
-        title = "Albums",
-        subtitle = "All album on your library listed here.",
-        searchPlaceholder = "Find song listed here, by the lyrics, or the artist",
+        title = stringResource(R.string.albums),
+        subtitle = stringResource(R.string.library_albums_subtitle),
+        searchPlaceholder = stringResource(R.string.find_album_hint),
         entries = entries,
         onOpen = { navController.navigate("album/${it.id}") },
         // Both buttons open the newest album rather than building a queue across every album:
@@ -96,12 +98,12 @@ private fun ShelfAlbumsScreen(
     }
 
     LibraryGridScreen(
-        title = "Albums",
+        title = stringResource(R.string.albums),
         subtitle = when (shelf) {
-            LibraryShelfKind.Local -> "Albums with music on this device."
-            LibraryShelfKind.Cached -> "Albums with songs in your cache."
+            LibraryShelfKind.Local -> stringResource(R.string.albums_on_device)
+            LibraryShelfKind.Cached -> stringResource(R.string.albums_in_cache)
         },
-        searchPlaceholder = "Find an album listed here",
+        searchPlaceholder = stringResource(R.string.find_album_hint),
         entries = entries,
         onOpen = { entry ->
             val album = albums.firstOrNull { it.key == entry.id } ?: return@LibraryGridScreen

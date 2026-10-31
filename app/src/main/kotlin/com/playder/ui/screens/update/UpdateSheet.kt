@@ -63,6 +63,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -112,7 +113,7 @@ private suspend fun checkUpdate(force: Boolean): UpdateState =
 /** shows the app version sheet as a PopupSheet, see docs/popup-sheet.skill.md */
 fun PopupSheetState.showUpdateSheet(updateState: UpdateState, onOpenDevSpace: (Int) -> Unit = {}) {
     val popup = this
-    show(buttonBar = { SheetPrimaryButton(text = "Done", onClick = popup::dismiss) }) {
+    show(buttonBar = { SheetPrimaryButton(text = stringResource(R.string.loc_update_done), onClick = popup::dismiss) }) {
         UpdateSheetContent(initialState = updateState, popup = popup, onOpenDevSpace = onOpenDevSpace)
     }
 }
@@ -234,12 +235,12 @@ private fun ColumnScope.UpdateSheetContent(
             )
 
             Spacer(Modifier.height(22.dp))
-            Text("Actions", fontSize = 17.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp)
+            Text(stringResource(R.string.loc_update_actions), fontSize = 17.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp)
             Spacer(Modifier.height(10.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 ActionRow(
                     icon = R.drawable.refresh,
-                    label = if (state is UpdateState.Checking) "Checking…" else "Check for update",
+                    label = stringResource(if (state is UpdateState.Checking) R.string.loc_update_checking else R.string.loc_update_check),
                     spinning = state is UpdateState.Checking,
                     onClick = checkAgain,
                 )
@@ -251,21 +252,21 @@ private fun ColumnScope.UpdateSheetContent(
                     previous?.let { older ->
                         ActionRow(
                             icon = R.drawable.history,
-                            label = "Downgrade to ${shortVersion(older.version)}",
+                            label = stringResource(R.string.loc_update_downgrade, shortVersion(older.version)),
                             onClick = { popup.showUpdateDetailSheet(older) },
                         )
                     }
                 }
                 ActionRow(
                     icon = R.drawable.bedtime,
-                    label = "Switch to nightly",
-                    hint = "Not out yet",
+                    label = stringResource(R.string.loc_update_nightly),
+                    hint = stringResource(R.string.loc_update_not_out),
                     enabled = false,
                     onClick = {},
                 )
                 ActionRow(
                     icon = R.drawable.info,
-                    label = "About app",
+                    label = stringResource(R.string.loc_update_about),
                     onClick = { popup.showAboutSheet(onOpenDevSpace = onOpenDevSpace) },
                 )
             }
@@ -331,17 +332,17 @@ private fun UpdateStatusCard(
         ) { shown ->
             when (shown) {
                 is UpdateState.Available -> StatusRow(
-                    title = "New update!",
+                    title = stringResource(R.string.loc_update_new),
                     big = shortVersion(shown.release.version),
-                    action = "UPDATE NOW",
+                    action = stringResource(R.string.loc_update_now),
                     onAction = { onUpdate(shown.release) },
                 )
-                UpdateState.Checking -> StatusRow(title = "Looking for updates", big = "…", pulsing = true)
-                UpdateState.UpToDate -> StatusRow(title = "You're on the latest", big = "All good")
+                UpdateState.Checking -> StatusRow(title = stringResource(R.string.loc_update_looking), big = "…", pulsing = true)
+                UpdateState.UpToDate -> StatusRow(title = stringResource(R.string.loc_update_latest), big = stringResource(R.string.loc_update_all_good))
                 is UpdateState.Failed -> StatusRow(
-                    title = "Couldn't check for updates",
-                    big = "Offline?",
-                    action = "TRY AGAIN",
+                    title = stringResource(R.string.loc_update_failed),
+                    big = stringResource(R.string.loc_update_offline),
+                    action = stringResource(R.string.loc_update_try_again),
                     onAction = onRetry,
                 )
             }
@@ -468,8 +469,6 @@ private fun ActionRow(
     }
 }
 
-const val UpdateHeadline = "Theres an update~!"
-
 @Composable
 private fun ColumnScope.UpdateDetailContent(
     release: GithubRelease,
@@ -485,7 +484,7 @@ private fun ColumnScope.UpdateDetailContent(
 
     val startInstall: (java.io.File) -> Unit = { file ->
         if (!installApk(context, file)) {
-            error = "Allow \"Install unknown apps\" for playder, then tap Install here again."
+            error = context.getString(R.string.loc_update_allow_install)
         }
     }
 
@@ -505,7 +504,7 @@ private fun ColumnScope.UpdateDetailContent(
     ) {
         Icon(
             painter = painterResource(R.drawable.arrow_back),
-            contentDescription = "Back",
+            contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
             modifier = Modifier.size(18.dp),
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -534,19 +533,20 @@ private fun ColumnScope.UpdateDetailContent(
             .padding(16.dp)
             .animateContentSize()
     ) {
-        Text(text = "Changelog", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.loc_update_changelog), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(4.dp))
         ChangelogMarkdown(
             markdown = release.body,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             strongColor = MaterialTheme.colorScheme.onSurface,
+            emptyText = stringResource(R.string.loc_update_no_changelog),
         )
     }
 
     Spacer(modifier = Modifier.height(18.dp))
 
     Text(
-        text = "To Be Installed -",
+        text = stringResource(R.string.loc_update_to_be_installed),
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         fontSize = 11.sp,
         fontWeight = FontWeight.SemiBold,
@@ -618,7 +618,7 @@ private fun ColumnScope.UpdateDetailContent(
                             onLocked(false)
                             result.fold(
                                 onSuccess = { startInstall(it) },
-                                onFailure = { error = it.message ?: "Download failed" },
+                                onFailure = { error = it.message ?: context.getString(R.string.loc_update_download_failed) },
                             )
                         }
                     }
@@ -634,9 +634,9 @@ private fun ColumnScope.UpdateDetailContent(
         )
         Text(
             text = when {
-                downloading -> "Downloading… ${(animatedProgress * 100).toInt()}%"
-                release.apkUrl == null -> "No APK in this release"
-                else -> "Install here"
+                downloading -> stringResource(R.string.loc_update_downloading, (animatedProgress * 100).toInt())
+                release.apkUrl == null -> stringResource(R.string.loc_update_no_apk)
+                else -> stringResource(R.string.loc_update_install_here)
             },
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
@@ -659,7 +659,7 @@ private fun ColumnScope.UpdateDetailContent(
                 onClick = { context.openUrl(release.htmlUrl) },
             )
     ) {
-        Text(text = "Open the web", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.loc_update_open_web), fontSize = 14.sp, fontWeight = FontWeight.Bold)
     }
     }
 }

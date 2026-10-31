@@ -36,7 +36,9 @@ fun LibraryImportedScreen(
     val menuState = LocalMenuState.current
     val source = viewModel.source
 
-    val label = source?.label ?: "an unknown source"
+    val label = source?.label ?: androidx.compose.ui.res.stringResource(com.playder.R.string.library_unknown_source)
+    val importedQueueTitle =
+        androidx.compose.ui.res.stringResource(com.playder.R.string.library_imported_from_title, label)
     val sourceIcon: (@Composable () -> Unit)? = if (source != null) {
         { ImportSourceIcon(source, size = AvatarSize) }
     } else {
@@ -44,12 +46,14 @@ fun LibraryImportedScreen(
     }
 
     LibraryEntityListScreen(
-        title = source?.label ?: "Imported",
-        subtitle = when (songs.size) {
-            1 -> "1 song imported from $label."
-            else -> "${songs.size} songs imported from $label."
-        },
-        searchPlaceholder = "Find a song imported from $label",
+        title = source?.label ?: androidx.compose.ui.res.stringResource(com.playder.R.string.library_tab_imported),
+        subtitle = androidx.compose.ui.res.pluralStringResource(
+            com.playder.R.plurals.library_imported_song_count,
+            songs.size,
+            songs.size,
+            label,
+        ),
+        searchPlaceholder = androidx.compose.ui.res.stringResource(com.playder.R.string.library_search_imported_hint, label),
         items = songs,
         idOf = { it.id },
         nameOf = { it.song.title },
@@ -61,7 +65,7 @@ fun LibraryImportedScreen(
             val ordered = sortForLibraryIndex(songs) { it.song.title }
             playerConnection.playQueue(
                 ListQueue(
-                    title = "Imported from $label",
+                    title = importedQueueTitle,
                     items = ordered.map { it.toMediaItem() },
                     startIndex = ordered.indexOf(song).coerceAtLeast(0),
                 ),

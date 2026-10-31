@@ -182,6 +182,6 @@ private fun BackButton(onClick: () -> Unit) {
             .background(DevBarButtonFill)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick),
     ) {
-        Icon(painterResource(R.drawable.chevron_leftpx), contentDescription = "Back", tint = Color.White, modifier = Modifier.size(20.dp))
+        Icon(painterResource(R.drawable.chevron_leftpx), contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back), tint = Color.White, modifier = Modifier.size(20.dp))
     }
 }

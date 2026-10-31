@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.playder.R
 import com.playder.db.entities.Song
 import com.playder.extensions.toMediaItem
 import com.playder.ui.component.SongSwipeBox
@@ -34,7 +36,7 @@ internal fun LazyListScope.libraryCachedTab(
 ) {
     if (data.songs.isEmpty()) {
         item(key = "cached_empty") {
-            LibraryEmptyState(text = "Nothing cached yet. Songs you play show up here.")
+            LibraryEmptyState(text = stringResource(R.string.cached_empty_hint))
         }
     } else {
         libraryShelfCards(data, navController, spaceAbove = 0.dp)
@@ -43,14 +45,14 @@ internal fun LazyListScope.libraryCachedTab(
     // above the list rather than under it: with hundreds of songs cached it would be a long way down
     item(key = "cached_manage") {
         Spacer(modifier = Modifier.height(12.dp))
-        LibraryManagePill(text = "Manage cache", onClick = onManage)
+        LibraryManagePill(text = stringResource(R.string.manage_cache), onClick = onManage)
     }
 
     if (data.songs.isEmpty()) return
 
     item(key = "cached_songs_header") {
         Spacer(modifier = Modifier.height(24.dp))
-        LibraryCapsLabel("All cached music")
+        LibraryCapsLabel(stringResource(R.string.all_cached_music))
         Spacer(modifier = Modifier.height(8.dp))
     }
 

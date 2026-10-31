@@ -40,6 +40,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
@@ -176,14 +177,14 @@ private fun githubAvatarUrl(githubUser: String): String =
 
 fun PopupSheetState.showAboutSheet(onOpenDevSpace: (Int) -> Unit = {}) {
     val popup = this
-    show(buttonBar = { SheetPrimaryButton(text = "Done", onClick = popup::dismiss) }) {
+    show(buttonBar = { SheetPrimaryButton(text = stringResource(R.string.loc_update_done), onClick = popup::dismiss) }) {
         AboutSheetContent(popup = popup, onOpenDevSpace = onOpenDevSpace)
     }
 }
 
 private fun PopupSheetState.showLicenseSheet() {
     val popup = this
-    show(buttonBar = { SheetPrimaryButton(text = "Done", onClick = popup::dismiss) }) {
+    show(buttonBar = { SheetPrimaryButton(text = stringResource(R.string.loc_update_done), onClick = popup::dismiss) }) {
         LicenseSheetContent()
     }
 }
@@ -246,7 +247,7 @@ private fun ColumnScope.AboutSheetContent(
                 }
                 Spacer(Modifier.height(14.dp))
                 Text(
-                    text = "About app",
+                    text = stringResource(R.string.loc_about_title),
                     fontSize = 36.sp,
                     lineHeight = 38.sp,
                     fontWeight = FontWeight.Bold,
@@ -254,7 +255,7 @@ private fun ColumnScope.AboutSheetContent(
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "Playder Music | $installed",
+                    text = stringResource(R.string.loc_about_brand_line, installed),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = (-0.4).sp,
@@ -271,7 +272,7 @@ private fun ColumnScope.AboutSheetContent(
                     .padding(horizontal = 18.dp, vertical = 16.dp),
             ) {
                 Text(
-                    text = "Playder Music is a music app but\nkinda cool.",
+                    text = stringResource(R.string.loc_about_blurb),
                     fontSize = 15.sp,
                     lineHeight = 19.sp,
                     fontWeight = FontWeight.Bold,
@@ -280,17 +281,17 @@ private fun ColumnScope.AboutSheetContent(
             }
 
             Spacer(Modifier.height(18.dp))
-            SectionHeader("actions")
+            SectionHeader(stringResource(R.string.loc_about_actions))
             Spacer(Modifier.height(8.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 AboutPillRow(
-                    text = "Playder Music github \u2192",
+                    text = stringResource(R.string.loc_about_github),
                     onClick = { context.openUrl(GithubRepoUrl) },
                 )
             }
 
             Spacer(Modifier.height(18.dp))
-            SectionHeader("meet the lead dev")
+            SectionHeader(stringResource(R.string.loc_about_lead_devs))
             Spacer(Modifier.height(8.dp))
             Column(
                 modifier = Modifier
@@ -312,7 +313,7 @@ private fun ColumnScope.AboutSheetContent(
             }
 
             Spacer(Modifier.height(18.dp))
-            SectionHeader("we wont exist without these guys")
+            SectionHeader(stringResource(R.string.loc_about_credits))
             Spacer(Modifier.height(8.dp))
             Column(
                 modifier = Modifier
@@ -324,7 +325,7 @@ private fun ColumnScope.AboutSheetContent(
                 BaseCredits.forEach { credit ->
                     PersonRow(
                         name = credit.name,
-                        subtitle = credit.subtitle,
+                        subtitle = stringResource(R.string.loc_about_developer),
                         avatarUrl = githubAvatarUrl(credit.githubUser),
                         showArrow = false,
                         onClick = { context.openUrl(credit.url) },
@@ -333,15 +334,15 @@ private fun ColumnScope.AboutSheetContent(
             }
 
             Spacer(Modifier.height(18.dp))
-            SectionHeader("License")
+            SectionHeader(stringResource(R.string.loc_about_license))
             Spacer(Modifier.height(8.dp))
             AboutCardButton(
-                text = "More about license",
+                text = stringResource(R.string.loc_about_more_license),
                 onClick = { popup.showLicenseSheet() },
             )
 
             Spacer(Modifier.height(18.dp))
-            SectionHeader("Cool contributors")
+            SectionHeader(stringResource(R.string.loc_about_contributors))
             Spacer(Modifier.height(8.dp))
             Column(
                 modifier = Modifier
@@ -376,7 +377,7 @@ private fun ColumnScope.LicenseSheetContent() {
     ) {
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "License",
+            text = stringResource(R.string.loc_about_license),
             fontSize = 36.sp,
             lineHeight = 38.sp,
             fontWeight = FontWeight.Bold,
@@ -551,7 +552,18 @@ private fun LicenseCard(
             )
             Spacer(Modifier.height(2.dp))
             Text(
-                text = entry.subtitle,
+                text = stringResource(
+                    when (entry.title) {
+                        "Playder Music · GNU General Public License v3.0" -> R.string.loc_about_free_open_source
+                        "ViviMusic · GNU General Public License v3.0" -> R.string.loc_about_license_vivi
+                        "Metrolist · GNU General Public License v3.0" -> R.string.loc_about_license_metrolist
+                        "SimpMusic · GNU General Public License v3.0" -> R.string.loc_about_license_simpmusic
+                        "ArchiveTune · GNU General Public License v3.0" -> R.string.loc_about_license_archivetune
+                        "RiMusic · GNU General Public License v3.0" -> R.string.loc_about_license_rimusic
+                        "LRCLIB · MIT License" -> R.string.loc_about_license_lrclib
+                        else -> R.string.loc_about_license_autoeq
+                    },
+                ),
                 fontSize = 11.5.sp,
                 fontWeight = FontWeight.Medium,
                 letterSpacing = (-0.2).sp,

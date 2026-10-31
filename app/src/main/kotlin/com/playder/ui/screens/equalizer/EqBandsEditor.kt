@@ -38,6 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.playder.R
 import com.playder.eq.data.FilterType
 import com.playder.eq.data.ParametricEQBand
 import com.playder.ui.screens.audiolab.LabCard
@@ -53,12 +55,12 @@ fun EqBandsSection(
     nodes: List<ParametricEQBand>,
     onGain: (index: Int, gain: Double) -> Unit,
 ) {
-    LabSectionLabel("Bands")
+    LabSectionLabel(stringResource(R.string.loc_eq_bands_tab))
     LabCard(padding = 12.dp) {
         BandSliders(nodes, onGain)
         Spacer(Modifier.height(10.dp))
         Text(
-            "Sweep across the sliders to draw a curve",
+            stringResource(R.string.loc_eq_sweep_hint),
             fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Faint,
             modifier = Modifier.padding(horizontal = 6.dp),
         )

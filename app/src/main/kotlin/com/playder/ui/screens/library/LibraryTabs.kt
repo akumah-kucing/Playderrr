@@ -29,9 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.annotation.StringRes
+import com.playder.R
 import com.playder.ui.screens.search.SearchColors
 import com.playder.ui.screens.search.SearchHorizontalPadding
 import com.playder.viewmodels.LibraryShelfKind
@@ -40,11 +43,11 @@ import com.playder.viewmodels.LibraryShelfKind
  * What the Library shows: everything, what plays from the phone, what the player has cached, or
  * what was imported. [shelf] is the slice of the library a tab is built from, if it is one.
  */
-enum class LibraryTab(val label: String, val shelf: LibraryShelfKind? = null) {
-    All("All"),
-    Local("Local", LibraryShelfKind.Local),
-    Cached("Cached", LibraryShelfKind.Cached),
-    Imported("Imported"),
+enum class LibraryTab(@StringRes val labelRes: Int, val shelf: LibraryShelfKind? = null) {
+    All(R.string.library_tab_all),
+    Local(R.string.library_tab_local, LibraryShelfKind.Local),
+    Cached(R.string.library_tab_cached, LibraryShelfKind.Cached),
+    Imported(R.string.library_tab_imported),
 }
 
 private val ChipTrack = Color(0xFF161618)
@@ -87,7 +90,7 @@ fun LibraryTabChips(
                     .padding(horizontal = 14.dp, vertical = 5.dp),
             ) {
                 Text(
-                    text = tab.label,
+                    text = stringResource(tab.labelRes),
                     color = if (isSelected) SearchColors.Primary else SearchColors.Primary.copy(alpha = 0.72f),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,

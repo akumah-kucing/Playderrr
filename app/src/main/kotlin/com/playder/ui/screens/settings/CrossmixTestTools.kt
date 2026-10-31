@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.playder.LocalPlayerConnection
 import com.playder.R
 import com.playder.ui.component.SettingsItem
@@ -22,17 +23,17 @@ fun crossmixTestItems(isVisible: Boolean = true): List<SettingsItem> {
     val status by statusFlow.collectAsState()
     return listOf(
         SettingsItem(
-            title = { Text("Crossmix status") },
-            descriptionText = status.ifBlank { "Nothing yet. Play a song with another queued after it" },
+            title = { Text(stringResource(R.string.loc_crossmix_status)) },
+            descriptionText = status.ifBlank { stringResource(R.string.loc_crossmix_status_empty) },
             icon = painterResource(R.drawable.info),
             iconShape = androidx.compose.foundation.shape.CircleShape,
             isVisible = isVisible,
         ),
         SettingsItem(
-            title = { Text("Test on this song") },
+            title = { Text(stringResource(R.string.loc_crossmix_test_song)) },
             highlightKey = "Test on this song",
-            descriptionText = "Mixes into the next song",
-            detail = "Plans the mix into the next song, then jumps to a few seconds before it",
+            descriptionText = stringResource(R.string.loc_crossmix_test_song_desc),
+            detail = stringResource(R.string.loc_crossmix_test_song_detail),
             icon = painterResource(R.drawable.fast_forward),
             iconShape = androidx.compose.foundation.shape.CircleShape,
             enabled = playerConnection != null,

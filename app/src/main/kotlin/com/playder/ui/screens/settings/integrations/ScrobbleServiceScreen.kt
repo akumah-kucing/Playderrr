@@ -92,7 +92,7 @@ fun ScrobbleServiceScreen(
             style = SettingsGroupStyle.Grouped,
             items = listOfNotNull(
                 SettingsItem(
-                    title = { Text("Now Playing") },
+                    title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.now_playing)) },
                     highlightKey = "Now Playing",
                     descriptionText = "Show the song you're on right now on your profile",
                     icon = painterResource(R.drawable.music_note),

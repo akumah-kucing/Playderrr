@@ -59,6 +59,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -103,16 +104,16 @@ fun AutoEqTab(viewModel: AudioLabViewModel, eq: EqSettings) {
     val error by viewModel.error.collectAsState()
     val correction = eq.correction
 
-    LabSectionLabel("Headphone correction")
+    LabSectionLabel(stringResource(R.string.loc_eq_headphone_correction))
     LabCard(padding = 12.dp) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 6.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("FREQUENCY RESPONSE", fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 12.sp,
+            Text(stringResource(R.string.loc_eq_frequency_response), fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 12.sp,
                 letterSpacing = 1.2.sp, color = LabColors.Secondary, modifier = Modifier.weight(1f))
-            Legend(OriginalColor, "Original")
+            Legend(OriginalColor, stringResource(R.string.loc_eq_original))
             Spacer(Modifier.width(10.dp))
-            Legend(TargetColor, "Target")
+            Legend(TargetColor, stringResource(R.string.loc_eq_target))
             Spacer(Modifier.width(10.dp))
-            Legend(CorrectedColor, "Corrected")
+            Legend(CorrectedColor, stringResource(R.string.loc_eq_corrected))
         }
         Spacer(Modifier.height(8.dp))
         ResponseGraph(measurement = measurement.takeIf { correction != null && it?.entry?.path == correction.path }, correction = correction)
@@ -206,7 +207,8 @@ private fun ResponseGraph(measurement: AutoEqMeasurement?, correction: AutoEqCor
     }
     if (measurement == null) {
         Text(
-            if (correction == null) "Pick your headphones below" else "Loading ${correction.model}…",
+            if (correction == null) stringResource(R.string.loc_eq_pick_headphones)
+            else stringResource(R.string.loc_eq_loading_model, correction.model),
             fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Faint,
             modifier = Modifier.padding(top = 10.dp, start = 6.dp),
         )
@@ -229,7 +231,11 @@ private fun SelectedHeadphone(
                 Text(correction.model, fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 17.sp,
                     color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    listOfNotNull("by ${correction.source}", correction.rig, "${correction.filters.size} filters").joinToString(" · "),
+                    listOfNotNull(
+                        stringResource(R.string.loc_eq_by_source, correction.source),
+                        correction.rig,
+                        stringResource(R.string.loc_eq_filter_count, correction.filters.size),
+                    ).joinToString(" · "),
                     fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
                 )
             }
@@ -240,8 +246,8 @@ private fun SelectedHeadphone(
         }
         Spacer(Modifier.height(8.dp))
         LabToggleRow(
-            title = "Apply correction",
-            subtitle = "Flattens these headphones toward the target, under your own curve",
+            title = stringResource(R.string.loc_eq_apply_correction),
+            subtitle = stringResource(R.string.loc_eq_apply_correction_desc),
             checked = enabled,
             onCheckedChange = viewModel::setCorrectionEnabled,
         )
@@ -249,14 +255,16 @@ private fun SelectedHeadphone(
 
         val tuning = correction.tuning
         Column(Modifier.graphicsLayer { alpha = if (canTune) 1f else 0.4f }) {
-            LabSectionLabel("Filter bands")
+            LabSectionLabel(stringResource(R.string.loc_eq_filter_bands))
             LabChips(
-                chips = AutoEqTuning.BandChoices.map { LabChip(it.toString(), "$it bands") },
+                chips = AutoEqTuning.BandChoices.map {
+                    LabChip(it.toString(), stringResource(if (it == 1) R.string.loc_eq_band_count_one else R.string.loc_eq_band_count_many, it))
+                },
                 selectedKey = tuning.bands.toString(),
                 onSelect = { key -> if (canTune) viewModel.tune { it.copy(bands = key.toInt()) } },
             )
             Spacer(Modifier.height(12.dp))
-            LabSectionLabel("Correct up to")
+            LabSectionLabel(stringResource(R.string.loc_eq_correct_up_to))
             LabChips(
                 chips = AutoEqTuning.MaxHzChoices.map { LabChip(it.toString(), "${it / 1000} kHz") },
                 selectedKey = tuning.maxHz.toString(),
@@ -264,7 +272,7 @@ private fun SelectedHeadphone(
             )
             Spacer(Modifier.height(12.dp))
             LabSlider(
-                label = "Bass",
+                label = stringResource(R.string.loc_eq_bass),
                 valueText = (if (tuning.bassDb > 0) "+" else "") + String.format("%.0f dB", tuning.bassDb),
                 value = tuning.bassDb.toFloat(),
                 onValueChange = { v -> if (canTune) viewModel.tune { it.copy(bassDb = Math.round(v).toDouble()) } },
@@ -273,7 +281,7 @@ private fun SelectedHeadphone(
             )
             Spacer(Modifier.height(6.dp))
             LabSlider(
-                label = "Tilt",
+                label = stringResource(R.string.loc_eq_tilt),
                 valueText = (if (tuning.tiltDbPerOctave > 0) "+" else "") + String.format("%.1f dB/oct", tuning.tiltDbPerOctave),
                 value = tuning.tiltDbPerOctave.toFloat(),
                 onValueChange = { v -> if (canTune) viewModel.tune { it.copy(tiltDbPerOctave = Math.round(v * 10) / 10.0) } },
@@ -283,9 +291,9 @@ private fun SelectedHeadphone(
         }
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (!tuning.isDefault) LabTextAction("Use AutoEq's fit", R.drawable.refresh, enabled = canTune) { viewModel.tune { AutoEqTuning() } }
+            if (!tuning.isDefault) LabTextAction(stringResource(R.string.loc_eq_use_autoeq_fit), R.drawable.refresh, enabled = canTune) { viewModel.tune { AutoEqTuning() } }
             Spacer(Modifier.weight(1f))
-            LabTextAction("Remove", R.drawable.close) { viewModel.clearCorrection() }
+            LabTextAction(stringResource(R.string.loc_eq_remove), R.drawable.close) { viewModel.clearCorrection() }
         }
     }
 }
@@ -316,13 +324,13 @@ private fun Database(viewModel: AudioLabViewModel, selectedPath: String?, loadin
     LabCard(padding = 14.dp) {
         Row(Modifier.padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Database", fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Color.White)
-                Text("AutoEq · measured by reviewers", fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary)
+                Text(stringResource(R.string.loc_eq_database), fontFamily = InterFontFamily, fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Color.White)
+                Text(stringResource(R.string.loc_eq_measured_by_reviewers), fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary)
             }
             val ready = index as? AutoEqIndex.Ready
             if (ready != null) {
                 Text(
-                    "${String.format("%,d", ready.models.size)} models",
+                    stringResource(R.string.loc_eq_model_count, ready.models.size),
                     fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = LabColors.Secondary,
                 )
             }
@@ -353,11 +361,11 @@ private fun Database(viewModel: AudioLabViewModel, selectedPath: String?, loadin
                 ) {
                     Text(state.message, fontFamily = InterFontFamily, fontSize = 14.sp, color = LabColors.Secondary)
                     Spacer(Modifier.height(12.dp))
-                    LabTextAction("Try again", R.drawable.refresh) { viewModel.loadIndex(refresh = true) }
+                    LabTextAction(stringResource(R.string.loc_eq_try_again), R.drawable.refresh) { viewModel.loadIndex(refresh = true) }
                 }
                 is AutoEqIndex.Ready -> {
                     if (results.isEmpty()) {
-                        Text("No headphones match “$query”", fontFamily = InterFontFamily, fontSize = 14.sp,
+                        Text(stringResource(R.string.loc_eq_no_headphones_match, query), fontFamily = InterFontFamily, fontSize = 14.sp,
                             color = LabColors.Secondary, modifier = Modifier.align(Alignment.Center))
                     }
                     LazyColumn(state = listState, modifier = Modifier.fillMaxSize().padding(end = 22.dp)) {
@@ -406,7 +414,7 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
     ) {
         Box(Modifier.weight(1f)) {
             if (query.isEmpty()) {
-                Text("Search model (e.g. HD 600)", fontFamily = InterFontFamily, fontSize = 15.sp, color = LabColors.Faint)
+                Text(stringResource(R.string.loc_eq_search_model), fontFamily = InterFontFamily, fontSize = 15.sp, color = LabColors.Faint)
             }
             BasicTextField(
                 value = query,
@@ -419,7 +427,7 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
         }
         if (query.isNotEmpty()) {
             Icon(
-                painterResource(R.drawable.close), "Clear", tint = LabColors.Secondary,
+                painterResource(R.drawable.close), stringResource(R.string.loc_eq_clear), tint = LabColors.Secondary,
                 modifier = Modifier.size(18.dp).clip(CircleShape).clickable { onQueryChange("") },
             )
         }
@@ -450,7 +458,8 @@ private fun ModelRow(
                 Text(model.name, fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 15.sp,
                     color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    if (model.entries.size == 1) model.entries.first().sourceLabel else "${model.entries.size} profiles",
+                    if (model.entries.size == 1) model.entries.first().sourceLabel
+                    else stringResource(R.string.loc_eq_profile_count_many, model.entries.size),
                     fontFamily = InterFontFamily, fontSize = 12.sp, color = LabColors.Secondary, maxLines = 1, overflow = TextOverflow.Ellipsis,
                 )
             }

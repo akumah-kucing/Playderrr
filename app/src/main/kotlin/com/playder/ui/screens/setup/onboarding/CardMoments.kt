@@ -49,6 +49,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -204,8 +205,8 @@ internal fun HelloCardStep(
                     translationY = (1f - p) * 40.dp.toPx()
                 },
         ) {
-            Text("Hello!", color = Color.White, fontSize = 64.sp, lineHeight = 66.sp, fontWeight = FontWeight.Bold, letterSpacing = (-2).sp)
-            Text("welcome to playder!", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.loc_card_moments_hello), color = Color.White, fontSize = 64.sp, lineHeight = 66.sp, fontWeight = FontWeight.Bold, letterSpacing = (-2).sp)
+            Text(stringResource(R.string.loc_card_moments_welcome), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -262,7 +263,7 @@ internal fun DoneStep(card: CardInfo, onFinished: () -> Unit) {
             }
             Spacer(Modifier.height(18.dp))
             Text(
-                "You're good to go",
+                stringResource(R.string.loc_card_moments_ready),
                 color = Onb.Subtitle,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,

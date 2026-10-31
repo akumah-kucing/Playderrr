@@ -6,10 +6,7 @@
     <string name="albums">Альбоми</string>
     <string name="playlists">Плейлисти</string>
     <plurals name="n_selected">
-        <item quantity="one">%d вибрано</item>
-        <item quantity="few">%d вибране</item>
-        <item quantity="many">%d вибрані</item>
-        <item quantity="other">%d вибрані</item>
+        <item quantity="other">%d вибрано</item>
     </plurals>
     <string name="history">Історія</string>
     <string name="stats">Статистика</string>
@@ -128,44 +125,30 @@
     <string name="duplicates_description_multiple">%d пісень вже у вашому плейлисті</string>
     <plurals name="n_song">
         <item quantity="one">%d композиція</item>
-        <item quantity="few">%d композиції</item>
-        <item quantity="many">%d композицій</item>
         <item quantity="other">%d композицій</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d виконавець</item>
-        <item quantity="few">%d виконавця</item>
-        <item quantity="many">%d виконавців</item>
         <item quantity="other">%d виконавців</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d альбом</item>
-        <item quantity="few">%d альбоми</item>
-        <item quantity="many">%d альбомів</item>
         <item quantity="other">%d альбомів</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d плейлист</item>
-        <item quantity="few">%d плейлисти</item>
-        <item quantity="many">%d плейлистів</item>
         <item quantity="other">%d плейлистів</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d тиждень</item>
-        <item quantity="few">%d тижні</item>
-        <item quantity="many">%d тижнів</item>
         <item quantity="other">%d тижнів</item>
     </plurals>
     <plurals name="n_month">
         <item quantity="one">%d місяць</item>
-        <item quantity="few">%d місяці</item>
-        <item quantity="many">%d місяців</item>
         <item quantity="other">%d місяців</item>
     </plurals>
     <plurals name="n_year">
         <item quantity="one">%d рік</item>
-        <item quantity="few">%d роки</item>
-        <item quantity="many">%d років</item>
         <item quantity="other">%d років</item>
     </plurals>
     <string name="playlist_imported">Плейлист імпортовано</string>
@@ -176,9 +159,7 @@
     <string name="sleep_timer">Таймер сну</string>
     <string name="end_of_song">Кінець пісні</string>
     <plurals name="minute">
-        <item quantity="one">%d хвилина</item>
-        <item quantity="few">%d хвилини</item>
-        <item quantity="many">%d хвилин</item>
+        <item quantity="one">1 хвилина</item>
         <item quantity="other">%d хвилин</item>
     </plurals>
     <string name="error_no_stream">Немає доступних потоків</string>
@@ -297,4 +278,60 @@
     <string name="use_login_for_browse_desc">Це може вплинути на те, який вміст ви бачите, і, наприклад, показує лише платні альбоми, якщо ви ввійшли в обліковий запис Premium</string>
     <string name="use_login_for_browse">Використовуйте логін для перегляду вмісту</string>
     <string name="action_login">Увійти</string>
+    <string name="music">Музика</string>
+    <string name="album_description_placeholder">Це тимчасовий опис альбому. Насолоджуйтеся піснями нижче!</string>
+    <string name="you_might_also_like">Схожий список відтворення</string>
+    <string name="shuffle_content_desc">Відтворення впереміш</string>
+    <string name="shuffle_label">Перемішати</string>
+    <string name="pause">Призупинити</string>
+    <string name="added_to_library">Додано до бібліотеки</string>
+    <string name="removed_from_library">Вилучено з бібліотеки</string>
+    <string name="remove_from_import_and_library">Вилучити з імпорту та бібліотеки</string>
+    <string name="removed_from_import_and_library">Вилучено з імпортів %1$s і бібліотеки</string>
+    <string name="saving">Збереження</string>
+    <string name="saved">Збережено</string>
+    <string name="start_an_radio">Радіо</string>
+    <string name="add_to_an_playlist">Додати</string>
+    <string name="more_label">Більше</string>
+    <string name="releases_for_you">Новинки для вас</string>
+    <string name="lyrics_swipe_to_change_song">Проведіть, щоб змінити пісню</string>
+    <string name="lyrics_swipe_to_change_song_desc">Проведіть ліворуч або праворуч у розділі виконавця й назви пісні на повноекранній вкладці текстів, щоб змінити пісню</string>
+    <string name="lyrics_thumbnail_play_pause">Показувати відтворення/паузу на мініатюрі</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Показувати кнопку відтворення/паузи поверх мініатюри пісні в повноекранному режимі текстів</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">APK-файлів не знайдено</item>
+        <item quantity="one">Знайдено %d APK-файл</item>
+        <item quantity="other">Знайдено %d APK-файлів</item>
+    </plurals>
+    <string name="theme_desc">Налаштуйте тему застосунку</string>
+    <string name="theme_colors">Тема та кольори</string>
+    <string name="theme_mode">Режим теми</string>
+    <string name="color_palette">Палітра кольорів</string>
+    <string name="use_system_colors">Використовувати системні кольори</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Показувати позначку якості аудіо</string>
+    <string name="network_ip_version">Версія IP мережі</string>
+    <string name="ip_version_auto">Автоматично</string>
+    <string name="ip_version_ipv4">Примусово використовувати IPv4</string>
+    <string name="ip_version_ipv6">Примусово використовувати IPv6</string>
+    <string name="audio_quality_medium">Середня</string>
+    <string name="clear_downloaded_updates">Видалити завантажені оновлення</string>
+    <string name="clear_downloaded_updates_desc">Видаліть завантажені APK-файли, щоб звільнити місце</string>
+    <string name="bluetooth_permission_required">Для пошуку аудіопристроїв потрібен дозвіл Bluetooth.</string>
+    <string name="streaming_to">Відтворюється на пристрої</string>
+    <string name="this_phone">Цей телефон</string>
+    <string name="wired_headphones">Дротові навушники</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Динамік телефона</string>
+    <string name="audio_quality_title">Якість аудіо</string>
+    <string name="battery_content_desc">Рівень заряду акумулятора</string>
+    <string name="done">Готово</string>
+    <string name="audio_devices">Аудіопристрої</string>
+    <string name="bluetooth_headphones">Навушники Bluetooth</string>
+    <string name="license">GNU General Public License v3.0</string>
+    <string name="standard_lyrics_blur">Стандартне розмиття тексту пісень</string>
+    <string name="listen_together_smart_resync">Розумна повторна синхронізація мережі</string>
+    <string name="listen_together_smart_resync_desc">Автоматично синхронізуватися з ведучим після втрати з’єднання</string>
+    <string name="error_stream_unavailable_title">Не вдалося відтворити цей трек</string>
+    <string name="playback_error_channel_name">Помилки відтворення</string>
 </resources>

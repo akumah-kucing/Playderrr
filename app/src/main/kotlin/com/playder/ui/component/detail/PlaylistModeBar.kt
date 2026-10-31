@@ -116,7 +116,7 @@ internal fun PlaylistModeBarRow(
                 if (mode.onMore != null) {
                     ModeCircleButton(
                         icon = R.drawable.more_horiz,
-                        contentDescription = "Options",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.options),
                         onClick = mode.onMore,
                     )
                     Spacer(Modifier.width(8.dp))

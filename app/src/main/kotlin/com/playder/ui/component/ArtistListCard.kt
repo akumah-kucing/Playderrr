@@ -170,7 +170,7 @@ fun ArtistListCard(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = "Similar to",
+                        text = androidx.compose.ui.res.stringResource(com.playder.R.string.similar_to),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                         maxLines = 1,

@@ -61,36 +61,50 @@ fun PopupSheetState.showManageImportsSheet(
             sheet?.dismiss()
         }
     sheet = showWithHandle {
+        val deleteAllLabel = androidx.compose.ui.res.stringResource(R.string.library_delete_all_imports)
+        val deleteAllTitle = androidx.compose.ui.res.stringResource(R.string.library_delete_all_imports_confirm)
+        val deleteAllMessage = androidx.compose.ui.res.stringResource(R.string.library_delete_all_imports_message)
+        val undoImportLabel = androidx.compose.ui.res.stringResource(R.string.library_undo_import_session)
+        val undoImportTitle = androidx.compose.ui.res.stringResource(R.string.library_undo_last_import)
+        val undoImportMessage = androidx.compose.ui.res.stringResource(R.string.library_undo_last_import_message)
+        val deleteAction = androidx.compose.ui.res.stringResource(R.string.delete)
+        val undoAction = androidx.compose.ui.res.stringResource(R.string.library_undo_import)
         ManageLayout(
-            ManageAction(R.drawable.delete, "Delete all imports") {
+            ManageAction(R.drawable.delete, deleteAllLabel) {
                 confirmThen(
-                    title = "Delete all imports?",
-                    message = "Every song, like and playlist you imported leaves your library. Songs that were " +
-                        "already in it stay, and so does music YouTube sync keeps up to date.",
-                    action = "Delete all imports",
+                    title = deleteAllTitle,
+                    message = deleteAllMessage,
+                    action = deleteAllLabel,
                     run = viewModel::deleteAllImports,
                 )
             },
-            ManageAction(R.drawable.undo, "Undo import session") {
+            ManageAction(R.drawable.undo, undoImportLabel) {
                 confirmThen(
-                    title = "Undo your last import?",
-                    message = "The songs, likes and playlists your last import brought in leave your library. " +
-                        "Anything that was there before stays.",
-                    action = "Undo import",
+                    title = undoImportTitle,
+                    message = undoImportMessage,
+                    action = undoAction,
                     run = viewModel::undoLatestImport,
                 )
             },
-            wide = ManageAction(R.drawable.sync, "Re-sync all") {
+            wide = ManageAction(R.drawable.sync, androidx.compose.ui.res.stringResource(R.string.library_resync_all)) {
                 sheet?.dismiss()
                 onResyncAll()
             },
             rows = sources.map { source ->
-                ManageAction(R.drawable.delete, "Delete ${source.label} imports") {
+                val deleteSourceLabel = androidx.compose.ui.res.stringResource(R.string.library_delete_source_imports, source.label)
+                val deleteSourceTitle = androidx.compose.ui.res.stringResource(R.string.library_delete_source_imports_confirm, source.label)
+                val deleteSourceMessage =
+                    androidx.compose.ui.res.stringResource(R.string.library_delete_source_imports_message, source.label) +
+                        if (source == ImportSource.YOUTUBE_MUSIC) {
+                            " " + androidx.compose.ui.res.stringResource(R.string.library_youtube_sync_stays)
+                        } else {
+                            ""
+                        }
+                ManageAction(R.drawable.delete, deleteSourceLabel) {
                     confirmThen(
-                        title = "Delete ${source.label} imports?",
-                        message = "Everything you imported from ${source.label} leaves your library, playlists included." +
-                            if (source == ImportSource.YOUTUBE_MUSIC) " Music YouTube sync keeps up to date stays." else "",
-                        action = "Delete",
+                        title = deleteSourceTitle,
+                        message = deleteSourceMessage,
+                        action = deleteAction,
                         run = { viewModel.deleteImportsFrom(source) },
                     )
                 }
@@ -112,28 +126,32 @@ fun PopupSheetState.showManageLocalSheet(
 ) {
     var sheet: PopupSheetHandle? = null
     sheet = showWithHandle {
+        val undoImportLabel = androidx.compose.ui.res.stringResource(R.string.library_undo_import_session)
+        val undoImportAction = androidx.compose.ui.res.stringResource(R.string.library_undo_import)
+        val undoLocalTitle = androidx.compose.ui.res.stringResource(R.string.library_undo_local_import)
+        val undoLocalMessage = androidx.compose.ui.res.stringResource(R.string.library_undo_local_import_message)
         ManageLayout(
-            ManageAction(R.drawable.refresh, "Re-scan local") {
+            ManageAction(R.drawable.refresh, androidx.compose.ui.res.stringResource(R.string.library_rescan_local)) {
                 sheet?.dismiss()
                 onRescan()
             },
-            ManageAction(R.drawable.delete, "Delete from list") {
+            ManageAction(R.drawable.delete, androidx.compose.ui.res.stringResource(R.string.library_delete_from_list)) {
                 sheet?.dismiss()
                 onRemoveFromList()
             },
-            wide = ManageAction(R.drawable.library_add, "Add a music folder") {
+            wide = ManageAction(R.drawable.library_add, androidx.compose.ui.res.stringResource(R.string.library_add_music_folder)) {
                 sheet?.dismiss()
                 onAddFolder()
             },
             rows = listOf(
-                ManageAction(R.drawable.info, "Check collection") {
+                ManageAction(R.drawable.info, androidx.compose.ui.res.stringResource(R.string.library_check_collection)) {
                     showLocalAuditSheet(songs)
                 },
-                ManageAction(R.drawable.undo, "Undo import session") {
+                ManageAction(R.drawable.undo, undoImportLabel) {
                     showConfirm(
-                        title = "Undo your last local import?",
-                        message = "The songs it added leave your library. The files stay on your phone.",
-                        action = "Undo import",
+                        title = undoLocalTitle,
+                        message = undoLocalMessage,
+                        action = undoImportAction,
                     ) {
                         viewModel.undoLatestLocalImport()
                         sheet?.dismiss()
@@ -164,10 +182,10 @@ private fun LocalAuditContent(songs: List<Song>) {
         value = withContext(Dispatchers.Default) { auditLocalSongs(songs) }
     }.value
 
-    Text(text = "Local collection check", color = SearchColors.Primary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+    Text(text = androidx.compose.ui.res.stringResource(R.string.library_local_collection_check), color = SearchColors.Primary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(8.dp))
     Text(
-        text = "Read-only metadata check. Nothing in your library or files will be changed.",
+        text = androidx.compose.ui.res.stringResource(R.string.library_local_collection_read_only),
         color = SearchColors.Secondary,
         fontSize = 14.sp,
         lineHeight = 20.sp,
@@ -175,13 +193,13 @@ private fun LocalAuditContent(songs: List<Song>) {
     Spacer(Modifier.height(12.dp))
 
     if (result == null) {
-        Text(text = "Checking local tracks...", color = SearchColors.Secondary, fontSize = 14.sp)
+        Text(text = androidx.compose.ui.res.stringResource(R.string.library_checking_local_tracks), color = SearchColors.Secondary, fontSize = 14.sp)
     } else {
-        AuditResultRow("Local tracks checked", result.trackCount)
-        AuditResultRow("Possible duplicate groups", result.possibleDuplicateGroups)
-        AuditResultRow("Missing title", result.missingTitles)
-        AuditResultRow("Missing artist", result.missingArtists)
-        AuditResultRow("Missing artwork", result.missingArtwork)
+        AuditResultRow(androidx.compose.ui.res.stringResource(R.string.library_local_tracks_checked), result.trackCount)
+        AuditResultRow(androidx.compose.ui.res.stringResource(R.string.library_possible_duplicate_groups), result.possibleDuplicateGroups)
+        AuditResultRow(androidx.compose.ui.res.stringResource(R.string.library_missing_title), result.missingTitles)
+        AuditResultRow(androidx.compose.ui.res.stringResource(R.string.library_missing_artist), result.missingArtists)
+        AuditResultRow(androidx.compose.ui.res.stringResource(R.string.library_missing_artwork), result.missingArtwork)
     }
 }
 
@@ -230,19 +248,21 @@ fun PopupSheetState.showManageCachedSheet(
 ) {
     var sheet: PopupSheetHandle? = null
     sheet = showWithHandle {
+        val clearCacheLabel = androidx.compose.ui.res.stringResource(R.string.library_clear_cache)
+        val clearCacheTitle = androidx.compose.ui.res.stringResource(R.string.library_clear_cache_confirm)
+        val clearCacheMessage = androidx.compose.ui.res.stringResource(R.string.library_clear_cache_message)
         ManageLayout(
-            ManageAction(R.drawable.clear_all, "Clear cache") {
+            ManageAction(R.drawable.clear_all, clearCacheLabel) {
                 showConfirm(
-                    title = "Clear your cache?",
-                    message = "Every cached song is deleted from this phone and streams again the next time " +
-                        "you play it. Your library and your downloads stay as they are.",
-                    action = "Clear cache",
+                    title = clearCacheTitle,
+                    message = clearCacheMessage,
+                    action = clearCacheLabel,
                 ) {
                     onClearCache()
                     sheet?.dismiss()
                 }
             },
-            ManageAction(R.drawable.delete, "Remove songs") {
+            ManageAction(R.drawable.delete, androidx.compose.ui.res.stringResource(R.string.library_remove_songs)) {
                 sheet?.dismiss()
                 showRemoveCachedSheet(cachedSongs, onRemove)
             },

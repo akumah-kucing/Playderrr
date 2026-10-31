@@ -320,7 +320,7 @@ private fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
     ) {
         Icon(
             painter = painterResource(R.drawable.arrow_back_ios),
-            contentDescription = "Back",
+            contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
             tint = Color.White,
             modifier = Modifier.size(15.dp).offset(x = 2.dp),
         )

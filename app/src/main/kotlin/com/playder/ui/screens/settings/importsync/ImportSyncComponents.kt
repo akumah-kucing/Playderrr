@@ -98,11 +98,11 @@ fun LinkInputDialog(
             TextButton(onClick = {
                 clipboard.getText()?.text?.trim()?.takeIf { it.isNotEmpty() }?.let { link = it }
             }) { Text("Paste") }
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.cancel)) }
             TextButton(
                 enabled = link.isNotBlank(),
                 onClick = { onSubmit(link.trim()) },
-            ) { Text("Continue") }
+            ) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.continue_action)) }
         },
     ) {
         Text(
@@ -139,7 +139,7 @@ fun PendingImportHost(
         PendingImport.Idle -> Unit
         is PendingImport.Loading -> DefaultDialog(
             onDismiss = viewModel::dismissPending,
-            buttons = { TextButton(onClick = viewModel::dismissPending) { Text("Cancel") } },
+            buttons = { TextButton(onClick = viewModel::dismissPending) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.cancel)) } },
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(modifier = Modifier.size(28.dp), strokeWidth = 3.dp)
@@ -193,7 +193,7 @@ private fun ImportReviewDialog(
             )
         },
         buttons = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.cancel)) }
             TextButton(onClick = { onImport(mirror && signedIn) }) { Text("Import") }
         },
     ) {

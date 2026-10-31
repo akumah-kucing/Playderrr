@@ -51,6 +51,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -201,7 +202,7 @@ fun SubSettingsScaffold(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back_ios),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.cd_back),
                     tint = Color.White,
                     modifier = Modifier.size(18.dp)
                 )
@@ -364,7 +365,7 @@ fun SubSettingsSearchBar(
                 decorationBox = { innerTextField ->
                     if (query.isEmpty()) {
                         Text(
-                            text = "Search any settings",
+                            text = stringResource(R.string.search_settings),
                             fontFamily = com.playder.ui.theme.InterFontFamily,
                             fontSize = 16.sp,
                             color = Color.White.copy(alpha = 0.5f)
@@ -378,7 +379,7 @@ fun SubSettingsSearchBar(
                 androidx.compose.foundation.layout.Spacer(modifier = Modifier.size(8.dp))
                 Icon(
                     painter = painterResource(R.drawable.close),
-                    contentDescription = "Clear",
+                    contentDescription = stringResource(R.string.clear),
                     tint = Color.White.copy(alpha = 0.7f),
                     modifier = Modifier
                         .size(20.dp)

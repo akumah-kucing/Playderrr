@@ -5,13 +5,17 @@ package com.playder
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.LocaleManager
 import android.content.ComponentName
+import android.content.Context
+import android.content.res.Configuration
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.os.LocaleList
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -111,6 +115,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.datastore.preferences.core.edit
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
@@ -138,6 +143,7 @@ import com.music.innertube.models.WatchEndpoint
 import com.playder.R
 import com.playder.constants.AppBarHeight
 import com.playder.constants.AppLanguageKey
+import com.playder.constants.canonicalizeAppLanguageTag
 import com.playder.constants.DarkModeKey
 import com.playder.ui.theme.ForceDarkTheme
 import com.playder.constants.DefaultOpenTabKey
@@ -213,7 +219,6 @@ import com.playder.utils.get
 import com.playder.utils.rememberEnumPreference
 import com.playder.utils.rememberPreference
 import com.playder.utils.reportException
-import com.playder.utils.setAppLocale
 import com.valentinilk.shimmer.LocalShimmerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import com.playder.ui.screens.setup.SetupWizardContainer
@@ -272,6 +277,27 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var downloadUtil: DownloadUtil
+
+    override fun attachBaseContext(newBase: Context) {
+        val savedAppLocale = newBase.dataStore[AppLanguageKey]
+            ?.takeUnless { it == SYSTEM_DEFAULT }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (savedAppLocale != null) {
+                val localeManager = newBase.getSystemService(LocaleManager::class.java)
+                if (localeManager.applicationLocales.isEmpty) {
+                    localeManager.applicationLocales = LocaleList.forLanguageTags(savedAppLocale)
+                }
+            }
+            super.attachBaseContext(newBase)
+        } else if (savedAppLocale != null) {
+            val configuration = Configuration(newBase.resources.configuration)
+            configuration.setLocale(Locale.forLanguageTag(savedAppLocale))
+            super.attachBaseContext(newBase.createConfigurationContext(configuration))
+        } else {
+            super.attachBaseContext(newBase)
+        }
+    }
 
     @Inject
     lateinit var syncUtils: SyncUtils
@@ -375,6 +401,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().handOffToLaunchIntro { introPlays }
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            lifecycleScope.launch {
+                val selectedLanguage = canonicalizeAppLanguageTag(
+                    getSystemService(LocaleManager::class.java)
+                        .applicationLocales
+                        .toLanguageTags()
+                ).ifBlank { SYSTEM_DEFAULT }
+                dataStore.edit { preferences ->
+                    if (preferences[AppLanguageKey] != selectedLanguage) {
+                        preferences[AppLanguageKey] = selectedLanguage
+                    }
+                }
+            }
+        }
         introRequested = savedInstanceState == null && intent?.action == Intent.ACTION_MAIN
         if (introRequested) LaunchGate.begin() else LaunchGate.skip()
         // the first start after an import says so once the intro is out of the way
@@ -390,14 +430,6 @@ class MainActivity : ComponentActivity() {
 
         window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            val locale = dataStore[AppLanguageKey]
-                ?.takeUnless { it == SYSTEM_DEFAULT }
-                ?.let { Locale.forLanguageTag(it) }
-                ?: Locale.getDefault()
-            setAppLocale(this, locale)
-        }
 
         lifecycleScope.launch {
             dataStore.data

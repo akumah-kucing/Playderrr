@@ -8,9 +8,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.playder.R
 import com.playder.importer.ImportSource
 import com.playder.ui.component.LocalMenuState
 import com.playder.ui.menu.PlaylistMenu
@@ -39,14 +41,14 @@ fun LibraryPlaylistsScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LibraryEntityListScreen(
-        title = "Playlist",
+        title = stringResource(R.string.playlists),
         subtitle = when {
-            source != null -> "Playlists imported from ${source.label}."
-            shelf == LibraryShelfKind.Local -> "Playlists with music on this device."
-            shelf == LibraryShelfKind.Cached -> "Playlists with songs in your cache."
-            else -> "All playlist on your library listed here."
+            source != null -> stringResource(R.string.playlists_imported_from, source.label)
+            shelf == LibraryShelfKind.Local -> stringResource(R.string.playlists_on_device)
+            shelf == LibraryShelfKind.Cached -> stringResource(R.string.playlists_in_cache)
+            else -> stringResource(R.string.library_playlists_subtitle)
         },
-        searchPlaceholder = "Find a playlist by its name",
+        searchPlaceholder = stringResource(R.string.find_playlist_hint),
         items = playlists,
         idOf = { it.id },
         nameOf = { it.playlist.name },

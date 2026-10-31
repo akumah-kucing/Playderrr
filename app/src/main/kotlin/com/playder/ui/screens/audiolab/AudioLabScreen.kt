@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontStyle
@@ -63,6 +64,7 @@ import com.playder.constants.CrossmixModeKey
 import com.playder.constants.playable
 import com.playder.eq.EqPresets
 import com.playder.eq.EqSettings
+import com.playder.R
 import com.playder.ui.component.damageBoundary
 import com.playder.ui.component.pressBounce
 import com.playder.ui.theme.InterFontFamily
@@ -102,12 +104,12 @@ fun AudioLabScreen(
     val effects = activeEffects(reverb, loudness, spatial, playback, volume)
 
     AudioLabPage(
-        title = LabTitle("Audio", "Lab"),
+        title = LabTitle("Audio", stringResource(R.string.loc_audio_lab_title)),
         onBack = { navController.navigateUp() },
     ) {
         val equalizer: @Composable (Modifier) -> Unit = { modifier ->
             BigHubCard(
-                title = "Equalizer",
+                title = stringResource(R.string.loc_audio_equalizer_title),
                 status = equalizerStatus(eq, presets.associate { it.id to it.name }),
                 on = eq.enabled,
                 onClick = { navController.navigate("equalizer") },
@@ -116,7 +118,7 @@ fun AudioLabScreen(
         }
         val effect: @Composable (Modifier) -> Unit = { modifier ->
             BigHubCard(
-                title = "Audio Effect",
+                title = stringResource(R.string.loc_audio_effect),
                 status = effectsStatus(effects),
                 on = effects.isNotEmpty(),
                 onClick = { navController.navigate("audio_fx") },
@@ -125,7 +127,7 @@ fun AudioLabScreen(
         }
         val qualityCard: @Composable (Modifier) -> Unit = { modifier ->
             SmallHubCard(
-                title = "Audio Quality",
+                title = stringResource(R.string.loc_audio_quality),
                 status = qualityName(quality, firstProvider),
                 onClick = { navController.navigate("audio_quality") },
                 modifier = modifier,
@@ -133,11 +135,11 @@ fun AudioLabScreen(
         }
         val transition: @Composable (Modifier) -> Unit = { modifier ->
             SmallHubCard(
-                title = "Transition",
+                title = stringResource(R.string.loc_audio_transition_title),
                 status = when (mode.playable()) {
-                    CrossmixMode.OFF -> "Off"
-                    CrossmixMode.AUTO_CROSSFADE -> "Auto"
-                    CrossmixMode.MANUAL_CROSSFADE -> "Manual"
+                    CrossmixMode.OFF -> stringResource(R.string.loc_audio_transition_off)
+                    CrossmixMode.AUTO_CROSSFADE -> stringResource(R.string.loc_audio_transition_auto)
+                    CrossmixMode.MANUAL_CROSSFADE -> stringResource(R.string.loc_audio_transition_manual)
                     CrossmixMode.CROSSMIX -> "CrossMix"
                 },
                 onClick = { navController.navigate("crossmix_settings") },
@@ -171,31 +173,49 @@ fun AudioLabScreen(
 }
 
 /** the effects status line, first names then "and 2 more" as in the mock */
+@Composable
 private fun effectsStatus(effects: List<ActiveEffect>): String {
-    val names = effects.map { it.label.uppercase() }
+    val names = effects.map {
+        stringResource(
+            when (it.key) {
+                "reverb" -> R.string.loc_audio_fx_reverb
+                "loudness" -> R.string.loc_audio_fx_loudness
+                "spatial" -> R.string.loc_audio_fx_spatial
+                "surround" -> R.string.loc_audio_fx_surround
+                "mono" -> R.string.loc_audio_fx_mono_audio
+                "playback" -> R.string.loc_audio_fx_playback
+                else -> R.string.loc_audio_fx_volume
+            },
+        ).uppercase()
+    }
     return when {
-        names.isEmpty() -> "ALL OFF"
+        names.isEmpty() -> stringResource(R.string.loc_audio_fx_all_off)
         names.size <= 2 -> names.joinToString(", ")
-        else -> names.take(2).joinToString(", ") + " and ${names.size - 2} more"
+        else -> names.take(2).joinToString(", ") + " " + stringResource(R.string.loc_audio_fx_and_more, names.size - 2)
     }
 }
 
+@Composable
 private fun equalizerStatus(eq: EqSettings, userPresets: Map<String, String>): String {
-    if (!eq.enabled) return "OFF"
-    val curve = eq.presetId?.let { id -> EqPresets.BuiltIn.firstOrNull { it.id == id }?.name ?: userPresets[id] } ?: "Custom"
+    if (!eq.enabled) return stringResource(R.string.loc_audio_fx_all_off)
+    val curve = eq.presetId?.let { id -> EqPresets.BuiltIn.firstOrNull { it.id == id }?.name ?: userPresets[id] }
+        ?: stringResource(R.string.loc_audio_fx_custom)
     val correction = eq.correction?.takeIf { eq.correctionEnabled }?.model
     return (if (correction != null) "$curve · $correction" else curve).uppercase()
 }
 
+@Composable
 private fun qualityName(q: AudioQuality, firstProvider: String?): String = when (firstProvider) {
-    com.playder.module.monochrome.MonochromeModule.Id -> "Monochrome · Lossless"
+    com.playder.module.monochrome.MonochromeModule.Id -> "Monochrome · ${stringResource(R.string.loc_audio_quality_lossless_label)}"
     com.playder.module.applemusic.AppleMusicModule.Id -> "Apple Music · AAC"
-    else -> "YouTube · " + when (q) {
-        AudioQuality.LOW -> "Low"
-        AudioQuality.MEDIUM -> "Medium"
-        AudioQuality.HIGH -> "High"
-        else -> "Auto"
-    }
+    else -> "YouTube · " + stringResource(
+        when (q) {
+            AudioQuality.LOW -> R.string.audio_quality_low
+            AudioQuality.MEDIUM -> R.string.loc_audio_quality_medium_label
+            AudioQuality.HIGH -> R.string.audio_quality_high
+            else -> R.string.audio_quality_auto
+        },
+    )
 }
 
 /** the equalizer's and effects' card, a green dot and the state in small type with the name under it */

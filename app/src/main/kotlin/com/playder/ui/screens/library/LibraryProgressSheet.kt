@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.playder.R
 import androidx.compose.ui.unit.sp
 import com.playder.models.TransferBatch
 import com.playder.models.TransferItem
@@ -150,7 +151,9 @@ private fun TransferRow(item: TransferItem) {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            val subtitle = if (item.state == TransferState.Failed) "Couldn't add this one" else item.subtitle
+            val subtitle = if (item.state == TransferState.Failed) {
+                androidx.compose.ui.res.stringResource(R.string.library_transfer_failed)
+            } else item.subtitle
             if (subtitle != null) {
                 Text(
                     text = subtitle,

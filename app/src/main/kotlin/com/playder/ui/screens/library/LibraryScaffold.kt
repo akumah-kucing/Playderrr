@@ -29,6 +29,7 @@ import com.playder.extensions.toMediaItem
 import com.playder.models.toMediaMetadata
 import com.playder.playback.queues.ListQueue
 import com.playder.playback.queues.YouTubeQueue
+import com.playder.R
 import com.playder.ui.component.GlassState
 import com.playder.ui.component.glassRoot
 import com.playder.ui.screens.search.SearchColors
@@ -36,6 +37,7 @@ import com.playder.ui.screens.search.SearchField
 import com.playder.ui.screens.search.SearchGlassTopBar
 import com.playder.ui.screens.search.SearchHorizontalPadding
 import com.playder.ui.screens.search.searchTopBarHeight
+import androidx.compose.ui.res.stringResource
 import com.playder.viewmodels.ShelfAlbum
 import com.music.innertube.models.AlbumItem
 import com.music.innertube.models.Artist as InnertubeArtist
@@ -127,7 +129,7 @@ internal fun androidx.compose.foundation.lazy.LazyListScope.librarySearchResults
     if (results.isEmpty()) {
         item(key = "no_results") {
             Text(
-                text = "Nothing in your library matches \"$query\"",
+                text = stringResource(R.string.library_search_no_results, query),
                 color = SearchColors.Secondary,
                 fontSize = 13.sp,
                 modifier = Modifier.padding(horizontal = SearchHorizontalPadding, vertical = 24.dp),
@@ -138,9 +140,9 @@ internal fun androidx.compose.foundation.lazy.LazyListScope.librarySearchResults
     items(results, key = { it.id }) { item ->
         val subtitle = when (item) {
             is SongItem -> item.artists.joinToString { it.name }
-            is AlbumItem -> "Album"
-            is ArtistItem -> "Artist"
-            is PlaylistItem -> "Playlist"
+            is AlbumItem -> stringResource(R.string.tab_album)
+            is ArtistItem -> stringResource(R.string.artist)
+            is PlaylistItem -> stringResource(R.string.playlists)
         }
         LibraryListRow(
             title = item.title,

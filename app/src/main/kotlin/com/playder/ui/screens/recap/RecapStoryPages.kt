@@ -50,6 +50,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +62,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.playder.R
 import com.playder.ui.component.BlurEffectCache
 import com.playder.ui.theme.InterFontFamily
 import com.playder.ui.utils.resize
@@ -200,7 +202,7 @@ private fun JourneyPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             .at(0f, av[1] + av[2] / 2f + geo.dp(44f))
             .padding(horizontal = 36.dp),
     ) {
-        Text("${data.name} you started your journey in Playder on", style = recapBold(22f), modifier = Modifier.lineMotion(anim, 0, n, drag = drag))
+        Text(stringResource(R.string.loc_recap_journey_start, data.name), style = recapBold(22f), modifier = Modifier.lineMotion(anim, 0, n, drag = drag))
         Spacer(Modifier.height(4.dp))
         OdometerText(
             text = DateLong.format(data.joinedDate),
@@ -209,7 +211,7 @@ private fun JourneyPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             modifier = Modifier.lineMotion(anim, 1, n, drag = drag),
         )
         Spacer(Modifier.height(20.dp))
-        Text("and you have been listening to music in total time of", style = recapBold(22f), modifier = Modifier.lineMotion(anim, 2, n, drag = drag))
+        Text(stringResource(R.string.loc_recap_total_time), style = recapBold(22f), modifier = Modifier.lineMotion(anim, 2, n, drag = drag))
         Spacer(Modifier.height(4.dp))
         OdometerText(
             text = formatHoursMinutes(data.allTimeMs),
@@ -218,11 +220,11 @@ private fun JourneyPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             modifier = Modifier.lineMotion(anim, 3, n, drag = drag),
         )
         Spacer(Modifier.height(22.dp))
-        Text("so long, partners!", style = recapBold(22f), modifier = Modifier.lineMotion(anim, 4, n, drag = drag))
+        Text(stringResource(R.string.loc_recap_so_long), style = recapBold(22f), modifier = Modifier.lineMotion(anim, 4, n, drag = drag))
     }
     val hintY = geo.height - geo.dp(144f)
     Text(
-        "TAP!",
+        stringResource(R.string.loc_recap_tap),
         style = MonoHint,
         modifier = Modifier
             .at(geo.dp(52f), hintY - geo.dp(13f))
@@ -248,7 +250,7 @@ private fun MonthPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
     ) {
         Column(modifier = Modifier.align(Alignment.BottomStart).fillMaxWidth()) {
             Text(
-                "${data.monthName} is",
+                stringResource(R.string.loc_recap_month_is, data.monthName),
                 style = recapBold(44f),
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth().padding(end = 6.dp).lineMotion(anim, 0, n, enterFromDp = 70f, drag = drag),
@@ -261,7 +263,7 @@ private fun MonthPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
                     modifier = Modifier.lineMotion(anim, 1, n, enterFromDp = 70f, drag = drag),
                 )
             }
-            Text("out of 100%", style = recapBold(15f), modifier = Modifier.padding(start = 6.dp).lineMotion(anim, 2, n, drag = drag))
+            Text(stringResource(R.string.loc_recap_out_of), style = recapBold(15f), modifier = Modifier.padding(start = 6.dp).lineMotion(anim, 2, n, drag = drag))
             Spacer(Modifier.height(12.dp))
             MonthBar(
                 fraction = data.monthProgress / 100f,
@@ -329,7 +331,7 @@ private fun WeekdayPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             .at(0f, av[1] + av[2] / 2f + geo.dp(22f))
             .padding(horizontal = 36.dp),
     ) {
-        Text("and at this time,", style = recapBold(34f), modifier = Modifier.lineMotion(anim, 0, n, drag = drag))
+        Text(stringResource(R.string.loc_recap_at_this_time), style = recapBold(34f), modifier = Modifier.lineMotion(anim, 0, n, drag = drag))
         BasicText(
             text = day.uppercase(),
             style = recapBold(62f, lineHeight = 66f, tracking = -2.4f, weight = FontWeight.ExtraBold),
@@ -337,11 +339,11 @@ private fun WeekdayPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             autoSize = TextAutoSize.StepBased(minFontSize = 30.sp, maxFontSize = 62.sp),
             modifier = Modifier.fillMaxWidth().lineMotion(anim, 1, n, drag = drag),
         )
-        Text("is your favourite day to listen to music", style = recapBold(22f), modifier = Modifier.lineMotion(anim, 2, n, drag = drag))
+        Text(stringResource(R.string.loc_recap_favorite_day), style = recapBold(22f), modifier = Modifier.lineMotion(anim, 2, n, drag = drag))
     }
     val hoursMs = data.favouriteDayMs
     val amount = if (hoursMs >= 3_600_000L) "${hoursMs / 3_600_000L}" else "${(hoursMs / 60_000L).coerceAtLeast(1L)}"
-    val unit = if (hoursMs >= 3_600_000L) if (hoursMs / 3_600_000L == 1L) " hour" else " hours" else " minutes"
+    val unit = stringResource(if (hoursMs >= 3_600_000L) R.string.loc_recap_hours else R.string.loc_recap_minutes)
     val more = if (data.runnerUpMs > 0L) ((data.favouriteDayMs - data.runnerUpMs) * 100f / data.runnerUpMs).roundToInt() else -1
     Column(
         modifier = Modifier
@@ -359,7 +361,7 @@ private fun WeekdayPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
             }
         }
         Text(
-            if (more >= 0) "more than your 2nd!" else "nothing else comes close!",
+            stringResource(if (more >= 0) R.string.loc_recap_more_than_second else R.string.loc_recap_nothing_else_close),
             style = big,
             modifier = Modifier.lineMotion(anim, 4, n, drag = drag),
         )
@@ -397,12 +399,12 @@ private fun ArtistSequence(s: StoryState, data: RecapStoryData, time: RecapTime)
     Box(modifier = Modifier.fillMaxSize().slideAway { reveal.exit.value }) {
         if (visible(spinAnim)) {
             Text(
-                "Again\nand\nagain",
+                stringResource(R.string.loc_recap_again_again),
                 style = recapBold(48f, lineHeight = 46f),
                 modifier = Modifier.at(geo.inset, geo.top + geo.dp(118f)).lineMotion(spinAnim, 0, 2, exitToDp = -140f),
             )
             Text(
-                "this\nartist..",
+                stringResource(R.string.loc_recap_this_artist),
                 style = recapBold(62f, lineHeight = 58f),
                 modifier = Modifier.at(geo.inset, geo.fy(578f)).lineMotion(spinAnim, 1, 2, exitToDp = -140f),
             )
@@ -486,9 +488,9 @@ private fun ArtistReveal(s: StoryState, hero: RecapArtist, anim: PageAnim, cx: F
     val song = hero.topSong
 
     Column(modifier = Modifier.at(geo.inset, geo.top + geo.dp(92f)).padding(end = 36.dp)) {
-        Text("Recognize\nthis artist?", style = recapBold(34f, lineHeight = 37f), modifier = Modifier.lineMotion(anim, 0, n, enterFromDp = 90f, drag = drag))
+        Text(stringResource(R.string.loc_recap_recognize_artist), style = recapBold(34f, lineHeight = 37f), modifier = Modifier.lineMotion(anim, 0, n, enterFromDp = 90f, drag = drag))
         Text(
-            "that's your favorite this month!",
+            stringResource(R.string.loc_recap_favorite_this_month),
             style = recapBold(26f, lineHeight = 28f).copy(color = Color.White.copy(alpha = 0.72f)),
             modifier = Modifier.padding(top = 4.dp).lineMotion(anim, 1, n, enterFromDp = 90f, drag = drag),
         )
@@ -540,7 +542,7 @@ private fun ArtistReveal(s: StoryState, hero: RecapArtist, anim: PageAnim, cx: F
                 },
         ) {
             Text(song.title, style = recapBold(12f), maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.width(120.dp))
-            Text("${song.plays} plays", style = recapBold(12f))
+            Text(stringResource(R.string.loc_recap_plays, song.plays), style = recapBold(12f))
         }
     }
 
@@ -562,7 +564,7 @@ private fun ArtistReveal(s: StoryState, hero: RecapArtist, anim: PageAnim, cx: F
         )
         Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.lineMotion(anim, 5, n, enterFromDp = 90f, drag = drag)) {
             OdometerText("${hero.plays}", recapBold(26f), progress = { stagger(anim.enter.value, 5, n) })
-            Text("x Plays", style = recapBold(26f))
+            Text(stringResource(R.string.loc_recap_x_plays), style = recapBold(26f))
         }
     }
 }
@@ -644,15 +646,15 @@ private fun SongSequence(s: StoryState, data: RecapStoryData, time: RecapTime) {
                 }
             }
             Column(modifier = Modifier.at(geo.inset, geo.fy(628f)).padding(end = 36.dp)) {
-                Text("You might\nrecognize this!", style = recapBold(40f, lineHeight = 42f), modifier = Modifier.lineMotion(grid, 0, 2, enterFromDp = 120f))
+                Text(stringResource(R.string.loc_recap_might_recognize), style = recapBold(40f, lineHeight = 42f), modifier = Modifier.lineMotion(grid, 0, 2, enterFromDp = 120f))
                 Spacer(Modifier.height(14.dp))
-                Text("hmm, which one...", style = recapBold(24f), modifier = Modifier.lineMotion(grid, 1, 2, enterFromDp = 120f))
+                Text(stringResource(R.string.loc_recap_hmm), style = recapBold(24f), modifier = Modifier.lineMotion(grid, 1, 2, enterFromDp = 120f))
             }
         }
 
         if (visible(melody)) {
             Text(
-                "Hear the\nmelody..",
+                stringResource(R.string.loc_recap_hear_melody),
                 style = recapBold(34f, lineHeight = 37f),
                 textAlign = TextAlign.End,
                 modifier = Modifier
@@ -748,10 +750,10 @@ private fun SongReveal(s: StoryState, hero: RecapSong, anim: PageAnim, coverCx: 
     Column(modifier = Modifier.at(geo.dp(33f), geo.fy(456f)).padding(end = 36.dp)) {
         Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.lineMotion(anim, 2, n, drag = drag)) {
             OdometerText("${hero.plays}", recapBold(46f), progress = { stagger(anim.enter.value, 2, n) })
-            Text(" Plays!", style = recapBold(46f))
+            Text(stringResource(R.string.loc_recap_plays_exclaim), style = recapBold(46f))
         }
         Text(
-            "Your favourite song\nthis month!!!",
+            stringResource(R.string.loc_recap_favorite_song),
             style = recapBold(26f, lineHeight = 28f).copy(color = Color.White.copy(alpha = 0.72f)),
             modifier = Modifier.padding(top = 2.dp).lineMotion(anim, 3, n, drag = drag),
         )
@@ -795,7 +797,7 @@ private fun ReceiptPage(s: StoryState, data: RecapStoryData) {
     val anim = s.pages[P_RECEIPT]
     val density = LocalDensity.current
     Text(
-        "Let's see your bill",
+        stringResource(R.string.loc_recap_bill),
         style = recapBold(30f),
         modifier = Modifier.at(geo.inset, geo.top + geo.dp(82f)).lineMotion(anim, 0, 2, riseDp = 20f, exitToDp = 0f),
     )
@@ -827,31 +829,31 @@ private fun Receipt(data: RecapStoryData, modifier: Modifier) {
     ) {
         ReceiptLine(dashes)
         ReceiptLine("PLAYDER")
-        ReceiptLine("${data.monthName} recap")
-        ReceiptLine("printed at ${now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}/${now.format(DateTimeFormatter.ofPattern("HH:mm"))}")
+        ReceiptLine(stringResource(R.string.loc_recap_month_recap, data.monthName))
+        ReceiptLine(stringResource(R.string.loc_recap_printed_at, "${now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))}/${now.format(DateTimeFormatter.ofPattern("HH:mm"))}"))
         ReceiptLine(dashes)
         Spacer(Modifier.height(18.dp))
-        ReceiptHeading("Top Artist")
+        ReceiptHeading(stringResource(R.string.loc_recap_top_artist))
         data.artists.forEachIndexed { i, a ->
-            ReceiptItem(a.thumbnailUrl, CircleShape, "${i + 1}x ${a.name}", "${formatHoursDecimal(a.playTimeMs)}h")
+            ReceiptItem(a.thumbnailUrl, CircleShape, stringResource(R.string.loc_recap_receipt_item, i + 1, a.name), "${formatHoursDecimal(a.playTimeMs)}h")
         }
         Spacer(Modifier.height(18.dp))
-        ReceiptHeading("Top Music")
+        ReceiptHeading(stringResource(R.string.loc_recap_top_music))
         data.songs.take(10).forEachIndexed { i, song ->
-            ReceiptItem(song.thumbnailUrl, RoundedCornerShape(5.dp), "${i + 1}x ${song.title}", "${formatHoursDecimal(song.playTimeMs)}h")
+            ReceiptItem(song.thumbnailUrl, RoundedCornerShape(5.dp), stringResource(R.string.loc_recap_receipt_item, i + 1, song.title), "${formatHoursDecimal(song.playTimeMs)}h")
         }
         Spacer(Modifier.height(36.dp))
         Text(
-            "Total : ${formatHoursMinutes(data.stats.totalMs)} playtime",
+            stringResource(R.string.loc_recap_playtime, formatHoursMinutes(data.stats.totalMs)),
             style = ReceiptMono.copy(textAlign = TextAlign.Start),
         )
         Text(
-            "${data.stats.plays} plays · ${data.stats.songCount} songs · ${data.stats.artistCount} artists",
+            stringResource(R.string.loc_recap_play_counts, data.stats.plays, data.stats.songCount, data.stats.artistCount),
             style = ReceiptMono.copy(textAlign = TextAlign.Start, color = Ink.copy(alpha = 0.6f)),
         )
         Spacer(Modifier.height(10.dp))
         ReceiptLine(dashes)
-        ReceiptLine("END OF LINE")
+        ReceiptLine(stringResource(R.string.loc_recap_end_line))
         ReceiptLine(dashes)
     }
 }
@@ -900,17 +902,17 @@ private fun EndPage(s: StoryState, data: RecapStoryData, time: RecapTime) {
     val anim = s.pages[P_END]
     val cardBottom = geo.top + geo.dp(175f) + (geo.width - 2 * geo.inset) / com.playder.ui.screens.setup.onboarding.IdCardAspect
     Text(
-        "There you go",
+        stringResource(R.string.loc_recap_there_you_go),
         style = recapBold(34f).copy(color = Color.White.copy(alpha = 0.72f)),
         modifier = Modifier.at(geo.inset, geo.top + geo.dp(112f)).lineMotion(anim, 0, 4, exitToDp = 0f),
     )
     Text(
-        "That's your\n${data.monthName} recap!",
+        stringResource(R.string.loc_recap_your_recap, data.monthName),
         style = recapBold(44f, lineHeight = 46f),
         modifier = Modifier.at(geo.inset, cardBottom + geo.dp(34f)).padding(end = 36.dp).lineMotion(anim, 1, 4, exitToDp = 0f),
     )
     Text(
-        "TAP TO FINISH",
+        stringResource(R.string.loc_recap_tap_finish),
         style = MonoHint,
         textAlign = TextAlign.Center,
         modifier = Modifier

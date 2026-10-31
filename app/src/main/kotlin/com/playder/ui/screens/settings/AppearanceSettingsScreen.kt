@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -123,12 +124,12 @@ fun AppearanceSettingsScreen(navController: NavController) {
     )
 
     SubSettingsScaffold(
-        title = "Appearance",
+        title = stringResource(R.string.appearance),
         onBack = { navController.navigateUp() },
         searchBar = { SubSettingsSearchBar(query = query, onQueryChange = { query = it }) },
     ) {
         Text(
-            text = "Player appearance",
+            text = stringResource(R.string.loc_appearance_heading),
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
@@ -138,9 +139,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
 
         val playerPageItems = listOf(
             SettingsItem(
-                title = { Text("Customize player") },
-                highlightKey = "Player customization",
-                descriptionText = "Customize player cover, background, style",
+                title = { Text(stringResource(R.string.loc_customize_player)) },
+                highlightKey = stringResource(R.string.loc_customize_player),
+                descriptionText = stringResource(R.string.loc_customize_player_desc),
                 icon = painterResource(R.drawable.album),
                 iconShape = CircleShape,
                 // the player is edited right where it plays: it opens and shrinks into its selector
@@ -148,14 +149,14 @@ fun AppearanceSettingsScreen(navController: NavController) {
                     if (playerConnection?.player?.currentMediaItem != null) {
                         playerConnection.requestPlayerStudio()
                     } else {
-                        android.widget.Toast.makeText(context, "Play a song, then hold the player to customize it", android.widget.Toast.LENGTH_SHORT).show()
+                        android.widget.Toast.makeText(context, R.string.loc_customize_player_hint, android.widget.Toast.LENGTH_SHORT).show()
                     }
                 },
             ),
             SettingsItem(
-                title = { Text("Customize lyrics tab") },
-                highlightKey = "Lyrics letter animation",
-                descriptionText = "Lyrics style and typography",
+                title = { Text(stringResource(R.string.loc_customize_lyrics)) },
+                highlightKey = stringResource(R.string.loc_customize_lyrics),
+                descriptionText = stringResource(R.string.loc_customize_lyrics_desc),
                 icon = painterResource(R.drawable.lyrics),
                 iconShape = CircleShape,
                 onClick = { onLyricsWaveAnimationChange(!lyricsWaveAnimation) },
@@ -175,9 +176,11 @@ fun AppearanceSettingsScreen(navController: NavController) {
 
         val playerToggleItems = listOf(
             SettingsItem(
-                title = { Text("Lyrics animation") },
-                highlightKey = "Lyrics animation style",
-                descriptionText = lyricsMotionStyle.description,
+                title = { Text(stringResource(R.string.loc_lyrics_animation)) },
+                highlightKey = stringResource(R.string.loc_lyrics_animation),
+                descriptionText = stringResource(
+                    if (lyricsMotionStyle == LyricsMotionStyle.MOTION) R.string.loc_lyrics_motion_desc else R.string.loc_lyrics_legacy_desc
+                ),
                 icon = painterResource(R.drawable.lyrics),
                 iconShape = CircleShape,
                 onClick = {
@@ -190,10 +193,10 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Lyrics Shader") },
+                title = { Text(stringResource(R.string.loc_lyrics_shader)) },
                 highlightKey = "Lyrics letter animation",
                 // style 1's rise is drawn, not shaded, so it keeps working with glow off
-                descriptionText = "Glow on sung lyrics (and Style 2's letter wave)",
+                descriptionText = stringResource(R.string.loc_lyrics_shader_desc),
                 icon = painterResource(R.drawable.biotech),
                 iconShape = CircleShape,
                 onClick = { onLyricsWaveAnimationChange(!lyricsWaveAnimation) },
@@ -205,9 +208,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("High quality bloom") },
-                highlightKey = "High quality bloom",
-                descriptionText = "Extra soft bloom pass on lyrics",
+                title = { Text(stringResource(R.string.loc_high_quality_bloom)) },
+                highlightKey = stringResource(R.string.loc_high_quality_bloom),
+                descriptionText = stringResource(R.string.loc_high_quality_bloom_desc),
                 icon = painterResource(R.drawable.sparks),
                 iconShape = CircleShape,
                 isVisible = lyricsWaveAnimation,
@@ -222,9 +225,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Audio format badge") },
-                highlightKey = "Audio format badge",
-                descriptionText = "What the song is playing as, beside its title",
+                title = { Text(stringResource(R.string.loc_audio_format_badge)) },
+                highlightKey = stringResource(R.string.loc_audio_format_badge),
+                descriptionText = stringResource(R.string.loc_audio_format_badge_desc),
                 icon = painterResource(R.drawable.graphic_eq),
                 iconShape = CircleShape,
                 onClick = { onFormatBadgeChange(!formatBadge) },
@@ -236,9 +239,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Show sample rate") },
-                highlightKey = "Show sample rate",
-                descriptionText = "The stream's sample rate after its format",
+                title = { Text(stringResource(R.string.loc_show_sample_rate)) },
+                highlightKey = stringResource(R.string.loc_show_sample_rate),
+                descriptionText = stringResource(R.string.loc_sample_rate_desc),
                 icon = painterResource(R.drawable.speed),
                 iconShape = CircleShape,
                 isVisible = formatBadge,
@@ -253,9 +256,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Always enable Youtube background") },
+                title = { Text(stringResource(R.string.loc_youtube_background)) },
                 highlightKey = "Yt video background",
-                descriptionText = "Stream video background on player when available",
+                descriptionText = stringResource(R.string.loc_youtube_background_desc),
                 icon = painterResource(R.drawable.slow_motion_video),
                 iconShape = CircleShape,
                 onClick = { onPlayVideoBackgroundChange(!playVideoBackground) },
@@ -267,8 +270,8 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Timestamp matching") },
-                descriptionText = "Based on subtitle",
+                title = { Text(stringResource(R.string.loc_timestamp_matching)) },
+                descriptionText = stringResource(R.string.loc_based_on_subtitle),
                 icon = painterResource(R.drawable.lyrics),
                 iconShape = CircleShape,
                 isVisible = playVideoBackground,
@@ -283,9 +286,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Enable animated canvas") },
-                highlightKey = "Animated canvas",
-                descriptionText = "Looping visuals for supported tracks",
+                title = { Text(stringResource(R.string.loc_animated_canvas)) },
+                highlightKey = stringResource(R.string.loc_animated_canvas),
+                descriptionText = stringResource(R.string.loc_animated_canvas_desc),
                 icon = painterResource(R.drawable.sparks),
                 iconShape = CircleShape,
                 onClick = { onCanvasEnabledChange(!canvasEnabled) },
@@ -297,8 +300,8 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Canvas on Wi-Fi only") },
-                descriptionText = "Skip mobile data",
+                title = { Text(stringResource(R.string.loc_canvas_wifi_only)) },
+                descriptionText = stringResource(R.string.loc_skip_mobile_data),
                 icon = painterResource(R.drawable.wifi_proxy),
                 iconShape = CircleShape,
                 isVisible = canvasEnabled,
@@ -326,7 +329,7 @@ fun AppearanceSettingsScreen(navController: NavController) {
         }
 
         Text(
-            text = "Global Appearance",
+            text = stringResource(R.string.loc_global_appearance),
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
@@ -336,9 +339,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
 
         val globalToggleItems = listOf(
             SettingsItem(
-                title = { Text("Blur") },
+                title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.player_background_blur)) },
                 highlightKey = "Blur",
-                descriptionText = "Glass blur across player and navigation",
+                descriptionText = stringResource(R.string.loc_player_blur_desc),
                 icon = painterResource(R.drawable.contrast),
                 iconShape = CircleShape,
                 onClick = { onDisableBlurChange(!disableBlur) },
@@ -350,12 +353,12 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Blur quality") },
-                highlightKey = "Blur quality",
+                title = { Text(stringResource(R.string.loc_blur_quality)) },
+                highlightKey = stringResource(R.string.loc_blur_quality),
                 descriptionText = if (blurQuality == com.playder.constants.BlurQuality.LOW) {
-                    "Lighter glass, like before 8.1. Smoother on slower phones"
+                    stringResource(R.string.loc_blur_low_desc)
                 } else {
-                    "Finer frosted glass on the bar and the player"
+                    stringResource(R.string.loc_blur_high_desc)
                 },
                 icon = painterResource(R.drawable.tune),
                 iconShape = CircleShape,
@@ -370,7 +373,7 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
                 trailingContent = {
                     Text(
-                        text = if (blurQuality == com.playder.constants.BlurQuality.LOW) "Low" else "High",
+                        text = stringResource(if (blurQuality == com.playder.constants.BlurQuality.LOW) R.string.loc_blur_low else R.string.loc_blur_high),
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = Color.White.copy(alpha = 0.70f),
@@ -378,8 +381,8 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 },
             ),
             SettingsItem(
-                title = { Text("Progressive blur") },
-                descriptionText = "Smooth progressive gradient blur",
+                title = { Text(stringResource(R.string.loc_progressive_blur)) },
+                descriptionText = stringResource(R.string.loc_progressive_blur_desc),
                 icon = painterResource(R.drawable.gradient),
                 iconShape = CircleShape,
                 isVisible = !disableBlur,
@@ -400,7 +403,7 @@ fun AppearanceSettingsScreen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Text("Blur strength")
+                        Text(stringResource(R.string.loc_blur_strength))
                         Text(
                             text = "${blurStrengthPx.roundToInt()}px",
                             fontFamily = FontFamily.Monospace,
@@ -424,9 +427,9 @@ fun AppearanceSettingsScreen(navController: NavController) {
                 isSubOption = true,
             ),
             SettingsItem(
-                title = { Text("Animation") },
-                highlightKey = "Animation",
-                descriptionText = "Smooth UI transitions and element blurs",
+                title = { Text(stringResource(R.string.loc_animation)) },
+                highlightKey = stringResource(R.string.loc_animation),
+                descriptionText = stringResource(R.string.loc_ui_animation_desc),
                 icon = painterResource(R.drawable.speed),
                 iconShape = CircleShape,
                 onClick = { onElementBlurAnimatorChange(!elementBlurAnimator) },

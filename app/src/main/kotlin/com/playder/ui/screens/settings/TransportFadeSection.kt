@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -80,7 +81,7 @@ fun TransportFadeSection() {
     val seconds = storedSeconds.coerceIn(TransportFadeMinSeconds, TransportFadeMaxSeconds)
 
     Text(
-        text = "Pause, play, forward and backward transition",
+        text = stringResource(R.string.loc_crossfade_transport_heading),
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp,
@@ -96,15 +97,15 @@ fun TransportFadeSection() {
         }
         Spacer(Modifier.height(10.dp))
         LabToggleRow(
-            title = "Enable fade",
-            subtitle = "Eases the music out when you pause or skip, and back in when you play",
+            title = stringResource(R.string.loc_crossfade_enable_fade),
+            subtitle = stringResource(R.string.loc_crossfade_fade_desc),
             checked = enabled,
             onCheckedChange = onEnabledChange,
         )
         LabCollapsible(enabled) {
             Box(Modifier.padding(horizontal = 6.dp)) {
                 LabSlider(
-                    label = "Length",
+                    label = stringResource(R.string.loc_crossfade_length),
                     valueText = secondsText(seconds),
                     value = seconds,
                     onValueChange = { onSecondsChange((it * 2f).roundToInt() / 2f) },
@@ -118,9 +119,9 @@ fun TransportFadeSection() {
             }
             Spacer(Modifier.height(14.dp))
             Column(Modifier.padding(horizontal = 6.dp)) {
-                Text("Layered effect", fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = LabColors.Primary)
+                Text(stringResource(R.string.loc_crossfade_layered_effect), fontFamily = InterFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = LabColors.Primary)
                 Text(
-                    "A CrossMix effect over the fade, like an echo trail or the record spinning back",
+                    stringResource(R.string.loc_crossfade_layered_desc),
                     fontFamily = InterFontFamily,
                     fontSize = 12.sp,
                     lineHeight = 15.sp,
@@ -136,6 +137,16 @@ fun TransportFadeSection() {
 
 private fun secondsText(seconds: Float): String =
     if (seconds % 1f == 0f) "${seconds.toInt()}s" else "${"%.1f".format(seconds)}s"
+
+private fun transportEffectLabel(effect: TransportEffect): Int = when (effect) {
+    TransportEffect.OFF -> R.string.loc_crossfade_effect_none
+    TransportEffect.ECHO -> R.string.loc_crossfade_effect_echo
+    TransportEffect.REWIND -> R.string.loc_crossfade_effect_rewind
+    TransportEffect.TAPE_STOP -> R.string.loc_crossfade_effect_tape_stop
+    TransportEffect.FAR_AWAY -> R.string.loc_crossfade_effect_far_away
+    TransportEffect.REVERB -> R.string.loc_crossfade_effect_reverb
+    TransportEffect.FILTER -> R.string.loc_crossfade_effect_filter
+}
 
 // the dark pill from the design: the chosen effect in the middle, a chevron that flips while the list is open
 @Composable
@@ -155,7 +166,7 @@ private fun EffectPicker(selected: TransportEffect, onSelect: (TransportEffect) 
         ) {
             Spacer(Modifier.size(24.dp))
             Text(
-                text = selected.label,
+                text = stringResource(transportEffectLabel(selected)),
                 fontFamily = InterFontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 17.sp,
@@ -165,7 +176,7 @@ private fun EffectPicker(selected: TransportEffect, onSelect: (TransportEffect) 
             )
             Icon(
                 painter = painterResource(R.drawable.expand_more),
-                contentDescription = "Choose an effect",
+                contentDescription = stringResource(R.string.loc_crossfade_choose_effect),
                 tint = Color.White,
                 modifier = Modifier.size(24.dp).graphicsLayer { rotationZ = chevron },
             )
@@ -180,7 +191,7 @@ private fun EffectPicker(selected: TransportEffect, onSelect: (TransportEffect) 
                 DropdownMenuItem(
                     text = {
                         Text(
-                            option.label,
+                            stringResource(transportEffectLabel(option)),
                             fontFamily = InterFontFamily,
                             fontWeight = if (option == selected) FontWeight.SemiBold else FontWeight.Normal,
                             fontSize = 15.sp,

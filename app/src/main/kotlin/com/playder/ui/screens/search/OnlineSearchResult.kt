@@ -51,6 +51,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -104,13 +105,13 @@ import java.net.URLEncoder
 import com.playder.ui.component.navigateToTab
 
 private val SearchCategories = listOf(
-    "All" to null,
-    "Music" to FILTER_SONG,
-    "Artist" to FILTER_ARTIST,
-    "Video" to FILTER_VIDEO,
-    "Album" to FILTER_ALBUM,
-    "Playlist" to FILTER_COMMUNITY_PLAYLIST,
-    "Featured" to FILTER_FEATURED_PLAYLIST,
+    R.string.filter_all to null,
+    R.string.filter_songs to FILTER_SONG,
+    R.string.filter_artists to FILTER_ARTIST,
+    R.string.filter_videos to FILTER_VIDEO,
+    R.string.filter_albums to FILTER_ALBUM,
+    R.string.filter_playlists to FILTER_COMMUNITY_PLAYLIST,
+    R.string.filter_featured_playlists to FILTER_FEATURED_PLAYLIST,
 )
 
 @Composable
@@ -255,7 +256,7 @@ fun OnlineSearchResult(
                     } else {
                         if (top != null) {
                             item(key = "top_header") {
-                                SearchSectionHeader(title = "Top Results", ruleAbove = false)
+                                SearchSectionHeader(title = stringResource(R.string.top_result), ruleAbove = false)
                             }
                             item(key = "top_card") {
                                 TopResultCard(
@@ -278,7 +279,7 @@ fun OnlineSearchResult(
                                 renderedSection = true
                                 item(key = "summary_header_${index}_${section.title}") {
                                     SearchSectionHeader(
-                                        title = if (index == 0) "Exact matches" else section.title,
+                                        title = if (index == 0) stringResource(R.string.exact_matches) else section.title,
                                         ruleAbove = ruleAbove,
                                     )
                                 }
@@ -320,7 +321,7 @@ fun OnlineSearchResult(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    text = "No results",
+                                    text = stringResource(R.string.no_results_found),
                                     style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
                                     color = SearchColors.Secondary,
                                 )
@@ -350,13 +351,13 @@ fun OnlineSearchResult(
             glassState = glassState,
             progressProvider = progressProvider,
             pureBlack = pureBlack,
-            title = "Search",
+            title = stringResource(R.string.search),
             trailing = {
                 SearchAvatar(imageUrl = profilePicStr.ifBlank { null }, onClick = { navController.navigateToTab("settings") })
             },
             below = {
                 SearchCategoryRow(
-                    categories = SearchCategories.map { it.first },
+                    categories = SearchCategories.map { stringResource(it.first) },
                     selectedIndex = selectedIndex,
                     onSelect = { index -> viewModel.filter.value = SearchCategories[index].second },
                 )
@@ -366,7 +367,7 @@ fun OnlineSearchResult(
                 value = query,
                 onValueChange = { query = it },
                 onSearch = submit,
-                placeholder = "Search for any tracks, albums, lyrics...",
+                placeholder = stringResource(R.string.search_any_tracks_albums_lyrics),
                 leading = {
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
@@ -407,27 +408,33 @@ private fun TopResultCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val kind = when (item) {
-        is SongItem -> if (item.isVideoSong) "Video" else "Song"
-        is AlbumItem -> "Album"
-        is ArtistItem -> "Artist"
-        is PlaylistItem -> "Playlist"
-    }
+    val kind = stringResource(when (item) {
+        is SongItem -> if (item.isVideoSong) R.string.search_type_video else R.string.search_type_song
+        is AlbumItem -> R.string.search_type_album
+        is ArtistItem -> R.string.search_type_artist
+        is PlaylistItem -> R.string.search_type_playlist
+    })
     val detail = when (item) {
         is SongItem -> listOfNotNull(
             kind,
-            item.artists.joinToString { it.name }.takeIf { it.isNotBlank() }?.let { "by $it" },
+            item.artists.joinToString { it.name }.takeIf { it.isNotBlank() }
+                ?.let { stringResource(R.string.search_by_artist_format, kind, it) },
             item.duration?.let { formatDuration(it) },
         ).joinToString("  •  ")
 
         is AlbumItem -> listOfNotNull(
             kind,
-            item.artists?.joinToString { it.name }?.takeIf { it.isNotBlank() }?.let { "by $it" },
+            item.artists?.joinToString { it.name }?.takeIf { it.isNotBlank() }
+                ?.let { stringResource(R.string.search_by_artist_format, kind, it) },
             item.year?.toString(),
         ).joinToString("  •  ")
 
         is ArtistItem -> kind
-        is PlaylistItem -> listOfNotNull(kind, item.author?.name?.let { "by $it" }, item.songCountText)
+        is PlaylistItem -> listOfNotNull(
+            kind,
+            item.author?.name?.let { stringResource(R.string.search_by_artist_format, kind, it) },
+            item.songCountText,
+        )
             .joinToString("  •  ")
     }
 
@@ -543,12 +550,12 @@ private fun ResultRow(
         ).joinToString("  •  ")
 
         is AlbumItem -> listOfNotNull(
-            "Album",
+            stringResource(R.string.search_type_album),
             item.artists?.joinToString { it.name }?.takeIf { it.isNotBlank() },
         ).joinToString("  •  ")
 
-        is ArtistItem -> "Artist"
-        is PlaylistItem -> listOfNotNull("Playlist", item.author?.name).joinToString("  •  ")
+        is ArtistItem -> stringResource(R.string.search_type_artist)
+        is PlaylistItem -> listOfNotNull(stringResource(R.string.search_type_playlist), item.author?.name).joinToString("  •  ")
     }
 
     val row: @Composable () -> Unit = {

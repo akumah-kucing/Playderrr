@@ -82,7 +82,7 @@ fun CsvColumnMappingDialog(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
-                        text = "Preview",
+                        text = androidx.compose.ui.res.stringResource(com.playder.R.string.preview),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

@@ -164,6 +164,7 @@ private fun SearchBarInputField(
     focusRequester: FocusRequester = remember { FocusRequester() },
 ) {
     val focused = interactionSource.collectIsFocusedAsState().value
+    val searchDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.search)
     val textColor = LocalTextStyle.current.color.takeOrElse {
         if (focused) colors.focusedTextColor else colors.unfocusedTextColor
     }
@@ -195,7 +196,7 @@ private fun SearchBarInputField(
                     }
                 }
                 .semantics {
-                    contentDescription = "Search"
+                    contentDescription = searchDescription
                     if (active) {
                         stateDescription = "Suggestions available"
                     }

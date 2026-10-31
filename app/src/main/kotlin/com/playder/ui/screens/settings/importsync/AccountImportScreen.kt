@@ -283,7 +283,7 @@ fun AccountImportScreen(
                         items = buildList {
                             if (!current.signedOut) add(
                                 SettingsItem(
-                                    title = { Text("Try again") },
+                                    title = { Text(androidx.compose.ui.res.stringResource(com.playder.R.string.try_again)) },
                                     icon = painterResource(R.drawable.refresh),
                                     iconShape = CircleShape,
                                     onClick = viewModel::retry,

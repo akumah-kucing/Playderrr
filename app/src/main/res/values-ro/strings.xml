@@ -11,7 +11,7 @@
     <string name="account">Cont</string>
     <string name="quick_picks">Alegeri rapide</string>
     <string name="quick_picks_empty">Ascultă melodii pentru a-ți genera alegerile rapide</string>
-    <string name="forgotten_favorites">Preferințe uitate</string>
+    <string name="forgotten_favorites">Favorite uitate</string>
     <string name="keep_listening">Continuă să asculți</string>
     <string name="your_youtube_playlists">Playlisturile tale de pe YouTube</string>
     <string name="similar_to">Similar cu</string>
@@ -88,7 +88,7 @@
     <string name="sort_by_play_time">Timpul redării</string>
     <string name="sort_by_custom">Ordine personalizată</string>
     <string name="media_id">ID media</string>
-    <string name="mime_type">MIME type</string>
+    <string name="mime_type">Tip MIME</string>
     <string name="codecs">Codecuri</string>
     <string name="bitrate">Rată de biți</string>
     <string name="sample_rate">Rată de eșantionare</string>
@@ -120,37 +120,30 @@
     <string name="duplicates_description_multiple">%d (de) melodii sunt deja în playlistul tău</string>
     <plurals name="n_song">
         <item quantity="one">%d melodie</item>
-        <item quantity="few">%d melodii</item>
         <item quantity="other">%d de melodii</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d artist</item>
-        <item quantity="few">%d artiști</item>
         <item quantity="other">%d de artiști</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d album</item>
-        <item quantity="few">%d albume</item>
         <item quantity="other">%d de albume</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d playlist</item>
-        <item quantity="few">%d playlisturi</item>
         <item quantity="other">%d de playlisturi</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d săptămână</item>
-        <item quantity="few">%d săptămâni</item>
         <item quantity="other">%d de săptămâni</item>
     </plurals>
     <plurals name="n_month">
         <item quantity="one">%d lună</item>
-        <item quantity="few">%d luni</item>
         <item quantity="other">%d de luni</item>
     </plurals>
     <plurals name="n_year">
         <item quantity="one">%d an</item>
-        <item quantity="few">%d ani</item>
         <item quantity="other">%d de ani</item>
     </plurals>
     <string name="playlist_imported">Playlist importat</string>
@@ -162,12 +155,11 @@
     <string name="end_of_song">Sfârșitul melodiei</string>
     <plurals name="minute">
         <item quantity="one">Un minut</item>
-        <item quantity="few">%d minute</item>
         <item quantity="other">%d de minute</item>
     </plurals>
     <string name="error_no_stream">Niciun stream disponibil</string>
     <string name="error_no_internet">Fără conexiune la rețea</string>
-    <string name="error_timeout">Timeout</string>
+    <string name="error_timeout">Timp expirat</string>
     <string name="error_unknown">Eroare necunoscută</string>
     <string name="action_like">Apreciază</string>
     <string name="action_like_all">Apreciază tot</string>
@@ -178,8 +170,6 @@
     <string name="repeat_mode_off">Mod repetare oprit</string>
     <string name="repeat_mode_one">Repetă melodia curentă</string>
     <plurals name="n_selected">
-        <item quantity="one">%d selectat</item>
-        <item quantity="few">%d selectate</item>
         <item quantity="other">%d selectate</item>
     </plurals>
     <string name="repeat_mode_all">Repetă coada</string>
@@ -271,7 +261,7 @@
     <string name="action_restore">Restaurează</string>
     <string name="imported_playlist">Playlist importat</string>
     <string name="backup_create_success">Backup creat cu succes</string>
-    <string name="backup_create_failed">Nu s-a putut creea backup-ul</string>
+    <string name="backup_create_failed">Nu s-a putut crea backup-ul</string>
     <string name="restore_failed">Nu s-a putut restaura backup-ul</string>
     <string name="discord_integration">Integrare cu Discord</string>
     <string name="discord_information">playder folosește biblioteca KizzyRPC pentru a-ți seta statusul contului tău de Discord. Acest lucru presupune folosirea conexiunii Discord Gateway, ceea ce ar putea fi considerată o încălcare a Termenilor serviciului Discord. Însă, nu există cazuri cunoscute de conturi de utilizator care au fost suspendate din acest motiv. Folosește pe propriul tău risc.\n\nplayder îți va extrage doar token-ul. Orice altceva este stocat local.</string>
@@ -288,4 +278,61 @@
     <string name="refetch">Reîncarcă</string>
     <string name="sided">Într-o parte</string>
     <string name="remove_download_playlist_confirm">Sigur vrei să ștergi toate cele %s (de) melodii din playlist din Melodii descărcate?</string>
+
+    <string name="music">Muzică</string>
+    <string name="album_description_placeholder">Aceasta este o descriere a substituentului pentru album. Ascultați cu plăcere piesele de mai jos!</string>
+    <string name="you_might_also_like">Lista de redare asociată</string>
+    <string name="shuffle_content_desc">Amestecă</string>
+    <string name="shuffle_label">Amestecă</string>
+    <string name="pause">Pauză</string>
+    <string name="added_to_library">Adăugat la bibliotecă</string>
+    <string name="removed_from_library">Eliminat din bibliotecă</string>
+    <string name="remove_from_import_and_library">Eliminați din import și bibliotecă</string>
+    <string name="removed_from_import_and_library">Eliminat din importurile dvs. %1$s și din bibliotecă</string>
+    <string name="saving">Salvare</string>
+    <string name="saved">Salvat</string>
+    <string name="start_an_radio">Radio</string>
+    <string name="add_to_an_playlist">Adaugă</string>
+    <string name="more_label">Mai mult</string>
+    <string name="releases_for_you">Lansări pentru tine</string>
+    <string name="lyrics_swipe_to_change_song">Glisați pentru a schimba melodia</string>
+    <string name="lyrics_swipe_to_change_song_desc">Glisați la stânga sau la dreapta în secțiunea artist și numele melodiei în versurile pe ecran complet pentru a schimba melodia</string>
+    <string name="lyrics_thumbnail_play_pause">Afișați redarea/pauză pe miniatură</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Afișați o suprapunere a butonului de redare/pauză pe miniatura melodiei în versurile pe ecran complet</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">Nu s-au găsit APK-uri</item>
+        <item quantity="one">%d APK găsit</item>
+        <item quantity="other">%d APK-uri găsite</item>
+    </plurals>
+    <string name="theme_desc">Personalizați-vă tema aplicației</string>
+    <string name="theme_colors">Temă și culori</string>
+    <string name="theme_mode">Modul temei</string>
+    <string name="color_palette">Paleta de culori</string>
+    <string name="use_system_colors">Utilizați culorile sistemului</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Afișați insigna de calitate audio</string>
+    <string name="network_ip_version">Versiunea IP de rețea</string>
+    <string name="ip_version_auto">automată</string>
+    <string name="ip_version_ipv4">IPv4 forțat</string>
+    <string name="ip_version_ipv6">IPv6 forțat</string>
+    <string name="audio_quality_medium">Mediu</string>
+    <string name="clear_downloaded_updates">Șterge actualizările descărcate</string>
+    <string name="clear_downloaded_updates_desc">Eliminați fișierele APK descărcate pentru a elibera spațiu</string>
+    <string name="bluetooth_permission_required">Este necesară permisiunea Bluetooth pentru a descoperi dispozitive audio.</string>
+    <string name="streaming_to">Redare pe</string>
+    <string name="this_phone">Acest telefon</string>
+    <string name="wired_headphones">Căști cu fir</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Difuzorul telefonului</string>
+    <string name="audio_quality_title">Calitate audio</string>
+    <string name="battery_content_desc">Nivelul bateriei</string>
+    <string name="done">Gata</string>
+    <string name="audio_devices">Dispozitive audio</string>
+    <string name="bluetooth_headphones">Căști Bluetooth</string>
+    <string name="license">Licență publică generală GNU v3.0</string>
+    <string name="standard_lyrics_blur">Estomparea versurilor standard</string>
+    <string name="listen_together_smart_resync">Resincronizare inteligentă a rețelei</string>
+    <string name="listen_together_smart_resync_desc">Recuperează automat sincronizarea cu gazda după întreruperea conexiunii</string>
+    <string name="error_stream_unavailable_title">Nu s-a putut reda această piesă</string>
+    <string name="playback_error_channel_name">Erori de redare</string>
 </resources>

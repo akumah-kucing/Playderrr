@@ -124,24 +124,31 @@
     <string name="duplicates_description_single">播放清單已有此曲目</string>
     <string name="duplicates_description_multiple">播放清單已有 %d 首相同曲目</string>
     <plurals name="n_song">
+        <item quantity="one">%d 首歌曲</item>
         <item quantity="other">%d 首歌曲</item>
     </plurals>
     <plurals name="n_artist">
+        <item quantity="one">%d 位藝人</item>
         <item quantity="other">%d 位藝人</item>
     </plurals>
     <plurals name="n_album">
+        <item quantity="one">%d 張專輯</item>
         <item quantity="other">%d 張專輯</item>
     </plurals>
     <plurals name="n_playlist">
+        <item quantity="one">%d 個播放清單</item>
         <item quantity="other">%d 個播放清單</item>
     </plurals>
     <plurals name="n_week">
+        <item quantity="one">%d 週</item>
         <item quantity="other">%d 週</item>
     </plurals>
     <plurals name="n_month">
+        <item quantity="one">%d 個月</item>
         <item quantity="other">%d 個月</item>
     </plurals>
     <plurals name="n_year">
+        <item quantity="one">%d 年</item>
         <item quantity="other">%d 年</item>
     </plurals>
     <string name="playlist_imported">已匯入此播放清單</string>
@@ -152,6 +159,7 @@
     <string name="sleep_timer">睡眠定時器</string>
     <string name="end_of_song">這首歌曲播放完畢</string>
     <plurals name="minute">
+        <item quantity="one">1 分鐘</item>
         <item quantity="other">%d 分鐘</item>
     </plurals>
     <string name="error_no_stream">沒有可用的音源</string>
@@ -203,7 +211,7 @@
     <string name="system_default">系統預設</string>
     <string name="enable_proxy">啟用 Proxy</string>
     <string name="proxy_type">Proxy 種類</string>
-    <string name="proxy_url">Proxy URL</string>
+    <string name="proxy_url">Proxy 網址</string>
     <string name="restart_to_take_effect">重啟以套用變更</string>
     <string name="player_and_audio">播放與音訊</string>
     <string name="audio_quality">音質</string>
@@ -267,4 +275,63 @@
     <string name="new_version_available">發現新版本</string>
     <string name="translation_models">翻譯模型</string>
     <string name="clear_translation_models">清除翻譯模型</string>
+    <string name="music">音樂</string>
+    <string name="album_description_placeholder">這是專輯說明的佔位文字。盡情欣賞下方的曲目吧！</string>
+    <string name="you_might_also_like">相關播放清單</string>
+    <string name="shuffle_content_desc">隨機播放</string>
+    <string name="shuffle_label">隨機播放</string>
+    <string name="pause">暫停</string>
+    <string name="added_to_library">已加入到音樂庫</string>
+    <string name="removed_from_library">已從音樂庫移除</string>
+    <string name="remove_from_import_and_library">從匯入內容及音樂庫中移除</string>
+    <string name="removed_from_import_and_library">已從你的 %1$s 匯入項目及音樂庫中移除</string>
+    <string name="saving">正在儲存</string>
+    <string name="saved">已儲存</string>
+    <string name="start_an_radio">電臺</string>
+    <string name="add_to_an_playlist">加入</string>
+    <string name="more_label">更多</string>
+    <string name="releases_for_you">為你推薦的新作品</string>
+    <string name="lyrics_swipe_to_change_song">滑動切換歌曲</string>
+    <string name="lyrics_swipe_to_change_song_desc">在全螢幕歌詞中，向左或向右滑動藝人和歌曲名稱區域即可切換歌曲</string>
+    <string name="lyrics_thumbnail_play_pause">在縮圖上顯示播放/暫停按鈕</string>
+    <string name="lyrics_thumbnail_play_pause_desc">在全螢幕歌詞的歌曲縮圖上疊加顯示播放／暫停按鈕</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">找不到 APK</item>
+        <item quantity="one">%d 個 APK</item>
+        <item quantity="other">%d 個 APK</item>
+    </plurals>
+    <string name="theme_desc">自訂應用程式主題</string>
+    <string name="theme_colors">主題與顏色</string>
+    <string name="theme_mode">主題模式</string>
+    <string name="color_palette">調色板</string>
+    <string name="use_system_colors">使用系統顏色</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="action_login">登入</string>
+    <string name="show_audio_quality_badge">顯示音質標記</string>
+    <string name="network_ip_version">網路 IP 版本</string>
+    <string name="ip_version_auto">自動</string>
+    <string name="ip_version_ipv4">強制使用 IPv4</string>
+    <string name="ip_version_ipv6">強制使用 IPv6</string>
+    <string name="audio_quality_medium">中</string>
+    <string name="clear_downloaded_updates">清除已下載的更新</string>
+    <string name="clear_downloaded_updates_desc">刪除已下載的 APK 檔案以釋放空間</string>
+    <string name="use_login_for_browse">登入帳號瀏覽內容</string>
+    <string name="use_login_for_browse_desc">這可能會影響您看到的內容，例如，如果您使用會員帳號登入，則會顯示僅會員專輯</string>
+    <string name="bluetooth_permission_required">發現音訊設備需要藍牙權限。</string>
+    <string name="streaming_to">正在串流至</string>
+    <string name="this_phone">此手機</string>
+    <string name="wired_headphones">有線耳機</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">手機揚聲器</string>
+    <string name="audio_quality_title">音訊品質</string>
+    <string name="battery_content_desc">電池電量</string>
+    <string name="done">完成</string>
+    <string name="audio_devices">音訊設備</string>
+    <string name="bluetooth_headphones">藍牙耳機</string>
+    <string name="license">GNU 通用公共許可證第 3 版</string>
+    <string name="standard_lyrics_blur">標準歌詞模糊效果</string>
+    <string name="listen_together_smart_resync">智慧網路重新同步</string>
+    <string name="listen_together_smart_resync_desc">連線中斷後自動追上主持人的播放進度</string>
+    <string name="error_stream_unavailable_title">無法播放此曲目</string>
+    <string name="playback_error_channel_name">播放錯誤</string>
 </resources>

@@ -504,7 +504,7 @@ fun HomeTrackRow(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.more_horiz),
-                    contentDescription = "More",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.show_more),
                     tint = Color.White.copy(alpha = 0.85f),
                     modifier = Modifier.size(17.dp),
                 )

@@ -5,6 +5,7 @@ package com.playder.ui.screens.settings.integrations
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -22,10 +23,10 @@ private val LibreFmRed = Color(0xFF990000)
 @Composable
 fun IntegrationsScreen(navController: NavController) {
     SubSettingsScaffold(
-        title = "Integrations",
+        title = stringResource(R.string.integrations),
         onBack = { navController.navigateUp() },
     ) {
-        IntegrationPageSubtitle("Available integrations")
+        IntegrationPageSubtitle(androidx.compose.ui.res.stringResource(R.string.loc_integrations_available))
 
         IntegrationBannerCard(
             name = "Discord",

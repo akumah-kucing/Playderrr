@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -110,9 +111,9 @@ internal fun ArtistSubpageHeader(
                 )
                 if (isGrid != null) {
                     Spacer(Modifier.width(10.dp))
-                    LayoutToggle(icon = R.drawable.grid_view, selected = isGrid, description = "Grid") { onGridChange(true) }
+                    LayoutToggle(icon = R.drawable.grid_view, selected = isGrid, description = stringResource(R.string.artist_grid_content_desc_ui)) { onGridChange(true) }
                     Spacer(Modifier.width(6.dp))
-                    LayoutToggle(icon = R.drawable.list, selected = !isGrid, description = "List") { onGridChange(false) }
+                    LayoutToggle(icon = R.drawable.list, selected = !isGrid, description = stringResource(R.string.artist_list_content_desc_ui)) { onGridChange(false) }
                 }
             }
             if (!subtitle.isNullOrBlank()) {

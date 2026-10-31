@@ -77,6 +77,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -386,13 +387,18 @@ internal fun ArtistName(
 }
 
 /** "12.3M subscribers · 21.4M monthly audience" */
-internal fun artistStats(subscribers: String?, monthly: String?): String =
+internal fun artistStats(
+    subscribers: String?,
+    monthly: String?,
+    subscribersSuffix: String,
+    monthlyListenersSuffix: String,
+): String =
     listOfNotNull(
         subscribers?.trim()?.takeIf { it.isNotEmpty() }?.let { text ->
-            if (text.any { it.isLetter() && it !in "KMBkmb" }) text else "$text subscribers"
+            if (text.any { it.isLetter() && it !in "KMBkmb" }) text else "$text $subscribersSuffix"
         },
         monthly?.trim()?.takeIf { it.isNotEmpty() }?.let { text ->
-            if (text.count { it.isLetter() } > 2) text else "$text monthly listeners"
+            if (text.count { it.isLetter() } > 2) text else "$text $monthlyListenersSuffix"
         },
     ).joinToString(" · ")
 
@@ -415,7 +421,7 @@ internal fun ArtistActions(
         if (showSubscribe) {
             CircleAction(
                 icon = if (isPlaying) R.drawable.ic_untitled_pause else R.drawable.ic_untitled_play,
-                contentDescription = if (isPlaying) "Pause" else "Play",
+                contentDescription = stringResource(if (isPlaying) R.string.pause else R.string.play),
                 onClick = onPlay,
             )
         } else {
@@ -424,7 +430,7 @@ internal fun ArtistActions(
         Spacer(Modifier.width(if (showSubscribe) 4.dp else 9.dp))
         CircleAction(
             icon = if (liked) R.drawable.ic_untitled_heart else R.drawable.ic_untitled_heart_unfill,
-            contentDescription = if (liked) "Liked" else "Like",
+            contentDescription = stringResource(if (liked) R.string.action_remove_like else R.string.action_like),
             onClick = onLike,
         )
         AnimatedVisibility(
@@ -469,7 +475,7 @@ private fun SubscribePill(subscribed: Boolean, onClick: () -> Unit) {
         )
         Spacer(Modifier.width(7.dp))
         Text(
-            text = if (subscribed) "Subscribed" else "Subscribe",
+            text = stringResource(if (subscribed) R.string.artist_subscribed_ui else R.string.subscribe),
             style = TrackTitleStyle.copy(fontSize = 15.sp, fontWeight = FontWeight.Bold),
             color = content,
         )
@@ -606,14 +612,14 @@ private fun ReleaseCard(
                 }
                 CircleAction(
                     icon = if (isPlaying) R.drawable.ic_untitled_pause else R.drawable.ic_untitled_play,
-                    contentDescription = "Play",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.play),
                     onClick = onPlay,
                 )
                 if (release.album != null) {
                     Spacer(Modifier.width(4.dp))
                     CircleAction(
                         icon = if (saved) R.drawable.library_add_check else R.drawable.add,
-                        contentDescription = if (saved) "In your library" else "Add to library",
+                        contentDescription = stringResource(if (saved) R.string.from_your_library else R.string.add_to_library),
                         onClick = onSave,
                     )
                 }
@@ -627,7 +633,7 @@ private fun BioCard(name: String, bio: String, onClick: () -> Unit) {
     ArtistCard(onClick = onClick) {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = "About $name",
+                text = stringResource(R.string.artist_about_ui, name),
                 style = CardLabelStyle,
                 color = Color.White,
                 maxLines = 1,
@@ -691,7 +697,7 @@ internal fun ArtistShelfTitle(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.more_horiz),
-                        contentDescription = "More",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.show_more),
                         tint = Color.White.copy(alpha = 0.78f),
                         modifier = Modifier.size(18.dp),
                     )
@@ -715,7 +721,7 @@ internal fun ArtistShelfTitle(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_chevron_right),
-                        contentDescription = "See all",
+                        contentDescription = stringResource(R.string.show_more),
                         tint = Color.White.copy(alpha = 0.6f),
                         modifier = Modifier.size(18.dp),
                     )
@@ -798,7 +804,7 @@ internal fun ArtistTopBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back_ios),
-                    contentDescription = "Back",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
                     tint = Color.White,
                     modifier = Modifier
                         .size(16.dp)

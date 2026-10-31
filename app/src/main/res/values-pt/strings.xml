@@ -4,9 +4,7 @@
     <string name="albums">Álbuns</string>
     <string name="playlists">Listas de reprodução</string>
     <plurals name="n_selected">
-        <item quantity="one">%d selecionada</item>
-        <item quantity="many">%d selecionadas</item>
-        <item quantity="other">%d selecionadas</item>
+        <item quantity="other">%d selecionados</item>
     </plurals>
     <string name="history">Histórico</string>
     <string name="stats">Estatísticas</string>
@@ -106,27 +104,22 @@
     <string name="duplicates_description_multiple">%d músicas já estão na lista de reprodução</string>
     <plurals name="n_song">
         <item quantity="one">%d música</item>
-        <item quantity="many">%d músicas</item>
         <item quantity="other">%d músicas</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d artista</item>
-        <item quantity="many">%d artistas</item>
         <item quantity="other">%d artistas</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d álbum</item>
-        <item quantity="many">%d álbuns</item>
         <item quantity="other">%d álbuns</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d lista de reprodução</item>
-        <item quantity="many">%d listas de reprodução</item>
         <item quantity="other">%d listas de reprodução</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d semana</item>
-        <item quantity="many">%d semanas</item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <string name="queue_all_songs">Todas as músicas</string>
@@ -139,12 +132,10 @@
     <string name="dark_theme">Tema Escuro</string>
     <plurals name="n_month">
         <item quantity="one">%d mês</item>
-        <item quantity="many">%d meses</item>
         <item quantity="other">%d meses</item>
     </plurals>
     <plurals name="n_year">
         <item quantity="one">%d ano</item>
-        <item quantity="many">%d anos</item>
         <item quantity="other">%d anos</item>
     </plurals>
     <string name="playlist_imported">Lista de reprodução importada</string>
@@ -155,8 +146,7 @@
     <string name="sleep_timer">Temporizador</string>
     <string name="end_of_song">Fim da música</string>
     <plurals name="minute">
-        <item quantity="one">%d minuto</item>
-        <item quantity="many">%d minutos</item>
+        <item quantity="one">1 minuto</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <string name="error_no_stream">Não existem fluxos</string>
@@ -288,4 +278,60 @@
     <string name="use_login_for_browse">Inicie a sessão para ver o conteúdo de navegação</string>
     <string name="use_login_for_browse_desc">Isto influencia o conteúdo visível, e por exemplo, mostra apenas álbuns Premium, se estiver autenticado com uma conta Premium</string>
     <string name="action_login">Iniciar sessão</string>
+    <string name="music">Música</string>
+    <string name="album_description_placeholder">Esta é uma descrição provisória do álbum. Desfrute das faixas abaixo!</string>
+    <string name="you_might_also_like">Lista de reprodução relacionada</string>
+    <string name="shuffle_content_desc">Reprodução aleatória</string>
+    <string name="shuffle_label">Aleatório</string>
+    <string name="pause">Pausar</string>
+    <string name="added_to_library">Adicionado à biblioteca</string>
+    <string name="removed_from_library">Removido da biblioteca</string>
+    <string name="remove_from_import_and_library">Remover das importações e da biblioteca</string>
+    <string name="removed_from_import_and_library">Removido das suas importações de %1$s e da biblioteca</string>
+    <string name="saving">A guardar</string>
+    <string name="saved">Guardado</string>
+    <string name="start_an_radio">Rádio</string>
+    <string name="add_to_an_playlist">Adicionar</string>
+    <string name="more_label">Mais</string>
+    <string name="releases_for_you">Lançamentos para si</string>
+    <string name="lyrics_swipe_to_change_song">Deslize para mudar de música</string>
+    <string name="lyrics_swipe_to_change_song_desc">Deslize para a esquerda ou para a direita na secção do artista e da música, nas letras em ecrã inteiro, para mudar de música</string>
+    <string name="lyrics_thumbnail_play_pause">Mostrar reproduzir/pausar na miniatura</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Mostrar um botão de reproduzir/pausar sobre a miniatura da música nas letras em ecrã inteiro</string>
+    <plurals name="n_apk_found">
+        <item quantity="zero">Nenhum APK encontrado</item>
+        <item quantity="one">%d APK encontrado</item>
+        <item quantity="other">%d APKs encontrados</item>
+    </plurals>
+    <string name="theme_desc">Personalize o tema da aplicação</string>
+    <string name="theme_colors">Tema e cores</string>
+    <string name="theme_mode">Modo do tema</string>
+    <string name="color_palette">Paleta de cores</string>
+    <string name="use_system_colors">Usar as cores do sistema</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="show_audio_quality_badge">Mostrar indicador da qualidade do áudio</string>
+    <string name="network_ip_version">Versão do IP da rede</string>
+    <string name="ip_version_auto">Automático</string>
+    <string name="ip_version_ipv4">Forçar IPv4</string>
+    <string name="ip_version_ipv6">Forçar IPv6</string>
+    <string name="audio_quality_medium">Média</string>
+    <string name="clear_downloaded_updates">Limpar atualizações transferidas</string>
+    <string name="clear_downloaded_updates_desc">Remover ficheiros APK transferidos para libertar espaço</string>
+    <string name="bluetooth_permission_required">É necessária a permissão de Bluetooth para detetar dispositivos de áudio.</string>
+    <string name="streaming_to">A transmitir para</string>
+    <string name="this_phone">Este telemóvel</string>
+    <string name="wired_headphones">Auscultadores com fios</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Altifalante do telemóvel</string>
+    <string name="audio_quality_title">Qualidade do áudio</string>
+    <string name="battery_content_desc">Nível da bateria</string>
+    <string name="done">Concluído</string>
+    <string name="audio_devices">Dispositivos de áudio</string>
+    <string name="bluetooth_headphones">Auscultadores Bluetooth</string>
+    <string name="license">GNU General Public License v3.0</string>
+    <string name="standard_lyrics_blur">Desfoque padrão das letras</string>
+    <string name="listen_together_smart_resync">Ressincronização inteligente da rede</string>
+    <string name="listen_together_smart_resync_desc">Sincronizar automaticamente com o anfitrião após uma falha de ligação</string>
+    <string name="error_stream_unavailable_title">Não foi possível reproduzir esta faixa</string>
+    <string name="playback_error_channel_name">Erros de reprodução</string>
 </resources>

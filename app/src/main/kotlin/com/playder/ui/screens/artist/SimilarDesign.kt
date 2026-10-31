@@ -66,6 +66,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -158,9 +159,9 @@ internal fun SimilarPage(
     groups: SimilarGroups?,
     deepLoading: Boolean,
     artistsTitle: String,
-    playlistsTitle: String = "Featured Playlist",
-    songsTitle: String = "Featured songs",
-    albumsTitle: String = "New from them",
+    playlistsTitle: String,
+    songsTitle: String,
+    albumsTitle: String,
 ) {
     val playerConnection = LocalPlayerConnection.current ?: return
     val menuState = LocalMenuState.current
@@ -373,7 +374,7 @@ internal fun SimilarPage(
                     ) {
                         item(key = "empty") {
                             Text(
-                                text = "Nothing to show here yet",
+                                text = stringResource(R.string.artist_nothing_to_show_ui),
                                 style = TrackSubtitleStyle.copy(fontSize = 13.sp),
                                 color = Color.White.copy(alpha = 0.6f),
                                 modifier = Modifier.padding(horizontal = PlaylistInset, vertical = 28.dp),
@@ -487,7 +488,7 @@ internal fun StartOfTheLine(modifier: Modifier = Modifier) {
     ) {
         ReceiptLine()
         Text(
-            text = "START OF THE LINE",
+            text = stringResource(R.string.artist_start_of_line_ui),
             style = ReceiptCenterStyle,
             color = Color.White.copy(alpha = 0.78f),
             maxLines = 1,

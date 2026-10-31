@@ -5,10 +5,13 @@ package com.playder.ui.screens.library
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.playder.R
 import com.playder.ui.component.LocalMenuState
 import com.playder.ui.menu.ArtistMenu
 import com.playder.viewmodels.LibraryHomeViewModel
@@ -29,23 +32,24 @@ fun LibraryArtistsScreen(
     val artists by (shelf?.let(viewModel::shelf)?.artists ?: viewModel.artists).collectAsStateWithLifecycle()
     val menuState = LocalMenuState.current
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LibraryEntityListScreen(
-        title = "Artist",
+        title = stringResource(R.string.artists),
         subtitle = when (shelf) {
-            LibraryShelfKind.Local -> "Artists with music on this device."
-            LibraryShelfKind.Cached -> "Artists with songs in your cache."
-            null -> "All artist on your library listed here."
+            LibraryShelfKind.Local -> stringResource(R.string.artists_on_device)
+            LibraryShelfKind.Cached -> stringResource(R.string.artists_in_cache)
+            null -> stringResource(R.string.library_artists_subtitle)
         },
-        searchPlaceholder = "Find an artist by name",
+        searchPlaceholder = stringResource(R.string.find_artist_hint),
         items = artists,
         idOf = { it.id },
         nameOf = { it.artist.name },
         subtitleOf = {
-            val count = if (it.songCount == 1) "1 song" else "${it.songCount} songs"
+            val count = context.resources.getQuantityString(R.plurals.library_song_count, it.songCount, it.songCount)
             when (shelf) {
-                LibraryShelfKind.Local -> "$count on this device"
-                LibraryShelfKind.Cached -> "$count cached"
+                LibraryShelfKind.Local -> context.getString(R.string.songs_on_device, count)
+                LibraryShelfKind.Cached -> context.getString(R.string.songs_in_cache, count)
                 null -> count
             }
         },

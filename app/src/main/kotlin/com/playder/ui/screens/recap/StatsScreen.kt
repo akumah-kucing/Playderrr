@@ -65,6 +65,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -184,7 +185,7 @@ fun StatsScreen(navController: NavController) {
                             .padding(horizontal = PagePadding)
                             .graphicsLayer { alpha = 1f - collapse },
                     ) {
-                        Text("Stats", style = statsText(44f, tracking = -1.6f))
+                        Text(androidx.compose.ui.res.stringResource(com.playder.R.string.stats), style = statsText(44f, tracking = -1.6f))
                         Spacer(Modifier.width(8.dp))
                         Text(
                             "$year Re'cap  >",
@@ -218,7 +219,10 @@ fun StatsScreen(navController: NavController) {
                             .clickable { val open = !allOpen; CardKeys.forEach { expanded[it] = open } }
                             .padding(start = 14.dp, end = 10.dp, top = 7.dp, bottom = 7.dp),
                     ) {
-                        Text(if (allOpen) "Collapse all" else "Expand all", style = statsText(13f, FontWeight.SemiBold, tracking = 0f))
+                        Text(
+                            stringResource(if (allOpen) R.string.loc_stats_collapse_all else R.string.loc_stats_expand_all),
+                            style = statsText(13f, FontWeight.SemiBold, tracking = 0f),
+                        )
                         Spacer(Modifier.width(4.dp))
                         Chevron(open = allOpen, size = 18)
                     }
@@ -230,32 +234,44 @@ fun StatsScreen(navController: NavController) {
                 } else if (s.isEmpty) {
                     item(key = "empty") {
                         StatsCardBox {
+                            val period = if (kind == StatsRange.Kind.Month) "${monthFull(s.range.month)} ${s.range.year}" else "${s.range.year}"
+                            Text(stringResource(R.string.loc_stats_nothing_played, period), style = statsText(17f))
                             Text(
-                                "Nothing played in ${if (kind == StatsRange.Kind.Month) "${monthFull(s.range.month)} ${s.range.year}" else "${s.range.year}"} yet.",
-                                style = statsText(17f),
+                                stringResource(R.string.loc_stats_play_a_few),
+                                style = statsText(13f, FontWeight.Medium, StatsInkMuted, 0f),
+                                modifier = Modifier.padding(top = 4.dp),
                             )
-                            Text("Play a few songs and this fills itself in.", style = statsText(13f, FontWeight.Medium, StatsInkMuted, 0f), modifier = Modifier.padding(top = 4.dp))
                         }
                     }
                 } else {
-                    val thisWhat = if (kind == StatsRange.Kind.Month) "This month" else "This year"
-                    item(key = "total") { TotalCard(s, thisWhat, expanded) }
+                    item(key = "total") {
+                        TotalCard(
+                            s,
+                            stringResource(if (kind == StatsRange.Kind.Month) R.string.loc_stats_this_month else R.string.loc_stats_this_year),
+                            expanded,
+                        )
+                    }
                     item(key = "genre") { GenreCard(genres, expanded) }
                     s.topArtists.firstOrNull()?.let { top -> item(key = "artist") { ArtistCard(s, top, expanded) } }
                     s.topSongs.firstOrNull()?.let { top -> item(key = "song") { SongCard(s, top, expanded) } }
                     item(key = "often") {
                         Text(
-                            "Let's see how often you like to listen to music",
+                            stringResource(R.string.loc_stats_frequency_intro),
                             style = statsText(16f),
                             modifier = Modifier.padding(start = PagePadding, end = PagePadding, top = 18.dp, bottom = 12.dp),
                         )
                     }
-                    item(key = "weekday") { WeekdayCard(s, thisWhat, expanded) }
+                    item(key = "weekday") {
+                        WeekdayCard(
+                            s,
+                            stringResource(if (kind == StatsRange.Kind.Month) R.string.loc_stats_this_month else R.string.loc_stats_this_year),
+                            expanded,
+                        )
+                    }
                     item(key = "hour") { HourCard(s, expanded) }
                     item(key = "privacy") {
                         Text(
-                            "Everything here is collected by your usage on this app and WILL NEVER BE SENT to some random server! " +
-                                "(Genres are looked up by artist name only.)",
+                            stringResource(R.string.loc_stats_privacy),
                             style = statsText(11f, FontWeight.SemiBold, StatsInkMuted, 0f),
                             modifier = Modifier.padding(horizontal = PagePadding + 4.dp, vertical = 10.dp),
                         )
@@ -324,9 +340,13 @@ fun StatsScreen(navController: NavController) {
                         }
                         .clickable(enabled = morph > 0.5f, onClick = ::openPicker),
                 ) {
-                    Text("Stats", style = statsText(28f, tracking = -1f))
+                    Text(androidx.compose.ui.res.stringResource(com.playder.R.string.stats), style = statsText(28f, tracking = -1f))
                     Spacer(Modifier.width(6.dp))
-                    Text("$year Re'cap", style = statsText(15f, color = StatsInkMuted, tracking = -0.3f), modifier = Modifier.padding(bottom = 4.dp))
+                    Text(
+                        stringResource(R.string.loc_recap_show_by_year, year),
+                        style = statsText(15f, color = StatsInkMuted, tracking = -0.3f),
+                        modifier = Modifier.padding(bottom = 4.dp),
+                    )
                 }
             }
             Spacer(Modifier.weight(1f))
@@ -403,7 +423,7 @@ private fun Chevron(open: Boolean, size: Int) {
     val turn by animateFloatAsState(if (open) 180f else 0f, tween(320, easing = Emphasized), label = "chevron")
     Icon(
         painter = painterResource(R.drawable.expand_more),
-        contentDescription = if (open) "Collapse" else "Expand",
+        contentDescription = stringResource(if (open) R.string.loc_stats_collapse_all else R.string.loc_stats_expand_all),
         tint = Color.White,
         modifier = Modifier.size(size.dp).graphicsLayer { rotationZ = turn },
     )
@@ -428,7 +448,11 @@ private fun TotalCard(s: ListeningStats, thisWhat: String, expanded: MutableMap<
         expanded = expanded,
         detail = {
             Text(
-                if (s.range.kind == StatsRange.Kind.Month) "Every day of ${monthFull(s.range.month)}" else "Every month of ${s.range.year}",
+                if (s.range.kind == StatsRange.Kind.Month) {
+                    stringResource(R.string.loc_stats_every_day, monthFull(s.range.month))
+                } else {
+                    stringResource(R.string.loc_stats_every_month, s.range.year)
+                },
                 style = statsText(13f, FontWeight.SemiBold, StatsInkMuted, 0f),
                 modifier = Modifier.padding(bottom = 8.dp),
             )
@@ -449,7 +473,7 @@ private fun TotalCard(s: ListeningStats, thisWhat: String, expanded: MutableMap<
             }
         },
     ) {
-        Text("$thisWhat, you've been listening for", style = statsText(15f))
+        Text(stringResource(R.string.loc_stats_listening_for, thisWhat), style = statsText(15f))
         Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(top = 2.dp)) {
             OdometerText("${minutes / 60}", big, progress = roll)
             Text("h", style = unit, modifier = Modifier.padding(bottom = 8.dp))
@@ -461,10 +485,10 @@ private fun TotalCard(s: ListeningStats, thisWhat: String, expanded: MutableMap<
         Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF3A3A3A)))
         Spacer(Modifier.height(12.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Fact("${s.songCount}", if (s.songCount == 1) "Song" else "Songs")
-            Fact("${s.artistCount}", if (s.artistCount == 1) "Artist" else "Artists")
-            Fact("${s.albumCount}", if (s.albumCount == 1) "Album" else "Albums")
-            Fact("${s.plays}", if (s.plays == 1) "play" else "plays")
+            Fact("${s.songCount}", stringResource(if (s.songCount == 1) R.string.loc_stats_song else R.string.loc_stats_songs))
+            Fact("${s.artistCount}", stringResource(if (s.artistCount == 1) R.string.loc_stats_artist else R.string.loc_stats_artists))
+            Fact("${s.albumCount}", stringResource(if (s.albumCount == 1) R.string.loc_stats_album else R.string.loc_stats_albums))
+            Fact("${s.plays}", stringResource(if (s.plays == 1) R.string.loc_stats_play else R.string.loc_stats_plays))
         }
     }
 }
@@ -501,11 +525,15 @@ private fun GenreCard(state: GenreState, expanded: MutableMap<String, Boolean>) 
             }
         },
     ) {
-        Text("Dominant Genre", style = statsText(15f))
+        Text(stringResource(R.string.loc_stats_dominant_genre), style = statsText(15f))
         when (state) {
-            GenreState.Loading -> Text("Sorting your genres…", style = statsText(14f, FontWeight.Medium, StatsInkMuted, 0f), modifier = Modifier.padding(vertical = 30.dp))
+            GenreState.Loading -> Text(
+                stringResource(R.string.loc_stats_sorting_genres),
+                style = statsText(14f, FontWeight.Medium, StatsInkMuted, 0f),
+                modifier = Modifier.padding(vertical = 30.dp),
+            )
             GenreState.Unavailable -> Text(
-                "Couldn't name your genres right now - this needs a connection the first time.",
+                stringResource(R.string.loc_stats_genre_offline),
                 style = statsText(14f, FontWeight.Medium, StatsInkMuted, 0f),
                 modifier = Modifier.padding(vertical = 18.dp),
             )
@@ -544,13 +572,18 @@ private fun ArtistCard(s: ListeningStats, top: RecapArtist, expanded: MutableMap
         detail = {
             RankList(
                 rows = s.topArtists.take(10).map { a ->
-                    RankRow(a.name, "${shortDuration(a.playTimeMs)} · ${a.plays} plays", a.playTimeMs, a.thumbnailUrl)
+                    RankRow(
+                        a.name,
+                        stringResource(R.string.loc_stats_rank_artist, shortDuration(a.playTimeMs), a.plays),
+                        a.playTimeMs,
+                        a.thumbnailUrl,
+                    )
                 },
                 circle = true,
             )
         },
     ) {
-        Text("You really love listening to this artist", style = statsText(15f))
+        Text(stringResource(R.string.loc_stats_love_artist), style = statsText(15f))
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 12.dp)) {
             AsyncImage(
                 model = top.thumbnailUrl?.resize(240, 240),
@@ -562,7 +595,7 @@ private fun ArtistCard(s: ListeningStats, top: RecapArtist, expanded: MutableMap
             Column {
                 Text(top.name, style = statsText(24f, tracking = -0.8f), maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Text(
-                    "${shortDuration(top.playTimeMs)} playtime and ${top.plays} plays from ${top.name}",
+                    stringResource(R.string.loc_stats_artist_detail, shortDuration(top.playTimeMs), top.plays, top.name),
                     style = statsText(12f, FontWeight.SemiBold, StatsInkMuted, 0f),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -580,13 +613,18 @@ private fun SongCard(s: ListeningStats, top: RecapSong, expanded: MutableMap<Str
         detail = {
             RankList(
                 rows = s.topSongs.take(10).map { song ->
-                    RankRow(song.title, "${song.artistName} · ${song.plays} plays · ${shortDuration(song.playTimeMs)}", song.plays.toLong(), song.thumbnailUrl)
+                    RankRow(
+                        song.title,
+                        stringResource(R.string.loc_stats_rank_song, song.artistName, song.plays, shortDuration(song.playTimeMs)),
+                        song.plays.toLong(),
+                        song.thumbnailUrl,
+                    )
                 },
                 circle = false,
             )
         },
     ) {
-        Text("And without noticing, this song is your #1", style = statsText(15f))
+        Text(stringResource(R.string.loc_stats_song_favorite), style = statsText(15f))
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 12.dp)) {
             AsyncImage(
                 model = top.thumbnailUrl?.resize(240, 240),
@@ -596,9 +634,14 @@ private fun SongCard(s: ListeningStats, top: RecapSong, expanded: MutableMap<Str
             )
             Spacer(Modifier.width(16.dp))
             Column {
-                Text("${top.title} from ${top.artistName}", style = statsText(20f, tracking = -0.6f), maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Text(
-                    "${shortDuration(top.playTimeMs)} playtime and ${top.plays} plays",
+                    stringResource(R.string.loc_stats_song_artist, top.title, top.artistName),
+                    style = statsText(20f, tracking = -0.6f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    stringResource(R.string.loc_stats_song_detail, shortDuration(top.playTimeMs), top.plays),
                     style = statsText(12f, FontWeight.SemiBold, StatsInkMuted, 0f),
                 )
             }
@@ -620,9 +663,12 @@ private fun WeekdayCard(s: ListeningStats, thisWhat: String, expanded: MutableMa
             )
         },
     ) {
-        Text("$thisWhat, you like to listen to music every", style = statsText(13f, FontWeight.SemiBold))
+        Text(stringResource(R.string.loc_stats_weekday_intro, thisWhat), style = statsText(13f, FontWeight.SemiBold))
         Text(day.getDisplayName(JavaTextStyle.FULL, Locale.getDefault()), style = statsText(32f, tracking = -1.2f), modifier = Modifier.padding(vertical = 2.dp))
-        Text("totaling ${formatHoursDecimal(s.weekdayMs[best])} hours", style = statsText(12f, FontWeight.SemiBold, StatsInkSecondary, 0f))
+        Text(
+            stringResource(R.string.loc_stats_hours_total, formatHoursDecimal(s.weekdayMs[best])),
+            style = statsText(12f, FontWeight.SemiBold, StatsInkSecondary, 0f),
+        )
     }
 }
 
@@ -640,9 +686,20 @@ private fun HourCard(s: ListeningStats, expanded: MutableMap<String, Boolean>) {
             )
         },
     ) {
-        Text("And you love to listen in the ${timeOfDayName(best)} exactly around", style = statsText(13f, FontWeight.SemiBold))
+        val timeOfDay = stringResource(
+            when (best) {
+                in 5..11 -> R.string.loc_stats_period_morning
+                in 12..16 -> R.string.loc_stats_period_afternoon
+                in 17..21 -> R.string.loc_stats_period_evening
+                else -> R.string.loc_stats_period_night
+            },
+        )
+        Text(stringResource(R.string.loc_stats_hour_intro, timeOfDay), style = statsText(13f, FontWeight.SemiBold))
         Text(hourLabel(best), style = statsText(32f, tracking = -1.2f), modifier = Modifier.padding(vertical = 2.dp))
-        Text("totaling ${formatHoursDecimal(s.hourMs[best])} hours at this time!", style = statsText(12f, FontWeight.SemiBold, StatsInkSecondary, 0f))
+        Text(
+            stringResource(R.string.loc_stats_hours_at_time, formatHoursDecimal(s.hourMs[best])),
+            style = statsText(12f, FontWeight.SemiBold, StatsInkSecondary, 0f),
+        )
     }
 }
 
@@ -673,9 +730,12 @@ private fun ColumnScope.StatsPicker(
     if (m !in months) m = months.last()
 
     Column(modifier = Modifier.padding(horizontal = 22.dp).padding(bottom = 20.dp)) {
-        Text("Show by", style = statsText(36f, tracking = -1.4f))
+        Text(stringResource(R.string.loc_stats_show_by), style = statsText(36f, tracking = -1.4f))
         Spacer(Modifier.height(10.dp))
-        listOf(StatsRange.Kind.Month to "Month", StatsRange.Kind.Year to "Year").forEach { (value, label) ->
+        listOf(
+            StatsRange.Kind.Month to stringResource(R.string.loc_stats_month),
+            StatsRange.Kind.Year to stringResource(R.string.loc_stats_year),
+        ).forEach { (value, label) ->
             val on = k == value
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -693,19 +753,20 @@ private fun ColumnScope.StatsPicker(
                 }
                 Spacer(Modifier.width(14.dp))
                 Text(label, style = statsText(18f), modifier = Modifier.weight(1f))
-                if (on) Text("Selected", style = statsText(13f, FontWeight.SemiBold, StatsInkMuted, 0f))
+                if (on) Text(stringResource(R.string.loc_stats_selected), style = statsText(13f, FontWeight.SemiBold, StatsInkMuted, 0f))
             }
         }
         Box(Modifier.padding(vertical = 18.dp).fillMaxWidth().height(1.dp).background(Color(0xFF555555)))
-        Text("What year?", style = statsText(36f, tracking = -1.4f))
+        Text(stringResource(R.string.loc_stats_what_year), style = statsText(36f, tracking = -1.4f))
         Wheel(items = years, selected = y, label = { "$it" }, onSelected = { y = it })
         AnimatedVisibility(visible = k == StatsRange.Kind.Month) {
             Column {
-                Text("What month?", style = statsText(36f, tracking = -1.4f), modifier = Modifier.padding(top = 10.dp))
+                Text(stringResource(R.string.loc_stats_what_month), style = statsText(36f, tracking = -1.4f), modifier = Modifier.padding(top = 10.dp))
+                val currentMonthLabel = stringResource(R.string.loc_stats_month_current)
                 Wheel(
                     items = months,
                     selected = m,
-                    label = { mm -> monthFull(mm) + if (y == today.year && mm == today.monthValue) " (this month)" else "" },
+                    label = { mm -> monthFull(mm) + if (y == today.year && mm == today.monthValue) " $currentMonthLabel" else "" },
                     onSelected = { m = it },
                 )
             }
@@ -720,7 +781,7 @@ private fun ColumnScope.StatsPicker(
                 .clickable { onDone(k, y, m) },
             contentAlignment = Alignment.Center,
         ) {
-            Text("Done", style = statsText(20f))
+            Text(stringResource(R.string.loc_stats_done), style = statsText(20f))
         }
     }
 }

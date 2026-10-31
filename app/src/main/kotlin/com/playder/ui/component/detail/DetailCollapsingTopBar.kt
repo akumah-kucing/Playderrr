@@ -174,7 +174,7 @@ fun DetailCollapsingTopBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back_ios),
-                    contentDescription = "Back",
+                    contentDescription = androidx.compose.ui.res.stringResource(com.playder.R.string.cd_back),
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
                 )
